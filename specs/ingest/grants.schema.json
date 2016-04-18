@@ -1,0 +1,107 @@
+{
+   "type": "object",
+   "Description": "Grant",
+   "properties": {
+       "title": {
+           "type": "string"
+       },
+       "agency": {
+           "type": "string",
+           "description": "Any normalized string."
+       },
+       "agency_id": {
+           "type": "string",
+           "description": "Grant ID from funding agency."
+       },
+       "institution_id": {
+           "type": "string",
+           "description": "Grant id from local institution."
+       },
+       "type": {
+           "type": "string",
+           "enum": ["new", "renewal", "supplement"]
+       },
+       "start_date": {
+           "type": "string",
+           "format": "date-time",
+           "description": "Award start date in RFC-3339 format (YYYY-MM-DDTHH:mm:ssZ)"
+       },
+       "end_date": {
+           "type": "string",
+           "format": "date-time",
+           "description": "Award end datein in RFC-3339 format (YYYY-MM-DDTHH:mm:ssZ)"
+       },
+       "total": {
+           "type": "integer",
+           "description": "Total amount of grant over performance period (start date - end date)."
+       },
+       "people": {
+           "type": "array",
+           "items": {
+               "$anyOf": [
+                   { "$ref": "#/definitions/person"},
+                   { "$ref": "#/definitions/identity"}
+               ]
+           },
+           "minItems": 1,
+           "uniqueItems": true
+       },
+       "lastModified": {
+           "type": "string",
+           "format": "date-time",
+           "description": "Date information was updated either from funding agency or dumped from institution in in RFC-3339 format (YYYY-MM-DDTHH:mm:ssZ)"
+       }
+   },
+   "definitions": {
+       "role": {
+           "type": "string",
+           "enum":["PI", "Co-PI", "Key Personnel"]
+       },
+       "identity": {
+           "type": "object",
+           "properties": {
+               "institution": {
+                   "type": "string"
+               },
+               "identifier": {
+                   "type": "string"
+               },
+               "role":{
+                   "$ref": "#/definitions/role"
+               }
+           }
+       },
+       "person": {
+           "type": "object",
+           "properties": {
+               "first_name": {
+                   "type": "string"
+               },
+               "middle_name": {
+                   "type": "string"
+               },
+               "last_name": {
+                   "type": "string"
+               },
+               "role":{
+                   "$ref": "#/definitions/role"
+               }
+           },
+           "required": [
+               "first_name",
+               "last_name"
+           ]
+       }
+   },
+   "required": [
+       "title",
+       "agency",
+       "agency_id",
+       "institution_id",
+       "type",
+       "start_date",
+       "end_date",
+       "total",
+       "people"
+   ]
+}
