@@ -37,11 +37,8 @@
        },
        "people": {
            "type": "array",
-           "items": {
-               "$anyOf": [
-                   { "$ref": "#/definitions/person"},
-                   { "$ref": "#/definitions/identity"}
-               ]
+           "items":{
+               "$ref": "#/definitions/person"
            },
            "minItems": 1,
            "uniqueItems": true
@@ -57,21 +54,35 @@
            "type": "string",
            "enum":["PI", "Co-PI", "Key Personnel"]
        },
-       "identity": {
+       "idp_id": {
+           "description": "Identity Provided ID",
            "type": "object",
            "properties": {
-               "institution": {
-                   "type": "string"
+               "name": {
+                   "type": "string",
+                   "description": "Name of the Identity Provider"
                },
-               "identifier": {
-                   "type": "string"
+               "type": {
+                   "type": "string",
+                   "description": "Name used by idp to refer to identiry (UBITname)"
+               },
+               "id": {
+                   "type": "string",
+                   "description": "The actual ID"
                },
                "role":{
                    "$ref": "#/definitions/role"
                }
-           }
+           },
+           "required": [
+               "name",
+               "type",
+               "id",
+               "role"
+           ]
        },
-       "person": {
+       "common_id": {
+           "description": "Common Identity provided by Name",
            "type": "object",
            "properties": {
                "first_name": {
@@ -89,7 +100,15 @@
            },
            "required": [
                "first_name",
-               "last_name"
+               "last_name",
+               "role"
+           ]
+       },
+       "person": {
+           "type": "object",
+           "oneOf": [
+               { "$ref": "#/definitions/idp_id"},
+               { "$ref": "#/definitions/common_id"}
            ]
        }
    },
