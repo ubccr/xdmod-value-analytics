@@ -3,11 +3,6 @@
     "description": "Person",
     "title": "Organizational Person",
     "properties": {
-        "organization": {
-            "type": "string",
-            "description": "The user's organizational affiliation"
-        },
-
         "first_name": {
             "type": "string"
         },
@@ -21,7 +16,6 @@
             "type": "string",
             "description": "User's professional title."
         },
-
         "organizations": {
             "type": "array",
             "items": {

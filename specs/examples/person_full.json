@@ -9,7 +9,8 @@
                 "name": "University at Buffalo",
                 "title": "Lead Software Engineer",
                 "appointment_type": "staff",
-                "division": "CCR"
+                "division": "CCR",
+                "primary": true
             },
             {
                 "id": "sgallo@bioblower.com",
