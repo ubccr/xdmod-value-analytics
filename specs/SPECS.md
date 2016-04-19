@@ -5,6 +5,7 @@ Introduction
 ------------
 
 XDMoD Value Analytics currently utilizes three entities to provide ROI metrics:
+
 1. Organizations,
 2. People, and
 3. Grants
