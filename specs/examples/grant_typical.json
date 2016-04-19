@@ -1,0 +1,38 @@
+[
+    {
+        "title": "XD Metrics Service (XMS)",
+        "agency": "National Science Foundation (NSF)",
+        "agency_grant_id": "1445806",
+        "organization_grant_id": "12345-67890",
+        "type": "New",
+        "start_date": "2015-07-01",
+        "end_date": "2020-06-30",
+        "update_date": "2015-04-29",
+        "total_dollars": 9079701,
+        "people": [
+            {
+                "id": "furlani@buffalo.edu",
+                "role": "PI"
+            },
+            {
+                "id": "smgallo@buffalo.edu",
+                "role": "Co-PI"
+            },
+            {
+                "id": "jonesm@buffalo.edu",
+                "role": "Co-PI"
+            },
+            {
+                "id": "abani@buffalo.edu",
+                "role": "Co-PI"
+            },
+            {
+                "first_name": "Gregor",
+                "last_name": "von Laszewski",
+                "organization": "Indiana University",
+                "role": "Co-PI"
+            }
+        ],
+        "last_modified": "2016-04-19T06:50:00Z"
+    }
+]

@@ -1,0 +1,37 @@
+[
+    {
+        "first_name": "Steven",
+        "middle_name": "M",
+        "last_name": "Gallo",
+        "organizations": [
+            {
+                "id": "smgallo@buffalo.edu",
+                "name": "University at Buffalo",
+                "title": "Lead Software Engineer",
+                "appointment_type": "staff",
+                "division": "CCR"
+            },
+            {
+                "id": "sgallo@bioblower.com",
+                "name": "Buffalo Bio-Blower",
+                "appointment_type": "staff",
+                "division": "General"
+            }
+        ],
+        "identifiers": [
+            {
+                "type": "orchid",
+                "id": "0000-0002-1825-0097"
+            },{
+                "type": "nsf",
+                "id": "000160359"
+            }
+        ],
+        "groups": [
+            "xms",
+            "ccrstaff",
+            "caringguidance",
+            "redfly"
+        ]
+    }
+]

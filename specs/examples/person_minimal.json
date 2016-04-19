@@ -1,0 +1,15 @@
+[
+    {
+        "first_name": "Steven",
+        "middle_name": "M",
+        "last_name": "Gallo",
+        "organizations": [
+            {
+                "id": "smgallo@buffalo.edu",
+                "name": "University at Buffalo",
+                "appointment_type": "staff",
+                "division": "CCR"
+            }
+        ]
+    }
+]

@@ -1,0 +1,19 @@
+[
+    {
+        "title": "XD Metrics Service (XMS)",
+        "agency": "National Science Foundation (NSF)",
+        "agency_grant_id": "1445806",
+        "organization_grant_id": "12345-67890",
+        "type": "New",
+        "start_date": "2015-07-01",
+        "end_date": "2020-06-30",
+        "total_dollars": 9079701,
+        "people": [
+            {
+                "id": "furlani@buffalo.edu",
+                "role": "PI"
+            }
+        ],
+        "last_modified": "2016-04-19T06:50:00Z"
+    }
+]
