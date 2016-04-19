@@ -15,11 +15,12 @@ Schema definitions and examples are found in their respective subdirectories.
 Organizations
 -------------
 
-An organization is defined simply as a name and abbreviation and an XDMoD-VA installation at a
-single institution will typically define a single organization to represent the
-institution. However, to support cases where a person may be affiliated with multiple
-organizations as part of their institutional obligations, we allow the definition of multiple
-organizations. It is assumed that each organization name and abbreviation will be unique.
+An organization is defined simply as a name and abbreviation. An XDMoD-VA installation at a single
+institution will typically define a single organization to represent the institution. However, to
+support cases where a person may be affiliated with multiple organizations as part of their
+institutional obligations or the aggregation of data from multiple organizations or
+sub-organizations, we allow the definition of multiple organizations. It is assumed that each
+organization name and abbreviation will be unique.
 
     {
         "name": "University at Buffalo",
@@ -29,18 +30,20 @@ organizations. It is assumed that each organization name and abbreviation will b
 People
 ------
 
-Each person is uniquely defined by their name and a primary organization that they are affiliated
-with. Each organization provides an identifier for that person that **must be unqiue within that
-organization**. A person may be affiliated with more than one organization, each providing a unique
-organizational identifier for the person but only one organization may be specified as the user's
+Since a person's name is not unique, each person recrod is uniquely identified by the name of their
+primary organization and a unique organizational identifier assigned by that organization. Each
+organization must provide an identifier for a person that **is unqiue within that organization**. A
+person may be affiliated with more than one organization, each providing a unique organizational
+identifier for the person but only one organization may be specified as the user's primary
+organization. If a person is affiliated with a single organization it is assumed that is their
 primary organization.
 
-In addition, a person may have a list of identifiers used to link them to other entities such as
-funding agencies or citation clearinghouses. A person may also me a member of one or more groups,
-which are generic tags allowing multiple users to be grouped together.\
+In addition, a person record may have a list of identifiers used to link the person to other
+entities such as funding agencies or citation engines. A person may also be a member of one or more
+groups, which are generic tags allowing multiple users to be organized together.
 
 It is assumed that the list of organization names, person appointment types, and identifier types
-has normalized prior to providing that information to XDMoD. **Organization names must match a
+has normalized prior to providing that information to XDMoD. **Organization names must also match a
 defined organization.** XDMoD does not automatially identify and normalize this data.
 
 
@@ -84,24 +87,24 @@ defined organization.** XDMoD does not automatially identify and normalize this 
 Grants
 ------
 
-A grant is a financial award from a funding agency over a specified performance period.  All
-grants must include metadata such as the title, funding agency, grant identifiers for both the
-agency and organization, a start and end data, as well as a dollar amount. In addition. a grant
-contains a list of one or more people and their roles on the grant. At a minimum, this list must
-contain the PI.
+A grant is a financial award from a funding agency over a specified performance period.  All grant
+records must include metadata such as the title, funding agency, grant identifiers for both the
+agency and organization, a start and end date, as well as a dollar amount. In addition. a grant
+record contains a list of one or more people and their roles on the grant. At a minimum, this list
+must contain the PI.
 
 People affiliated with a grant are identified by their unique organizational ID and their role on
 the grant. If a single organization is defined, the person's organization does not need to be
-specified. However, if more than one organization is defined it is necessary to specific the
+specified. However, if more than one organization is defined it is necessary to specify the
 organization name as well as the organization id to uniquely identify the user because it is
-possible for the same identifier to be used my more than one organization. If a person associated
-with a grant is not a member of an organization defined within XDMoD Value Analytics (e.g., a
-Co-PI on the grant from another institution) then that person may be defined using their name and
-their organization name in addition to their role.
+possible for the same identifier to be used by more than one organization. If a person associated
+with a grant is not a member of an organization defined within XDMoD Value Analytics (e.g., a Co-PI
+on the grant from another institution) then that person may be defined using their name and their
+organization name in addition to their role.
 
 It is assumed that the list of funding agencies and organizations is normalized prior to providing
 that information to XDMoD. **Organization names must match a defined organization and organization
-ids must be defined prior to ingesting grant data.** XDMoD does not automatially identify and
+unique ids must be defined prior to ingesting grant data.** XDMoD does not automatially identify and
 normalize this data.
 
 

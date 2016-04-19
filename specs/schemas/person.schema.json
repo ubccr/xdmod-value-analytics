@@ -74,6 +74,10 @@
                 "title": {
                     "type": "string",
                     "description": "Person's title in the organization."
+                },
+                "primary": {
+                    "type": "boolean",
+                    "description": "Set primary to true if this is the person's primary organization."
                 }
             },
             "required": [
