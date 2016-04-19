@@ -30,8 +30,8 @@ People
 ------
 
 Each person is uniquely defined by their name and a primary organization that they are affiliated
-with. Each organization provides an identifier for that person that *must be unqiue within that
-organization*. A person may be affiliated with more than one organization, each providing a unique
+with. Each organization provides an identifier for that person that **must be unqiue within that
+organization**. A person may be affiliated with more than one organization, each providing a unique
 organizational identifier for the person but only one organization may be specified as the user's
 primary organization.
 
@@ -40,8 +40,8 @@ funding agencies or citation clearinghouses. A person may also me a member of on
 which are generic tags allowing multiple users to be grouped together.\
 
 It is assumed that the list of organization names, person appointment types, and identifier types
-has normalized prior to providing that information to XDMoD. *Organization names must match a
-defined organization.* XDMoD does not automatially identify and normalize this data.
+has normalized prior to providing that information to XDMoD. **Organization names must match a
+defined organization.** XDMoD does not automatially identify and normalize this data.
 
 
     {
@@ -100,8 +100,8 @@ Co-PI on the grant from another institution) then that person may be defined usi
 their organization name in addition to their role.
 
 It is assumed that the list of funding agencies and organizations is normalized prior to providing
-that information to XDMoD. *Organization names must match a defined organization and organization
-ids must be defined prior to ingesting grant data.* XDMoD does not automatially identify and
+that information to XDMoD. **Organization names must match a defined organization and organization
+ids must be defined prior to ingesting grant data.** XDMoD does not automatially identify and
 normalize this data.
 
 
