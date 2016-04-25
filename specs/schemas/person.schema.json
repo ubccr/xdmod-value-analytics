@@ -50,7 +50,7 @@
                 },
                 "appointment_type": {
                     "type": "string",
-                    "description": "Person's appointment within the organization"
+                    "description": "Person's appointment within the organization."
                 },
                 "division": {
                     "type": "string",
@@ -65,7 +65,7 @@
                     "description": "Set primary to true if this is the person's primary organization."
                 },
                 "groups": {
-                    "description": "Arbitrary groups that the user belongs to at this organization."
+                    "description": "Arbitrary groups that the user belongs to at this organization.",
                     "type": "array",
                     "items": {
                         "type": "string"

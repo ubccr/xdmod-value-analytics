@@ -10,7 +10,13 @@
                 "title": "Lead Software Engineer",
                 "appointment_type": "staff",
                 "division": "CCR",
-                "primary": true
+                "primary": true,
+                "groups": [
+                    "xms",
+                    "ccrstaff",
+                    "caringguidance",
+                    "redfly"
+                ]
             },
             {
                 "id": "sgallo@bioblower.com",
@@ -27,12 +33,6 @@
                 "type": "nsf",
                 "id": "000160359"
             }
-        ],
-        "groups": [
-            "xms",
-            "ccrstaff",
-            "caringguidance",
-            "redfly"
         ]
     }
 ]
