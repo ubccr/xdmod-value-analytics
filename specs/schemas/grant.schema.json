@@ -33,14 +33,14 @@
             "format": "full-date",
             "description": "Award end date in ISO-8601 format (YYYY-MM-DD)."
         },
-        "update_date": {
+        "agency_update_date": {
             "type": "string",
             "format": "full-date",
-            "description": "Date of update from funding agency in ISO-8601 format (YYYY-MM-DD)."
+            "description": "Date of last update from funding agency in ISO-8601 format (YYYY-MM-DD)."
         },
         "total_dollars": {
             "type": "integer",
-            "description": "Total dollar amount of grant over performance period (start date - end date)."
+            "description": "Total dollar amount of grant over performance period (start date - end date). This may be normalized to US dollars at the start of the grant, or any other currency as desired as long as it is consistent."
         },
         "people": {
             "type": "array",

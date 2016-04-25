@@ -12,10 +12,6 @@
         "last_name": {
             "type": "string"
         },
-        "title": {
-            "type": "string",
-            "description": "User's professional title."
-        },
         "organizations": {
             "type": "array",
             "items": {
@@ -24,23 +20,12 @@
             "uniqueItems": true,
             "minItems": 1
         },
-        "division": {
-            "type": "string",
-            "description": "User's divisional affiliation within the organization."
-        },
-        "groups": {
-            "type": "array",
-            "items": {
-                "type": "string"
-            },
-            "uniqueItems": true
-        },
         "identifiers": {
+            "description": "List of non-organizational identifiers for this user. For example, an ORCHID id.",
             "type": "array",
             "items": {
                 "$ref": "#/definitions/identifier"
             },
-            "minItems": 1,
             "uniqueItems": true
         },
         "last_modified": {
@@ -78,6 +63,19 @@
                 "primary": {
                     "type": "boolean",
                     "description": "Set primary to true if this is the person's primary organization."
+                },
+                "groups": {
+                    "description": "Arbitrary groups that the user belongs to at this organization."
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "uniqueItems": true
+                },
+                "last_modified": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Date data was last updated in in RFC-3339 format (YYYY-MM-DDTHH:mm:ssZ)."
                 }
             },
             "required": [
