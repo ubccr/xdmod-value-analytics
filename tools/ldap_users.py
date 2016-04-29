@@ -6,6 +6,7 @@ import argparse
 import ConfigParser
 import csv
 import getpass
+import json
 import ldap.sasl
 
 
@@ -65,7 +66,7 @@ def load_users(fields):
     return result
 
 
-def write_output(data, fields):
+def write_csv(data, fields):
     with open(config.get('Output', 'file'), 'wb') as csvfile:
         csv_writer = csv.writer(csvfile, quoting=csv.QUOTE_MINIMAL)
         csv_writer.writerow([f[1] for f in fields])
@@ -73,10 +74,34 @@ def write_output(data, fields):
             csv_writer.writerow([normalize(f, r) for f in fields])
 
 
+def build_json_user(fields, r, organization_name):
+    d = dict([[f[1], normalize(f, r)] for f in fields])
+    result = dict(last_name=d['last_name'], first_name=d['first_name'])
+    result['organizations'] = [
+        dict(id=d['user'],
+             name=organization_name,
+             appointment_type=d['title'],
+             division=d['division'])
+    ]
+    result['groups'] = d['groups'].split('|')
+    return result
+
+
+def write_json(data, fields):
+    org_name = config.get('Organization', 'name')
+    user_list = [build_json_user(fields, r, org_name) for r in data]
+    with open(config.get('Output', 'file'), 'wb') as jsonfile:
+        json.dump(user_list, jsonfile, indent=4)
+
+
 def main():
     fields = config.items('Fields')
     data = load_users(fields)
-    write_output(data, fields)
+    output_format = config.get('Output', 'format')
+    if output_format == 'csv':
+        write_csv(data, fields)
+    elif output_format == 'json':
+        write_json(data, fields)
 
 
 if __name__ == '__main__':
