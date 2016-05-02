@@ -53,6 +53,7 @@ def write_csv(data, fields):
 def build_json_grant(grant_fields, user_fields, grant, users):
     grant_dict = dict(zip(grant_fields, grant))
     grant_dict['people'] = [dict(zip(user_fields, u)) for u in users]
+    grant_dict['last_modified'] = datetime.datetime.now().isoformat()
     return grant_dict
 
 
