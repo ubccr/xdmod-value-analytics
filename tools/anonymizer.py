@@ -63,9 +63,16 @@ def anonymize_users(users, user_dict):
         for org in u['organizations']:
             user_dict[org['id']] = unique_id
             org['id'] = unique_id
-        group_count = len(u['groups'])
-        u['groups'] = list(set(random.choice(groups) for _ in range(group_count)))
+        u['groups'] = list(set(random.choice(groups) for _ in u['groups']))
 
+
+def normalize_role(role):
+    if role == "Principal Investigator":
+        return "PI"
+    elif role == 'Co-Principal Investigator':
+        return "Co-PI"
+    elif role == 'Key Person':
+        return 'Key Personnel'
 
 def anonymize_grants(grants, user_dict):
     for g in grants:
@@ -76,7 +83,7 @@ def anonymize_grants(grants, user_dict):
         g['agency'] = random.choice(random_data.agencies)
         for p in g['people']:
             p['id'] = user_dict[p['id']]
-
+            p['role'] = normalize_role(p['role'])
 
 def main():
     user_dict = dict()
