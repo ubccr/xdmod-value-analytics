@@ -8,6 +8,18 @@ import getpass
 import json
 
 
+class UTC(datetime.tzinfo):
+    """Simple class to export last_modified field in UTC"""
+    def utcoffset(self, dt):
+        return datetime.timedelta(0)
+
+    def tzname(self, dt):
+        return "UTC"
+
+    def dst(self, dt):
+        return datetime.timedelta(0)
+
+
 def get_user():
     if args.user: return args.user
     cfg_user = config.get('Credentials', 'user')
@@ -53,7 +65,7 @@ def write_csv(data, fields):
 def build_json_grant(grant_fields, user_fields, grant, users):
     grant_dict = dict(zip(grant_fields, grant))
     grant_dict['people'] = [dict(zip(user_fields, u)) for u in users]
-    grant_dict['last_modified'] = datetime.datetime.now().isoformat()
+    grant_dict['last_modified'] = datetime.datetime.now(UTC()).isoformat()
     return grant_dict
 
 
