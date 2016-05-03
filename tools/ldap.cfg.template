@@ -1,8 +1,9 @@
 [Credentials]
-user: befulton
+user: ad_user
+password: ad_pw
 
 [LDAP]
-connectstring: ldap://ads.iu.edu
+connectstring: ldap://ads.university.edu
 baseDN: ou=Accounts,dc=ads,dc=iu,dc=edu
 idfield: sAMAccountName
 splitfield: memberOf
@@ -16,8 +17,8 @@ division:division
 memberOf:groups
 
 [Organization]
-name:Indiana University
-abbrev: IU
+name:Southern State University
+abbrev: SSU
 
 [Output]
 format:json

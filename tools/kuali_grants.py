@@ -84,7 +84,7 @@ def main():
 if __name__ == '__main__':
     config = ConfigParser.SafeConfigParser()
     config.optionxform = str  # Make parser case-sensitive
-    config.read('kauli.cfg')
+    config.read('kuali.cfg')
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--user", help="DB user")

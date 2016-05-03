@@ -1,8 +1,9 @@
 [Credentials]
-user: hpastats
+user: db_user
+password: db_pw
 
 [Database]
-connectstring: esdbd100.uits.indiana.edu:1521/DSS1PRD.uits.indiana.edu
+connectstring: dbserver.university.edu:1521/database
 
 [Fields]
 id:user
