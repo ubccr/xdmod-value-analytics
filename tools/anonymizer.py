@@ -3,6 +3,7 @@ import random
 import random_data
 import string
 import re
+import validator
 
 random.seed(99)
 
@@ -85,14 +86,17 @@ def anonymize_grants(grants, user_dict):
             p['id'] = user_dict[p['id']]
             p['role'] = normalize_role(p['role'])
 
+
 def main():
     user_dict = dict()
     with open('users.json', 'rb') as jsonfile:
         users = json.load(jsonfile)
     anonymize_users(users, user_dict)
+    users = list(validator.user_validate(users))
     with open('grants.json', 'rb') as jsonfile:
         grants = json.load(jsonfile)
     anonymize_grants(grants, user_dict)
+    grants = list(validator.grant_validate(grants))
     with open('users_anon.json', 'wb') as jsonfile:
         json.dump(users, jsonfile, indent=4)
     with open('grants_anon.json', 'wb') as jsonfile:
