@@ -1,0 +1,56 @@
+{
+    "table_definition": {
+        "name": "grants_people",
+        "engine": "InnoDB",
+        "comment": "The people on grants for Value Analytics.",
+        "columns": [
+            {
+                "name": "grant_id",
+                "type": "int(11)",
+                "nullable": false,
+                "comment": "The ID for a grant (assigned by XDMoD)."
+            },
+            {
+                "name": "person_id",
+                "type": "int(11)",
+                "nullable": false,
+                "comment": "The ID for a person (assigned by XDMoD)."
+            },
+            {
+                "name": "grant_role_id",
+                "type": "int(11)",
+                "nullable": false,
+                "comment": "The role this person has on the grant."
+            },
+            {
+                "name": "organization_id",
+                "type": "int(11)",
+                "nullable": false,
+                "comment": "The ID of the organization the person is acting on behalf of."
+            }
+        ],
+        "indexes": [
+            {
+                "name": "PRIMARY",
+                "columns": [
+                    "grant_id",
+                    "person_id",
+                    "grant_role_id"
+                ]
+            },
+            {
+                "name": "person_id",
+                "columns": [
+                    "person_id"
+                ]
+            }
+        ]
+    },
+
+    "destination_columns": {
+        "grant_id": "grant_id",
+        "person_id": "person_id",
+        "grant_role_id": "grant_role_id",
+        "organization_id": "organization_id"
+    }
+}

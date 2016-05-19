@@ -1,0 +1,41 @@
+{
+    "table_definition": {
+        "name": "grant_types",
+        "engine": "InnoDB",
+        "comment": "Grant types for Value Analytics.",
+        "columns": [
+            {
+                "name": "id",
+                "type": "int(11)",
+                "nullable": false,
+                "extra": "AUTO_INCREMENT",
+                "comment": "The ID for a grant type (assigned by XDMoD)."
+            },
+            {
+                "name": "name",
+                "type": "varchar(300)",
+                "nullable": false,
+                "comment": "The name of a grant type."
+            }
+        ],
+        "indexes": [
+            {
+                "name": "PRIMARY",
+                "columns": [
+                    "id"
+                ]
+            },
+            {
+                "name": "name",
+                "columns": [
+                    "name"
+                ],
+                "is_unique": true
+            }
+        ]
+    },
+
+    "destination_columns": {
+        "name": "name"
+    }
+}

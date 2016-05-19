@@ -1,0 +1,167 @@
+<?php
+/**
+ * GroupBy used for viewing Value Analytics grants queries by grant.
+ */
+
+namespace DataWarehouse\Query\ValueAnalyticsGrants\GroupBys;
+
+use DataWarehouse\Query\Model\FormulaField;
+use DataWarehouse\Query\Model\Schema;
+use DataWarehouse\Query\Model\Table;
+use DataWarehouse\Query\Model\TableField;
+use DataWarehouse\Query\Model\WhereCondition;
+use DataWarehouse\Query\Query;
+use DataWarehouse\Query\ValueAnalyticsGrants\GroupBy;
+
+class GroupByGrant extends GroupBy
+{
+    public function __construct()
+    {
+        $dimensionTableAlias = 'fa';
+        $this->idFieldName = 'id';
+        $this->shortNameFieldName = 'organization_grant_number';
+        $this->longNameFieldFormula = "CONCAT(
+            $dimensionTableAlias.organization_grant_number,
+            ': ',
+            $dimensionTableAlias.title
+        )";
+        $this->orderIdFieldName = 'organization_grant_number';
+        $this->dimensionSchema = new Schema('modw_value_analytics');
+        $dimensionTableName = 'grants';
+        $this->dimensionTable = new Table(
+            $this->dimensionSchema,
+            $dimensionTableName,
+            $dimensionTableAlias
+        );
+
+        parent::__construct(
+            'va_grant',
+            array(),
+            "
+                SELECT
+                    $dimensionTableAlias.$this->idFieldName AS id,
+                    $dimensionTableAlias.$this->shortNameFieldName AS short_name,
+                    $this->longNameFieldFormula AS long_name
+                FROM $dimensionTableName AS $dimensionTableAlias
+                WHERE 1
+                ORDER BY $dimensionTableAlias.$this->orderIdFieldName
+            "
+        );
+    }
+
+    public static function getLabel()
+    {
+        return 'VA Grant';
+    }
+
+    public function getInfo()
+    {
+        return "A grant as defined by the receiving organization.";
+    }
+
+    public function applyTo(Query &$query, Table $dataTable, $multiGroup = false)
+    {
+        $query->addTable($this->dimensionTable);
+
+        $dimensionIdField = new TableField(
+            $this->dimensionTable,
+            $this->idFieldName,
+            $this->getIdColumnName($multiGroup)
+        );
+        $dimensionShortNameField = new TableField(
+            $this->dimensionTable,
+            $this->shortNameFieldName,
+            $this->getShortNameColumnName($multiGroup)
+        );
+        $dimensionLongNameField = new FormulaField(
+            $this->longNameFieldFormula,
+            $this->getLongNameColumnName($multiGroup)
+        );
+        $dimensionOrderIdField = new TableField(
+            $this->dimensionTable,
+            $this->orderIdFieldName,
+            $this->getOrderIdColumnName($multiGroup)
+        );
+
+        $query->addField($dimensionIdField);
+        $query->addField($dimensionShortNameField);
+        $query->addField($dimensionLongNameField);
+        $query->addField($dimensionOrderIdField);
+
+        $query->addGroup($dimensionIdField);
+
+        $dataTableDimensionIdField = new TableField(
+            $dataTable,
+            'grant_id'
+        );
+        $query->addWhereCondition(new WhereCondition(
+            $dimensionIdField,
+            '=',
+            $dataTableDimensionIdField
+        ));
+
+        $this->addOrder($query, $multiGroup, 'ASC', false);
+    }
+
+    public function addWhereJoin(
+        Query &$query,
+        Table $dataTable,
+        $multiGroup = false,
+        $operation,
+        $whereConstraint
+    ) {
+        $query->addTable($this->dimensionTable);
+
+        $dimensionIdField = new TableField(
+            $this->dimensionTable,
+            $this->idFieldName,
+            $this->getIdColumnName($multiGroup)
+        );
+        $dataTableDimensionIdField = new TableField(
+            $dataTable,
+            'grant_id'
+        );
+        $query->addWhereCondition(new WhereCondition(
+            $dimensionIdField,
+            '=',
+            $dataTableDimensionIdField
+        ));
+
+        if (is_array($whereConstraint)) {
+            $whereConstraintCsv = implode(',', $whereConstraint);
+            $whereConstraint = "($whereConstraintCsv)";
+        }
+        $query->addWhereCondition(new WhereCondition(
+            $dimensionIdField,
+            $operation,
+            $whereConstraint
+        ));
+    }
+
+    public function pullQueryParameters(&$request)
+    {
+        return parent::pullQueryParameters2(
+            $request,
+            '_filter_',
+            'grant_id'
+        );
+    }
+
+    public function pullQueryParameterDescriptions(&$request)
+    {
+        $dimensionTableFromClause = $this->dimensionTable->getQualifiedName(true);
+        return parent::pullQueryParameterDescriptions2(
+            $request,
+            "
+                SELECT
+                    $this->longNameFieldFormula AS field_label
+                FROM
+                    $dimensionTableFromClause
+                WHERE
+                    $this->idFieldName IN (_filter_)
+                ORDER BY
+                    $this->orderIdFieldName
+            "
+        );
+    }
+}

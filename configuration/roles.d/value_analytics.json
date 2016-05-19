@@ -1,0 +1,52 @@
+{
+    "+roles": {
+        "+po": {
+            "+query_descripters": [
+                {
+                    "realm": "ValueAnalyticsGrants",
+                    "group_by": "none"
+                },
+                {
+                    "realm": "ValueAnalyticsGrants",
+                    "group_by": "va_funding_agency"
+                },
+                {
+                    "realm": "ValueAnalyticsGrants",
+                    "group_by": "va_grant"
+                },
+                {
+                    "realm": "ValueAnalyticsGrants",
+                    "group_by": "va_grant_role_type"
+                },
+                {
+                    "realm": "ValueAnalyticsGrants",
+                    "group_by": "va_grant_role_organization"
+                },
+                {
+                    "realm": "ValueAnalyticsGrants",
+                    "group_by": "va_person"
+                },
+                {
+                    "realm": "ValueAnalyticsGrantRoles",
+                    "group_by": "none"
+                },
+                {
+                    "realm": "ValueAnalyticsGrantRoles",
+                    "group_by": "va_funding_agency"
+                },
+                {
+                    "realm": "ValueAnalyticsGrantRoles",
+                    "group_by": "va_grant_role_type"
+                },
+                {
+                    "realm": "ValueAnalyticsGrantRoles",
+                    "group_by": "va_grant_role_organization"
+                },
+                {
+                    "realm": "ValueAnalyticsGrantRoles",
+                    "group_by": "va_person"
+                }
+            ]
+        }
+    }
+}

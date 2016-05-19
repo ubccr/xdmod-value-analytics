@@ -1,0 +1,138 @@
+{
+    "table_definition": {
+        "name": "grants",
+        "engine": "InnoDB",
+        "comment": "Grant data for Value Analytics.",
+        "columns": [
+            {
+                "name": "id",
+                "type": "int(11)",
+                "nullable": false,
+                "extra": "AUTO_INCREMENT",
+                "comment": "The ID for a grant (assigned by XDMoD)."
+            },
+            {
+                "name": "agency_id",
+                "type": "int(11)",
+                "nullable": false,
+                "comment": "The agency the grant was funded by."
+            },
+            {
+                "name": "agency_grant_number",
+                "type": "varchar(300)",
+                "nullable": false,
+                "comment": "The grant number assigned by the funding agency."
+            },
+            {
+                "name": "organization_grant_number",
+                "type": "varchar(300)",
+                "nullable": false,
+                "comment": "The grant number assigned by the receiving organization."
+            },
+            {
+                "name": "grant_type_id",
+                "type": "int(11)",
+                "nullable": false,
+                "comment": "The type of the grant."
+            },
+            {
+                "name": "title",
+                "type": "varchar(1000)",
+                "nullable": false,
+                "comment": "The title of the grant."
+            },
+            {
+                "name": "start_date",
+                "type": "date",
+                "nullable": false,
+                "comment": "The start date of the grant."
+            },
+            {
+                "name": "start_time_ts",
+                "type": "int(10) unsigned",
+                "nullable": false,
+                "comment": "The start time of the grant as a Unix timestamp."
+            },
+            {
+                "name": "end_date",
+                "type": "date",
+                "nullable": false,
+                "comment": "The end date of the grant."
+            },
+            {
+                "name": "end_time_ts",
+                "type": "int(10) unsigned",
+                "nullable": false,
+                "comment": "The end time of the grant as a Unix timestamp."
+            },
+            {
+                "name": "agency_update_date",
+                "type": "date",
+                "nullable": true,
+                "comment": "The date of the last time the funding agency updated the grant."
+            },
+            {
+                "name": "total_dollars",
+                "type": "int(11)",
+                "nullable": false,
+                "comment": "The total amount of money provided by the grant."
+            },
+            {
+                "name": "last_modified",
+                "type": "datetime",
+                "nullable": false,
+                "comment": "The last time this grant was modified."
+            }
+        ],
+        "indexes": [
+            {
+                "name": "PRIMARY",
+                "columns": [
+                    "id"
+                ]
+            },
+            {
+                "name": "unique_grant_number",
+                "columns": [
+                    "agency_id",
+                    "agency_grant_number",
+                    "organization_grant_number"
+                ],
+                "is_unique": true
+            },
+            {
+                "name": "index_start_time_ts",
+                "columns": [
+                    "start_time_ts"
+                ]
+            },
+            {
+                "name": "index_end_time_ts",
+                "columns": [
+                    "end_time_ts"
+                ]
+            }
+        ]
+    },
+
+    "destination_columns": {
+        "agency_id": "agency",
+        "agency_grant_number": "agency_grant_id",
+        "organization_grant_number": "organization_grant_id",
+        "grant_type_id": "type",
+        "title": "title",
+        "start_date": "start_date",
+        "start_time_ts": "start_date",
+        "end_date": "end_date",
+        "end_time_ts": "end_date",
+        "agency_update_date": "agency_update_date",
+        "total_dollars": "total_dollars",
+        "last_modified": "last_modified"
+    },
+    "custom_insert_values_components": {
+        "agency_id": "(SELECT id FROM modw_value_analytics.funding_agencies WHERE name = ?)",
+        "grant_type_id": "(SELECT id FROM modw_value_analytics.grant_types WHERE name = ?)",
+        "start_time_ts": "UNIX_TIMESTAMP(DATE(?))",
+        "end_time_ts": "UNIX_TIMESTAMP(DATE(?) + INTERVAL 1 DAY - INTERVAL 1 SECOND)"
+    }
+}

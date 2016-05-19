@@ -1,0 +1,58 @@
+{
+    "table_definition": {
+        "name": "groups",
+        "engine": "InnoDB",
+        "comment": "Organization group data for Value Analytics.",
+        "columns": [
+            {
+                "name": "id",
+                "type": "int(11)",
+                "nullable": false,
+                "extra": "AUTO_INCREMENT",
+                "comment": "The ID for a group (assigned by XDMoD)."
+            },
+            {
+                "name": "organization_id",
+                "type": "int(11)",
+                "nullable": false,
+                "comment": "The organization the group belongs to."
+            },
+            {
+                "name": "name",
+                "type": "varchar(300)",
+                "nullable": false,
+                "comment": "The name of a group."
+            },
+            {
+                "name": "description",
+                "type": "varchar(1000)",
+                "nullable": true,
+                "comment": "A description for a group."
+            }
+        ],
+        "indexes": [
+            {
+                "name": "PRIMARY",
+                "columns": [
+                    "id"
+                ]
+            },
+            {
+                "name": "unique_org_id_group_name",
+                "columns": [
+                    "organization_id",
+                    "name"
+                ],
+                "is_unique": true
+            }
+        ]
+    },
+
+    "destination_columns": {
+        "organization_id": "o_name",
+        "name": "g_name"
+    },
+    "custom_insert_values_components": {
+        "organization_id": "(SELECT id FROM modw_value_analytics.organizations WHERE name = ?)"
+    }
+}

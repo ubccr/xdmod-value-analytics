@@ -1,0 +1,148 @@
+{
+    "table_definition": {
+        "name": "va_grant_fact_by_",
+        "engine": "MyISAM",
+        "comment": "Value Analytics grant facts aggregated by ${AGGREGATION_UNIT}.",
+        "columns": [
+            {
+                "name": "${AGGREGATION_UNIT}_id",
+                "type": "int(10) unsigned",
+                "nullable": false,
+                "comment": "The ID for the time period from modw.${AGGREGATION_UNIT}s."
+            },
+            {
+                "name": "year",
+                "type": "smallint(5) unsigned",
+                "nullable": false,
+                "comment": "The year of the ${AGGREGATION_UNIT}."
+            },
+            {
+                "name": "${AGGREGATION_UNIT}",
+                "type": "smallint(5) unsigned",
+                "nullable": false,
+                "comment": "The {$AGGREGATION_UNIT} of the year."
+            },
+            {
+                "name": "agency_id",
+                "type": "int(11)",
+                "nullable": false,
+                "comment": "The ID of the funding agency of a set of grants."
+            },
+            {
+                "name": "grant_type_id",
+                "type": "int(11)",
+                "nullable": false,
+                "comment": "The ID of the type of a set of grants."
+            },
+            {
+                "name": "grant_id",
+                "type": "int(11)",
+                "nullable": false,
+                "comment": "The ID of a grant."
+            },
+            {
+                "name": "num_grants",
+                "type": "int(11)",
+                "nullable": false,
+                "comment": "The number of grants in a set of grants."
+            },
+            {
+                "name": "num_grants_started",
+                "type": "int(11)",
+                "nullable": false,
+                "comment": "The number of grants started during this time period in a set of grants."
+            },
+            {
+                "name": "num_grants_ended",
+                "type": "int(11)",
+                "nullable": false,
+                "comment": "The number of grants ended during this time period in a set of grants."
+            },
+            {
+                "name": "time_proportional_dollars",
+                "type": "decimal(14, 4)",
+                "nullable": false,
+                "comment": "The time-proportional amount of money associated with a set of grants."
+            },
+            {
+                "name": "total_dollars",
+                "type": "int(11)",
+                "nullable": false,
+                "comment": "The total amount of money associated with a set of grants."
+            }
+        ],
+        "indexes": [
+            {
+                "name": "index_period_id",
+                "columns": [
+                    "${AGGREGATION_UNIT}_id"
+                ]
+            },
+            {
+                "name": "index_year",
+                "columns": [
+                    "year"
+                ]
+            },
+            {
+                "name": "index_period_value",
+                "columns": [
+                    "${AGGREGATION_UNIT}"
+                ]
+            },
+            {
+                "name": "index_agency_id",
+                "columns": [
+                    "agency_id"
+                ]
+            },
+            {
+                "name": "index_grant_type_id",
+                "columns": [
+                    "grant_type_id"
+                ]
+            },
+            {
+                "name": "index_grant_id",
+                "columns": [
+                    "grant_id"
+                ]
+            }
+        ]
+    },
+    "source_query": {
+        "query_hint": "SQL_NO_CACHE",
+        "records": {
+            "${AGGREGATION_UNIT}_id": "${:PERIOD_ID}",
+            "year": "${:YEAR_VALUE}",
+            "${AGGREGATION_UNIT}": "${:PERIOD_VALUE}",
+            "agency_id": "g.agency_id",
+            "grant_type_id": "g.grant_type_id",
+            "grant_id": "g.id",
+            "num_grants": "COUNT(*)",
+            "num_grants_started": "SUM(g.start_time_ts BETWEEN ${:PERIOD_START_TS} AND ${:PERIOD_END_TS})",
+            "num_grants_ended": "SUM(g.end_time_ts BETWEEN ${:PERIOD_START_TS} AND ${:PERIOD_END_TS})",
+            "time_proportional_dollars": "SUM(g.total_dollars * ((LEAST(g.end_time_ts, ${:PERIOD_END_TS}) - GREATEST(g.start_time_ts, ${:PERIOD_START_TS})) / (g.end_time_ts - g.start_time_ts)))",
+            "total_dollars": "SUM(g.total_dollars)"
+        },
+        "groupby": [
+            "${AGGREGATION_UNIT}_id",
+            "year",
+            "${AGGREGATION_UNIT}",
+            "agency_id",
+            "grant_type_id",
+            "grant_id"
+        ],
+        "joins": [
+            {
+                "schema": "${SOURCE_SCHEMA}",
+                "name": "grants",
+                "alias": "g"
+            }
+        ],
+        "where": [
+            "g.start_time_ts <= ${:PERIOD_END_TS}",
+            "g.end_time_ts >= ${:PERIOD_START_TS}"
+        ]
+    }
+}

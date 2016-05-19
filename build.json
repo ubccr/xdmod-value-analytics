@@ -18,6 +18,7 @@
     },
     "file_maps": {
         "data": [
+            "classes"
         ],
         "bin": [
         ],
@@ -30,6 +31,7 @@
             "README"
         ],
         "etc": {
+            "configuration/": "",
             "specs/schemas": "etl/etl_specs.d/value_analytics"
         }
     }
