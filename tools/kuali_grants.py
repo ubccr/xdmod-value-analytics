@@ -38,10 +38,12 @@ def get_password(user):
 
 
 def load_grants(fields):
-    query = """select lower(a.PERSON_USER_ID), a.CGAWD_TOT_AMT,
+    query = """select lower(a.PERSON_USER_ID),
+            CAST(a.CGAWD_TOT_AMT AS INT),
             TO_CHAR(a.CGAWD_BEG_DT, 'YYYY-MM-DD'),
             TO_CHAR(a.CGAWD_END_DT, 'YYYY-MM-DD'),
-            PRSN_ROLE_ID_DESC, CG_AGENCY_RPT_NM, CG_AGENCY_AWD_NBR, CGAWD_PROJ_TTL, a.KC_AWD_NBR,
+            PRSN_ROLE_ID_DESC, CG_AGENCY_RPT_NM, CG_AGENCY_AWD_NBR,
+            CGAWD_PROJ_TTL, a.KC_AWD_NBR,
              (case a.cgprpsl_awd_typ_cd when '2' then 'Renew' else 'New' end)
         from DSS_KC.KC_AWD_ALL_PRSN_V a
         where a.CGAWD_BEG_DT < :1 and a.CGAWD_END_DT > :2 and a.kc_awd_node = 'B' and ROWNUM < 100"""
