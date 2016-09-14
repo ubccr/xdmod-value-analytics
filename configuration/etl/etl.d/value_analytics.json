@@ -1,0 +1,286 @@
+{
+    "#": "Value Analytics Ingestion and Aggregation",
+
+    "defaults": {
+        "value_analytics": {
+            "enabled": true,
+            "truncate_destination": false,
+            "namespace": "ETL\\Ingestor",
+            "class": "StructuredFileIngestor",
+            "options_class": "IngestorOptions",
+            "endpoints": {
+                "destination": {
+                    "type": "mysql",
+                    "name": "Value Analytics DB",
+                    "config": "datawarehouse",
+                    "schema": "modw_value_analytics"
+                }
+            }
+        }
+    },
+
+    "value_analytics": [
+        {
+            "name": "ValueAnalyticsOrganizationsIngestor",
+            "description": "Ingests organization data for the Value Analytics module.",
+            "definition_file": "value_analytics/organizations.json",
+            "endpoints": {
+                "source": {
+                    "type": "jsonfile",
+                    "name": "Value Analytics Organizations Input File",
+                    "path": "value_analytics/organizations.json",
+                    "array_element_schema_path": "value_analytics/organization.schema.json"
+                }
+            }
+        },
+        {
+            "name": "ValueAnalyticsOrganizationsInPeopleIngestor",
+            "description": "Ingests Value Analytics organiations defined ad hoc in people's organization data.",
+            "definition_file": "value_analytics/organizations.json",
+            "endpoints": {
+                "source": {
+                    "type": "jsonfile",
+                    "name": "Value Analytics People Input File (Filtered to Organizations)",
+                    "path": "value_analytics/people.json",
+                    "filter": {
+                        "jq": "map({name: .organizations[].name}) | unique"
+                    }
+                }
+            }
+        },
+        {
+            "name": "ValueAnalyticsOrganizationsInGrantsPeopleIngestor",
+            "description": "Ingests Value Analytics organiations defined ad hoc in grants' people data.",
+            "definition_file": "value_analytics/organizations.json",
+            "endpoints": {
+                "source": {
+                    "type": "jsonfile",
+                    "name": "Value Analytics Grants Input File (Filtered to Organizations)",
+                    "path": "value_analytics/grants.json",
+                    "filter": {
+                        "jq": "map(.people[] | select(has(\"organization\")) | {name: .organization}) | unique"
+                    }
+                }
+            }
+        },
+        {
+            "name": "ValueAnalyticsFundingAgenciesIngestor",
+            "description": "Ingests Value Analytics organiations defined ad hoc in grants' funding agency data.",
+            "definition_file": "value_analytics/funding_agencies.json",
+            "endpoints": {
+                "source": {
+                    "type": "jsonfile",
+                    "name": "Value Analytics Grants Input File (Filtered to Funding Agencies)",
+                    "path": "value_analytics/grants.json",
+                    "filter": {
+                        "jq": "map({name: .agency}) | unique"
+                    }
+                }
+            }
+        },
+        {
+            "name": "ValueAnalyticsIdentityProvidersIngestor",
+            "description": "Ingests Value Analytics identity providers defined ad hoc in people's identifier data.",
+            "definition_file": "value_analytics/identity_providers.json",
+            "endpoints": {
+                "source": {
+                    "type": "jsonfile",
+                    "name": "Value Analytics People Input File (Filtered to Identity Providers)",
+                    "path": "value_analytics/people.json",
+                    "filter": {
+                        "jq": "map(select(has(\"identifiers\")) | {name: .identifiers[].type}) | unique"
+                    }
+                }
+            }
+        },
+        {
+            "name": "ValueAnalyticsGroupsIngestor",
+            "description": "Ingests organization group data for the Value Analytics module.",
+            "definition_file": "value_analytics/groups.json",
+            "endpoints": {
+                "source": {
+                    "type": "jsonfile",
+                    "name": "Value Analytics People Input File (Filtered to Organization Groups)",
+                    "path": "value_analytics/people.json",
+                    "filter": {
+                        "jq": "map(.organizations[] | select(has(\"groups\")) | {o_name: .name, g_name: .groups[]}) | unique"
+                    }
+                }
+            }
+        },
+        {
+            "name": "ValueAnalyticsPeopleOrganizationsSetup",
+            "description": "Sets up table for Value Analytics people's organization data.",
+            "namespace": "ETL\\Maintenance",
+            "class": "ManageTables",
+            "options_class": "MaintenanceOptions",
+            "definition_file_list": [
+                "value_analytics/people_organizations.json"
+            ]
+        },
+        {
+            "name": "ValueAnalyticsPeopleIdentifiersSetup",
+            "description": "Sets up table for Value Analytics people's identifier data.",
+            "namespace": "ETL\\Maintenance",
+            "class": "ManageTables",
+            "options_class": "MaintenanceOptions",
+            "definition_file_list": [
+                "value_analytics/people_identifiers.json"
+            ]
+        },
+        {
+            "name": "ValueAnalyticsPeopleGroupsSetup",
+            "description": "Sets up table for Value Analytics people's group data.",
+            "namespace": "ETL\\Maintenance",
+            "class": "ManageTables",
+            "options_class": "MaintenanceOptions",
+            "definition_file_list": [
+                "value_analytics/people_groups.json"
+            ]
+        },
+        {
+            "name": "ValueAnalyticsPeopleIngestor",
+            "description": "Ingests Value Analytics data for people with IDs.",
+            "class": "ValueAnalyticsPeopleIngestor",
+            "definition_file": "value_analytics/people.json",
+            "endpoints": {
+                "source": {
+                    "type": "jsonfile",
+                    "name": "Value Analytics People Input File",
+                    "path": "value_analytics/people.json",
+                    "array_element_schema_path": "value_analytics/person.schema.json"
+                }
+            }
+        },
+        {
+            "name": "ValueAnalyticsNoIdPeopleIngestor",
+            "description": "Ingests Value Analytics data for people without IDs.",
+            "class": "ValueAnalyticsPeopleIngestor",
+            "definition_file": "value_analytics/people.json",
+            "endpoints": {
+                "source": {
+                    "type": "jsonfile",
+                    "name": "Value Analytics Grants Input File",
+                    "path": "value_analytics/grants.json",
+                    "filter": {
+                        "jq": "map(.people[] | select(has(\"id\") | not)) | unique | map(. + {organizations: [{name: .organization, id: null}]})"
+                    }
+                }
+            }
+        },
+        {
+            "name": "ValueAnalyticsGrantTypesIngestor",
+            "description": "Ingests types of grants in Value Analytics data.",
+            "definition_file": "value_analytics/grant_types.json",
+            "endpoints": {
+                "source": {
+                    "type": "jsonfile",
+                    "name": "Value Analytics Grants Input File",
+                    "path": "value_analytics/grants.json",
+                    "filter": {
+                        "jq": "map({name: .type}) | unique"
+                    }
+                }
+            }
+        },
+        {
+            "name": "ValueAnalyticsGrantRolesIngestor",
+            "description": "Ingests roles for people on grants in Value Analytics data.",
+            "definition_file": "value_analytics/grant_roles.json",
+            "endpoints": {
+                "source": {
+                    "type": "jsonfile",
+                    "name": "Value Analytics Grants Input File",
+                    "path": "value_analytics/grants.json",
+                    "filter": {
+                        "jq": "map({name: .people[].role}) | unique"
+                    }
+                }
+            }
+        },
+        {
+            "name": "ValueAnalyticsGrantsIngestor",
+            "description": "Ingests grant data for the Value Analytics module.",
+            "definition_file": "value_analytics/grants.json",
+            "endpoints": {
+                "source": {
+                    "type": "jsonfile",
+                    "name": "Value Analytics Grants Input File",
+                    "path": "value_analytics/grants.json",
+                    "array_element_schema_path": "value_analytics/grant.schema.json"
+                }
+            }
+        },
+        {
+            "name": "ValueAnalyticsGrantsPeopleIngestor",
+            "description": "Ingests grant stakeholder data for the Value Analytics module.",
+            "class": "ValueAnalyticsGrantsPeopleIngestor",
+            "definition_file": "value_analytics/grants_people.json",
+            "endpoints": {
+                "source": {
+                    "type": "jsonfile",
+                    "name": "Value Analytics Grants Input File",
+                    "path": "value_analytics/grants.json"
+                }
+            }
+        },
+        {
+            "name": "ValueAnalyticsGrantsAggregator",
+            "description": "Aggregates Value Analytics grant data.",
+            "namespace": "ETL\\Aggregator",
+            "class": "SimpleAggregator",
+            "options_class": "AggregatorOptions",
+            "definition_file": "value_analytics/va_grant_fact_by.aggregation.json",
+            "table_prefix": "va_grant_fact_by_",
+            "aggregation_units": [
+                "day",
+                "month",
+                "quarter",
+                "year"
+            ],
+            "endpoints": {
+                "source": {
+                    "type": "mysql",
+                    "name": "Value Analytics DB",
+                    "config": "datawarehouse",
+                    "schema": "modw_value_analytics"
+                },
+                "destination": {
+                    "type": "mysql",
+                    "name": "Aggregate Data DB",
+                    "config": "datawarehouse",
+                    "schema": "modw_aggregates"
+                }
+            }
+        },
+        {
+            "name": "ValueAnalyticsGrantRolesAggregator",
+            "description": "Aggregates Value Analytics grant roles data.",
+            "namespace": "ETL\\Aggregator",
+            "class": "SimpleAggregator",
+            "options_class": "AggregatorOptions",
+            "definition_file": "value_analytics/va_grant_role_fact_by.aggregation.json",
+            "table_prefix": "va_grant_role_fact_by_",
+            "aggregation_units": [
+                "day",
+                "month",
+                "quarter",
+                "year"
+            ],
+            "endpoints": {
+                "source": {
+                    "type": "mysql",
+                    "name": "Value Analytics DB",
+                    "config": "datawarehouse",
+                    "schema": "modw_value_analytics"
+                },
+                "destination": {
+                    "type": "mysql",
+                    "name": "Aggregate Data DB",
+                    "config": "datawarehouse",
+                    "schema": "modw_aggregates"
+                }
+            }
+        }
+    ]
+}

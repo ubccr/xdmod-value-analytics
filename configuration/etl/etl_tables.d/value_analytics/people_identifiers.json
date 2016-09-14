@@ -1,0 +1,48 @@
+{
+    "table_definition": {
+        "name": "people_identifiers",
+        "engine": "InnoDB",
+        "comment": "A mapping of people to their identifiers.",
+        "columns": [
+            {
+                "name": "person_id",
+                "type": "int(11)",
+                "nullable": false,
+                "comment": "An ID for a person."
+            },
+            {
+                "name": "identity_provider_id",
+                "type": "int(11)",
+                "nullable": false,
+                "comment": "An ID for an identity provider (assigned by XDMoD)."
+            },
+            {
+                "name": "person_identity_provider_id",
+                "type": "varchar(100)",
+                "nullable": false,
+                "comment": "A person's ID within an identity provider."
+            }
+        ],
+        "indexes": [
+            {
+                "name": "PRIMARY",
+                "columns": [
+                    "person_id",
+                    "identity_provider_id"
+                ]
+            },
+            {
+                "name": "identity_provider_id",
+                "columns": [
+                    "identity_provider_id"
+                ]
+            }
+        ]
+    },
+
+    "destination_columns": {
+        "person_id": "person_id",
+        "identity_provider_id": "identity_provider_id",
+        "person_identity_provider_id": "person_identity_provider_id"
+    }
+}

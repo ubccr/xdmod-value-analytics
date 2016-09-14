@@ -1,0 +1,55 @@
+{
+    "table_definition": {
+        "name": "people",
+        "engine": "InnoDB",
+        "comment": "People data for Value Analytics.",
+        "columns": [
+            {
+                "name": "id",
+                "type": "int(11)",
+                "nullable": false,
+                "extra": "AUTO_INCREMENT",
+                "comment": "The ID for a person (assigned by XDMoD)."
+            },
+            {
+                "name": "first_name",
+                "type": "varchar(100)",
+                "nullable": false,
+                "comment": "The first name of a person."
+            },
+            {
+                "name": "middle_name",
+                "type": "varchar(100)",
+                "nullable": true,
+                "comment": "The middle name of a person."
+            },
+            {
+                "name": "last_name",
+                "type": "varchar(100)",
+                "nullable": false,
+                "comment": "The last name of a person."
+            },
+            {
+                "name": "last_modified",
+                "type": "datetime",
+                "nullable": true,
+                "comment": "The last time a person's data was modified."
+            }
+        ],
+        "indexes": [
+            {
+                "name": "PRIMARY",
+                "columns": [
+                    "id"
+                ]
+            }
+        ]
+    },
+
+    "destination_columns": {
+        "first_name": "first_name",
+        "middle_name": "middle_name",
+        "last_name": "last_name",
+        "last_modified": "last_modified"
+    }
+}

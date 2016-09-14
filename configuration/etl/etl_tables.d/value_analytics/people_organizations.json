@@ -1,0 +1,84 @@
+{
+    "table_definition": {
+        "name": "people_organizations",
+        "engine": "InnoDB",
+        "comment": "A mapping of people to their organizations.",
+        "columns": [
+            {
+                "name": "person_id",
+                "type": "int(11)",
+                "nullable": false,
+                "comment": "An ID for a person."
+            },
+            {
+                "name": "organization_id",
+                "type": "int(11)",
+                "nullable": false,
+                "comment": "An ID for an organization."
+            },
+            {
+                "name": "person_organization_id",
+                "type": "varchar(100)",
+                "nullable": true,
+                "comment": "A person's ID within an organization."
+            },
+            {
+                "name": "appointment_type",
+                "type": "varchar(100)",
+                "nullable": true,
+                "comment": "A person's appointment type within an organization."
+            },
+            {
+                "name": "division",
+                "type": "varchar(100)",
+                "nullable": true,
+                "comment": "A person's division within an organization."
+            },
+            {
+                "name": "title",
+                "type": "varchar(100)",
+                "nullable": true,
+                "comment": "A person's title within an organization."
+            },
+            {
+                "name": "primary",
+                "type": "boolean",
+                "nullable": false,
+                "default": false,
+                "comment": "An indicator of if this is a person's primary organization."
+            },
+            {
+                "name": "last_modified",
+                "type": "datetime",
+                "nullable": true,
+                "comment": "The last time a record was modified."
+            }
+        ],
+        "indexes": [
+            {
+                "name": "PRIMARY",
+                "columns": [
+                    "person_id",
+                    "organization_id"
+                ]
+            },
+            {
+                "name": "organization_id",
+                "columns": [
+                    "organization_id"
+                ]
+            }
+        ]
+    },
+
+    "destination_columns": {
+        "person_id": "person_id",
+        "organization_id": "organization_id",
+        "person_organization_id": "person_organization_id",
+        "appointment_type": "appointment_type",
+        "division": "division",
+        "title": "title",
+        "primary": "primary",
+        "last_modified": "last_modified"
+    }
+}

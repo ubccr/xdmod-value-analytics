@@ -1,0 +1,38 @@
+{
+    "name": "xdmod-value-analytics",
+    "version": "0.1.0",
+    "release": "0.1.a1",
+    "files": {
+        "include_paths": [
+            "specs/schemas"
+        ],
+        "include_patterns": [
+        ],
+        "exclude_paths": [
+            "specs",
+            "tools"
+        ],
+        "exclude_patterns": [
+            "#/\\.#"
+        ]
+    },
+    "file_maps": {
+        "data": [
+            "classes"
+        ],
+        "bin": [
+        ],
+        "lib": [
+        ],
+        "doc": [
+            "AUTHORS",
+            "CHANGELOG",
+            "LICENSE",
+            "README"
+        ],
+        "etc": {
+            "configuration/": "",
+            "specs/schemas": "etl/etl_specs.d/value_analytics"
+        }
+    }
+}

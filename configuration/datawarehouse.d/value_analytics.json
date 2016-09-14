@@ -1,0 +1,118 @@
+{
+    "+realms": {
+        "ValueAnalyticsGrants": {
+            "schema": "modw_aggregates",
+            "table": "va_grant_fact",
+            "datasource": "Various Institution Financial Systems",
+            "group_bys": [
+                {
+                    "name": "none",
+                    "class": "GroupByNone"
+                },
+                {
+                    "name": "day",
+                    "class": "GroupByDay"
+                },
+                {
+                    "name": "month",
+                    "class": "GroupByMonth"
+                },
+                {
+                    "name": "quarter",
+                    "class": "GroupByQuarter"
+                },
+                {
+                    "name": "year",
+                    "class": "GroupByYear"
+                },
+                {
+                    "name": "va_funding_agency",
+                    "class": "GroupByFundingAgency"
+                },
+                {
+                    "name": "va_grant",
+                    "class": "GroupByGrant"
+                },
+                {
+                    "name": "va_grant_role_type",
+                    "class": "GroupByGrantRoleType"
+                },
+                {
+                    "name": "va_grant_role_organization",
+                    "class": "GroupByGrantRoleOrganization"
+                },
+                {
+                    "name": "va_person",
+                    "class": "GroupByPerson"
+                }
+            ],
+            "statistics": [
+                {
+                    "name": "ended_grant_count",
+                    "class": "EndedGrantCountStatistic"
+                },
+                {
+                    "name": "started_grant_count",
+                    "class": "StartedGrantCountStatistic"
+                },
+                {
+                    "name": "time_proportional_grant_dollars",
+                    "class": "TimeProportionalGrantDollarsStatistic"
+                }
+            ]
+        },
+        "ValueAnalyticsGrantRoles": {
+            "schema": "modw_aggregates",
+            "table": "va_grant_role_fact",
+            "datasource": "Various Institution Financial Systems",
+            "group_bys": [
+                {
+                    "name": "none",
+                    "class": "GroupByNone"
+                },
+                {
+                    "name": "day",
+                    "class": "GroupByDay"
+                },
+                {
+                    "name": "month",
+                    "class": "GroupByMonth"
+                },
+                {
+                    "name": "quarter",
+                    "class": "GroupByQuarter"
+                },
+                {
+                    "name": "year",
+                    "class": "GroupByYear"
+                },
+                {
+                    "name": "va_funding_agency",
+                    "class": "GroupByFundingAgency"
+                },
+                {
+                    "name": "va_grant_role_type",
+                    "class": "GroupByGrantRoleType"
+                },
+                {
+                    "name": "va_grant_role_organization",
+                    "class": "GroupByGrantRoleOrganization"
+                },
+                {
+                    "name": "va_person",
+                    "class": "GroupByPerson"
+                }
+            ],
+            "statistics": [
+                {
+                    "name": "ended_grant_role_count",
+                    "class": "EndedGrantRoleCountStatistic"
+                },
+                {
+                    "name": "started_grant_role_count",
+                    "class": "StartedGrantRoleCountStatistic"
+                }
+            ]
+        }
+    }
+}

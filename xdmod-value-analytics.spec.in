@@ -1,0 +1,39 @@
+Name:          xdmod-value-analytics
+Version:       __VERSION__
+Release:       __RELEASE__%{?dist}
+Summary:       Value Analytics module for Open XDMoD
+URL:           http://xdmod.sourceforge.net/value-analytics-overview.html
+Vendor:        Center for Computational Research, University at Buffalo
+Packager:      Jeffrey T. Palmer <jtpalmer@buffalo.edu>
+Group:         Applications/Internet
+License:       LGPLv3+
+Source:        %{name}-%{version}.tar.gz
+BuildRoot:     %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
+BuildArch:     noarch
+BuildRequires: php-cli
+Requires:      xdmod >= 5.6.0
+
+%description
+Open XDMoD Value Analytics package.
+
+%prep
+%setup -q -n %{name}-%{version}
+
+%install
+rm -rf $RPM_BUILD_ROOT
+DESTDIR=$RPM_BUILD_ROOT ./install \
+    --quiet \
+    --bindir=%{_bindir} \
+    --libdir=%{_libdir}/xdmod \
+    --sysconfdir=%{_sysconfdir}/xdmod \
+    --datadir=%{_datadir}/xdmod \
+    --docdir=%{_docdir}/%{name}-%{version} \
+    --crondconfdir=%{_sysconfdir}/cron.d
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+%files
+%defattr(-,root,root,-)
+%{_datadir}/xdmod/
+%{_docdir}/%{name}-%{version}/

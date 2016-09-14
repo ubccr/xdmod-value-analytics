@@ -1,0 +1,41 @@
+{
+    "table_definition": {
+        "name": "people_groups",
+        "engine": "InnoDB",
+        "comment": "A mapping of people to their groups.",
+        "columns": [
+            {
+                "name": "person_id",
+                "type": "int(11)",
+                "nullable": false,
+                "comment": "An ID for a person."
+            },
+            {
+                "name": "group_id",
+                "type": "int(11)",
+                "nullable": false,
+                "comment": "An ID for a group (assigned by XDMoD)."
+            }
+        ],
+        "indexes": [
+            {
+                "name": "PRIMARY",
+                "columns": [
+                    "person_id",
+                    "group_id"
+                ]
+            },
+            {
+                "name": "group_id",
+                "columns": [
+                    "group_id"
+                ]
+            }
+        ]
+    },
+
+    "destination_columns": {
+        "person_id": "person_id",
+        "group_id": "group_id"
+    }
+}
