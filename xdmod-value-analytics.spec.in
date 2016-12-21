@@ -12,6 +12,7 @@ BuildRoot:     %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildArch:     noarch
 BuildRequires: php-cli
 Requires:      xdmod >= 5.6.0
+Requires:      jq
 
 %description
 Open XDMoD Value Analytics package.
@@ -37,3 +38,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %{_datadir}/xdmod/
 %{_docdir}/%{name}-%{version}/
+
+%config(noreplace) %{_sysconfdir}/xdmod/*.d/value_analytics.json
+%config(noreplace) %{_sysconfdir}/xdmod/etl/etl.d/value_analytics.json
+%config(noreplace) %{_sysconfdir}/xdmod/etl/*.d/value_analytics

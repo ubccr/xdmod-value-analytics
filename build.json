@@ -1,7 +1,7 @@
 {
     "name": "xdmod-value-analytics",
     "version": "0.1.0",
-    "release": "0.1.a1",
+    "release": "1.0",
     "files": {
         "include_paths": [
             "specs/schemas"
@@ -25,10 +25,10 @@
         "lib": [
         ],
         "doc": [
-            "AUTHORS",
-            "CHANGELOG",
+            {"AUTHORS.md": "AUTHORS"},
+            {"CHANGELOG.md": "CHANGELOG"},
             "LICENSE",
-            "README"
+            {"README.md": "README"}
         ],
         "etc": {
             "configuration/": "",

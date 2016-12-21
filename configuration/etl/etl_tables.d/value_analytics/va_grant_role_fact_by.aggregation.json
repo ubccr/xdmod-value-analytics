@@ -122,6 +122,12 @@
             }
         ]
     },
+    "aggregation_period_query": {
+        "conversions": {
+            "start_day_id": "YEAR(FROM_UNIXTIME(start_time_ts)) * 100000 + DAYOFYEAR(FROM_UNIXTIME(start_time_ts))",
+            "end_day_id": "YEAR(FROM_UNIXTIME(end_time_ts)) * 100000 + DAYOFYEAR(FROM_UNIXTIME(end_time_ts))"
+        }
+    },
     "source_query": {
         "query_hint": "SQL_NO_CACHE",
         "records": {

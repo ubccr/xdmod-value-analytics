@@ -1,6 +1,6 @@
 {
     "+roles": {
-        "+po": {
+        "+default": {
             "+query_descripters": [
                 {
                     "realm": "ValueAnalyticsGrants",
