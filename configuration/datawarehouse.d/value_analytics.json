@@ -1,6 +1,7 @@
 {
     "+realms": {
         "ValueAnalyticsGrants": {
+            "category": "Value Analytics",
             "schema": "modw_aggregates",
             "table": "va_grant_fact",
             "datasource": "Various Institution Financial Systems",
@@ -62,6 +63,7 @@
             ]
         },
         "ValueAnalyticsGrantRoles": {
+            "category": "Value Analytics",
             "schema": "modw_aggregates",
             "table": "va_grant_role_fact",
             "datasource": "Various Institution Financial Systems",
