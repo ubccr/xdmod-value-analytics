@@ -45,6 +45,10 @@
                     "class": "ActiveGrantCountStatistic"
                 },
                 {
+                    "name": "active_pi_count",
+                    "class": "ActivePICountStatistic"
+                },
+                {
                     "name": "ended_grant_count",
                     "class": "EndedGrantCountStatistic"
                 },
