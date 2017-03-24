@@ -37,6 +37,10 @@
             ],
             "statistics": [
                 {
+                    "name": "active_grant_count",
+                    "class": "ActiveGrantCountStatistic"
+                },
+                {
                     "name": "ended_grant_count",
                     "class": "EndedGrantCountStatistic"
                 },
