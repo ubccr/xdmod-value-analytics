@@ -13,18 +13,6 @@
                 {
                     "realm": "ValueAnalyticsGrants",
                     "group_by": "va_grant"
-                },
-                {
-                    "realm": "ValueAnalyticsGrants",
-                    "group_by": "va_grant_role_type"
-                },
-                {
-                    "realm": "ValueAnalyticsGrants",
-                    "group_by": "va_grant_role_organization"
-                },
-                {
-                    "realm": "ValueAnalyticsGrants",
-                    "group_by": "va_person"
                 }
             ]
         }
