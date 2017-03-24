@@ -33,6 +33,10 @@
                 {
                     "name": "va_grant",
                     "class": "GroupByGrant"
+                },
+                {
+                    "name": "va_pi",
+                    "class": "GroupByPI"
                 }
             ],
             "statistics": [
