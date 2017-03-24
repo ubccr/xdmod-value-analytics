@@ -1,7 +1,8 @@
 <?php
 /**
- * The proportional amount of grant dollars for each active grant covering
- * the requested time period(s).
+ * The amount of grant dollars disbursed for each active grant in
+ * the requested time period(s), assuming an even, linear distribution of funds
+ * over the lifetime of each grant.
  */
 namespace DataWarehouse\Query\ValueAnalyticsGrants\Statistics;
 
@@ -14,7 +15,7 @@ class TimeProportionalGrantDollarsStatistic extends Statistic
         parent::__construct(
             'COALESCE(SUM(jf.time_proportional_dollars), 0)',
             'time_proportional_grant_dollars',
-            'Time-Proportional Dollars of Active Grants',
+            'Grant Funding Profile: Linear Disbursements',
             '$',
             0
         );
@@ -23,9 +24,9 @@ class TimeProportionalGrantDollarsStatistic extends Statistic
     public function getInfo()
     {
         return <<<EOT
-The sum of each of the amount of dollars associated with applicable, active
-grants multiplied by the percentage of their lifetimes a data point covers. This
-assumes an even distribution of grant dollars over the lifetime of a grant.
+The amount of grant dollars disbursed for each active grant in
+the requested time period(s), assuming an even, linear distribution of funds
+over the lifetime of each grant.
 EOT;
     }
 }
