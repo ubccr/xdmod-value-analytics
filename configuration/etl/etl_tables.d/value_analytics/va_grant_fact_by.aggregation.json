@@ -69,6 +69,18 @@
                 "type": "int(11)",
                 "nullable": false,
                 "comment": "The total amount of money associated with a set of grants."
+            },
+            {
+                "name": "total_dollars_started",
+                "type": "int(11)",
+                "nullable": false,
+                "comment": "The total amount of money associated with grants that started during this time period."
+            },
+            {
+                "name": "total_dollars_ended",
+                "type": "int(11)",
+                "nullable": false,
+                "comment": "The total amount of money associated with grants that ended during this time period."
             }
         ],
         "indexes": [
@@ -129,7 +141,9 @@
             "num_grants_started": "SUM(g.start_time_ts BETWEEN ${:PERIOD_START_TS} AND ${:PERIOD_END_TS})",
             "num_grants_ended": "SUM(g.end_time_ts BETWEEN ${:PERIOD_START_TS} AND ${:PERIOD_END_TS})",
             "time_proportional_dollars": "SUM(g.total_dollars * ((LEAST(g.end_time_ts, ${:PERIOD_END_TS}) - GREATEST(g.start_time_ts, ${:PERIOD_START_TS})) / (g.end_time_ts - g.start_time_ts)))",
-            "total_dollars": "SUM(g.total_dollars)"
+            "total_dollars": "SUM(g.total_dollars)",
+            "total_dollars_started": "SUM(CASE WHEN g.start_time_ts BETWEEN ${:PERIOD_START_TS} AND ${:PERIOD_END_TS} THEN g.total_dollars ELSE 0 END)",
+            "total_dollars_ended": "SUM(CASE WHEN g.end_time_ts BETWEEN ${:PERIOD_START_TS} AND ${:PERIOD_END_TS} THEN g.total_dollars ELSE 0 END)"
         },
         "groupby": [
             "${AGGREGATION_UNIT}_id",

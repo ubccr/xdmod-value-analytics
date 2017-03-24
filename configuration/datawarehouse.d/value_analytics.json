@@ -51,6 +51,18 @@
                 {
                     "name": "time_proportional_grant_dollars",
                     "class": "TimeProportionalGrantDollarsStatistic"
+                },
+                {
+                    "name": "total_grant_dollars_active",
+                    "class": "TotalGrantDollarsActiveStatistic"
+                },
+                {
+                    "name": "total_grant_dollars_started",
+                    "class": "TotalGrantDollarsStartedStatistic"
+                },
+                {
+                    "name": "total_grant_dollars_ended",
+                    "class": "TotalGrantDollarsEndedStatistic"
                 }
             ]
         }
