@@ -252,35 +252,6 @@
                     "schema": "modw_aggregates"
                 }
             }
-        },
-        {
-            "name": "ValueAnalyticsGrantRolesAggregator",
-            "description": "Aggregates Value Analytics grant roles data.",
-            "namespace": "ETL\\Aggregator",
-            "class": "SimpleAggregator",
-            "options_class": "AggregatorOptions",
-            "definition_file": "value_analytics/va_grant_role_fact_by.aggregation.json",
-            "table_prefix": "va_grant_role_fact_by_",
-            "aggregation_units": [
-                "day",
-                "month",
-                "quarter",
-                "year"
-            ],
-            "endpoints": {
-                "source": {
-                    "type": "mysql",
-                    "name": "Value Analytics DB",
-                    "config": "datawarehouse",
-                    "schema": "modw_value_analytics"
-                },
-                "destination": {
-                    "type": "mysql",
-                    "name": "Aggregate Data DB",
-                    "config": "datawarehouse",
-                    "schema": "modw_aggregates"
-                }
-            }
         }
     ]
 }
