@@ -1,9 +1,6 @@
 <?php
 /**
  * The number of active grants.
- *
- * NOTE: This is disabled as there is currently no way to handle this correctly
- * in aggregate form.
  */
 namespace DataWarehouse\Query\ValueAnalyticsGrants\Statistics;
 
@@ -14,10 +11,10 @@ class ActiveGrantCountStatistic extends Statistic
     public function __construct($queryInstance = null)
     {
         parent::__construct(
-            'COALESCE(SUM(jf.num_grants), 0)',
+            'COALESCE(COUNT(DISTINCT(jf.grant_id)), 0)',
             'active_grant_count',
-            'Number of Active Grants',
-            'Number of Active Grants',
+            'Number of Grants Active',
+            'Number of Grants Active',
             0
         );
     }

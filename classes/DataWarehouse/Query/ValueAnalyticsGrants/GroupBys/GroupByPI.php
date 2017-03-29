@@ -1,10 +1,11 @@
 <?php
 /**
- * GroupBy used for viewing Value Analytics grants queries by funding agency.
+ * GroupBy used for viewing Value Analytics grants queries by PI.
  */
 
 namespace DataWarehouse\Query\ValueAnalyticsGrants\GroupBys;
 
+use DataWarehouse\Query\Model\FormulaField;
 use DataWarehouse\Query\Model\Schema;
 use DataWarehouse\Query\Model\Table;
 use DataWarehouse\Query\Model\TableField;
@@ -12,35 +13,44 @@ use DataWarehouse\Query\Model\WhereCondition;
 use DataWarehouse\Query\Query;
 use DataWarehouse\Query\ValueAnalyticsGrants\GroupBy;
 
-class GroupByFundingAgency extends GroupBy
+class GroupByPI extends GroupBy
 {
     public function __construct()
     {
+        $dimensionTableAlias = 'p';
         $idFieldName = 'id';
-        $shortNameFieldName = 'name';
-        $longNameFieldName = 'name';
-        $orderIdFieldName = 'name';
-        $dimensionTableName = 'funding_agencies';
-        $dimensionTableAlias = 'fa';
+        $shortNameFieldFormula = "CONCAT(
+            $dimensionTableAlias.last_name,
+            ', ',
+            $dimensionTableAlias.first_name,
+            IF(
+                $dimensionTableAlias.middle_name IS NOT NULL,
+                CONCAT(' ', $dimensionTableAlias.middle_name),
+                ''
+            )
+        )";
+        $longNameFieldFormula = $shortNameFieldFormula;
+        $orderIdFieldFormula = $shortNameFieldFormula;
+        $dimensionTableName = 'people';
 
         parent::__construct(
-            'va_funding_agency',
+            'va_pi',
             array(),
             "
                 SELECT
                     $dimensionTableAlias.$idFieldName AS id,
-                    $dimensionTableAlias.$shortNameFieldName AS short_name,
-                    $dimensionTableAlias.$longNameFieldName AS long_name
+                    $shortNameFieldFormula AS short_name,
+                    $longNameFieldFormula AS long_name
                 FROM $dimensionTableName AS $dimensionTableAlias
                 WHERE 1
-                ORDER BY $dimensionTableAlias.$orderIdFieldName
+                ORDER BY $orderIdFieldFormula
             "
         );
 
         $this->_id_field_name = $idFieldName;
-        $this->_short_name_field_name = $shortNameFieldName;
-        $this->_long_name_field_name = $longNameFieldName;
-        $this->orderIdFieldName = $orderIdFieldName;
+        $this->shortNameFieldFormula = $shortNameFieldFormula;
+        $this->longNameFieldFormula = $longNameFieldFormula;
+        $this->orderIdFieldFormula = $orderIdFieldFormula;
         $this->dimensionSchema = new Schema('modw_value_analytics');
         $this->dimensionTable = new Table(
             $this->dimensionSchema,
@@ -51,54 +61,51 @@ class GroupByFundingAgency extends GroupBy
 
     public static function getLabel()
     {
-        return 'VA Funding Agency';
+        return 'VA PI';
     }
 
     public function getInfo()
     {
-        return "An organization that funds grants.";
+        return "The PI on a grant.";
     }
 
     public function applyTo(Query &$query, Table $dataTable, $multiGroup = false)
     {
         $query->addTable($this->dimensionTable);
 
-        $dimensionIdField = new TableField(
+        $idField = new TableField(
             $this->dimensionTable,
             $this->_id_field_name,
             $this->getIdColumnName($multiGroup)
         );
-        $dimensionShortNameField = new TableField(
-            $this->dimensionTable,
-            $this->_short_name_field_name,
+        $shortNameField = new FormulaField(
+            $this->shortNameFieldFormula,
             $this->getShortNameColumnName($multiGroup)
         );
-        $dimensionLongNameField = new TableField(
-            $this->dimensionTable,
-            $this->_long_name_field_name,
+        $longNameField = new FormulaField(
+            $this->longNameFieldFormula,
             $this->getLongNameColumnName($multiGroup)
         );
-        $dimensionOrderIdField = new TableField(
-            $this->dimensionTable,
-            $this->orderIdFieldName,
+        $orderIdField = new FormulaField(
+            $this->orderIdFieldFormula,
             $this->getOrderIdColumnName($multiGroup)
         );
 
-        $query->addField($dimensionIdField);
-        $query->addField($dimensionShortNameField);
-        $query->addField($dimensionLongNameField);
-        $query->addField($dimensionOrderIdField);
+        $query->addField($idField);
+        $query->addField($shortNameField);
+        $query->addField($longNameField);
+        $query->addField($orderIdField);
 
-        $query->addGroup($dimensionIdField);
+        $query->addGroup($idField);
 
-        $dataTableDimensionIdField = new TableField(
+        $dataTableIdField = new TableField(
             $dataTable,
-            'agency_id'
+            'pi_id'
         );
         $query->addWhereCondition(new WhereCondition(
-            $dimensionIdField,
+            $idField,
             '=',
-            $dataTableDimensionIdField
+            $dataTableIdField
         ));
 
         $this->addOrder($query, $multiGroup, 'ASC', false);
@@ -113,19 +120,19 @@ class GroupByFundingAgency extends GroupBy
     ) {
         $query->addTable($this->dimensionTable);
 
-        $dimensionIdField = new TableField(
+        $idField = new TableField(
             $this->dimensionTable,
             $this->_id_field_name,
             $this->getIdColumnName($multiGroup)
         );
-        $dataTableDimensionIdField = new TableField(
+        $dataTableIdField = new TableField(
             $dataTable,
-            'agency_id'
+            'pi_id'
         );
         $query->addWhereCondition(new WhereCondition(
-            $dimensionIdField,
+            $idField,
             '=',
-            $dataTableDimensionIdField
+            $dataTableIdField
         ));
 
         if (is_array($whereConstraint)) {
@@ -133,7 +140,7 @@ class GroupByFundingAgency extends GroupBy
             $whereConstraint = "($whereConstraintCsv)";
         }
         $query->addWhereCondition(new WhereCondition(
-            $dimensionIdField,
+            $idField,
             $operation,
             $whereConstraint
         ));
@@ -144,7 +151,7 @@ class GroupByFundingAgency extends GroupBy
         return parent::pullQueryParameters2(
             $request,
             '_filter_',
-            'agency_id'
+            'pi_id'
         );
     }
 
@@ -155,13 +162,13 @@ class GroupByFundingAgency extends GroupBy
             $request,
             "
                 SELECT
-                    $this->_long_name_field_name AS field_label
+                    $this->longNameFieldFormula AS field_label
                 FROM
                     $dimensionTableFromClause
                 WHERE
                     $this->_id_field_name IN (_filter_)
                 ORDER BY
-                    $this->orderIdFieldName
+                    $this->orderIdFieldFormula
             "
         );
     }

@@ -18,34 +18,39 @@ class GroupByGrant extends GroupBy
     public function __construct()
     {
         $dimensionTableAlias = 'fa';
-        $this->idFieldName = 'id';
-        $this->shortNameFieldName = 'organization_grant_number';
-        $this->longNameFieldFormula = "CONCAT(
+        $idFieldName = 'id';
+        $shortNameFieldName = 'organization_grant_number';
+        $longNameFieldFormula = "CONCAT(
             $dimensionTableAlias.organization_grant_number,
             ': ',
             $dimensionTableAlias.title
         )";
-        $this->orderIdFieldName = 'organization_grant_number';
-        $this->dimensionSchema = new Schema('modw_value_analytics');
+        $orderIdFieldName = 'organization_grant_number';
         $dimensionTableName = 'grants';
-        $this->dimensionTable = new Table(
-            $this->dimensionSchema,
-            $dimensionTableName,
-            $dimensionTableAlias
-        );
 
         parent::__construct(
             'va_grant',
             array(),
             "
                 SELECT
-                    $dimensionTableAlias.$this->idFieldName AS id,
-                    $dimensionTableAlias.$this->shortNameFieldName AS short_name,
-                    $this->longNameFieldFormula AS long_name
+                    $dimensionTableAlias.$idFieldName AS id,
+                    $dimensionTableAlias.$shortNameFieldName AS short_name,
+                    $longNameFieldFormula AS long_name
                 FROM $dimensionTableName AS $dimensionTableAlias
                 WHERE 1
-                ORDER BY $dimensionTableAlias.$this->orderIdFieldName
+                ORDER BY $dimensionTableAlias.$orderIdFieldName
             "
+        );
+
+        $this->_id_field_name = $idFieldName;
+        $this->_short_name_field_name = $shortNameFieldName;
+        $this->longNameFieldFormula = $longNameFieldFormula;
+        $this->orderIdFieldName = $orderIdFieldName;
+        $this->dimensionSchema = new Schema('modw_value_analytics');
+        $this->dimensionTable = new Table(
+            $this->dimensionSchema,
+            $dimensionTableName,
+            $dimensionTableAlias
         );
     }
 
@@ -65,12 +70,12 @@ class GroupByGrant extends GroupBy
 
         $dimensionIdField = new TableField(
             $this->dimensionTable,
-            $this->idFieldName,
+            $this->_id_field_name,
             $this->getIdColumnName($multiGroup)
         );
         $dimensionShortNameField = new TableField(
             $this->dimensionTable,
-            $this->shortNameFieldName,
+            $this->_short_name_field_name,
             $this->getShortNameColumnName($multiGroup)
         );
         $dimensionLongNameField = new FormulaField(
@@ -114,7 +119,7 @@ class GroupByGrant extends GroupBy
 
         $dimensionIdField = new TableField(
             $this->dimensionTable,
-            $this->idFieldName,
+            $this->_id_field_name,
             $this->getIdColumnName($multiGroup)
         );
         $dataTableDimensionIdField = new TableField(
@@ -158,7 +163,7 @@ class GroupByGrant extends GroupBy
                 FROM
                     $dimensionTableFromClause
                 WHERE
-                    $this->idFieldName IN (_filter_)
+                    $this->_id_field_name IN (_filter_)
                 ORDER BY
                     $this->orderIdFieldName
             "

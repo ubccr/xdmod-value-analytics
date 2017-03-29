@@ -41,6 +41,12 @@
                 "comment": "The ID of a grant."
             },
             {
+                "name": "pi_id",
+                "type": "int(11)",
+                "nullable": false,
+                "comment": "The person ID of the PI."
+            },
+            {
                 "name": "num_grants",
                 "type": "int(11)",
                 "nullable": false,
@@ -69,6 +75,18 @@
                 "type": "int(11)",
                 "nullable": false,
                 "comment": "The total amount of money associated with a set of grants."
+            },
+            {
+                "name": "total_dollars_started",
+                "type": "int(11)",
+                "nullable": false,
+                "comment": "The total amount of money associated with grants that started during this time period."
+            },
+            {
+                "name": "total_dollars_ended",
+                "type": "int(11)",
+                "nullable": false,
+                "comment": "The total amount of money associated with grants that ended during this time period."
             }
         ],
         "indexes": [
@@ -107,6 +125,12 @@
                 "columns": [
                     "grant_id"
                 ]
+            },
+            {
+                "name": "index_pi_id",
+                "columns": [
+                    "pi_id"
+                ]
             }
         ]
     },
@@ -125,11 +149,14 @@
             "agency_id": "g.agency_id",
             "grant_type_id": "g.grant_type_id",
             "grant_id": "g.id",
+            "pi_id": "COALESCE((SELECT gp.person_id FROM modw_value_analytics.grants_people AS gp WHERE gp.grant_id = g.id AND gp.grant_role_id = (SELECT gr.id FROM modw_value_analytics.grant_roles AS gr WHERE gr.name = \"PI\" LIMIT 1) LIMIT 1), -1)",
             "num_grants": "COUNT(*)",
             "num_grants_started": "SUM(g.start_time_ts BETWEEN ${:PERIOD_START_TS} AND ${:PERIOD_END_TS})",
             "num_grants_ended": "SUM(g.end_time_ts BETWEEN ${:PERIOD_START_TS} AND ${:PERIOD_END_TS})",
             "time_proportional_dollars": "SUM(g.total_dollars * ((LEAST(g.end_time_ts, ${:PERIOD_END_TS}) - GREATEST(g.start_time_ts, ${:PERIOD_START_TS})) / (g.end_time_ts - g.start_time_ts)))",
-            "total_dollars": "SUM(g.total_dollars)"
+            "total_dollars": "SUM(g.total_dollars)",
+            "total_dollars_started": "SUM(CASE WHEN g.start_time_ts BETWEEN ${:PERIOD_START_TS} AND ${:PERIOD_END_TS} THEN g.total_dollars ELSE 0 END)",
+            "total_dollars_ended": "SUM(CASE WHEN g.end_time_ts BETWEEN ${:PERIOD_START_TS} AND ${:PERIOD_END_TS} THEN g.total_dollars ELSE 0 END)"
         },
         "groupby": [
             "${AGGREGATION_UNIT}_id",
@@ -137,7 +164,8 @@
             "${AGGREGATION_UNIT}",
             "agency_id",
             "grant_type_id",
-            "grant_id"
+            "grant_id",
+            "pi_id"
         ],
         "joins": [
             {

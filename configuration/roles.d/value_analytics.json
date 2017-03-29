@@ -13,6 +13,10 @@
                 {
                     "realm": "ValueAnalyticsGrants",
                     "group_by": "va_grant"
+                },
+                {
+                    "realm": "ValueAnalyticsGrants",
+                    "group_by": "va_pi"
                 }
             ]
         }
