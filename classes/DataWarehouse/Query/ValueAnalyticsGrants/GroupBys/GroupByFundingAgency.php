@@ -16,9 +16,9 @@ class GroupByFundingAgency extends GroupBy
 {
     public function __construct()
     {
-        $this->idFieldName = 'id';
-        $this->shortNameFieldName = 'name';
-        $this->longNameFieldName = 'name';
+        $idFieldName = 'id';
+        $shortNameFieldName = 'name';
+        $longNameFieldName = 'name';
         $this->orderIdFieldName = 'name';
         $this->dimensionSchema = new Schema('modw_value_analytics');
         $dimensionTableName = 'funding_agencies';
@@ -34,14 +34,18 @@ class GroupByFundingAgency extends GroupBy
             array(),
             "
                 SELECT
-                    $dimensionTableAlias.$this->idFieldName AS id,
-                    $dimensionTableAlias.$this->shortNameFieldName AS short_name,
-                    $dimensionTableAlias.$this->longNameFieldName AS long_name
+                    $dimensionTableAlias.$idFieldName AS id,
+                    $dimensionTableAlias.$shortNameFieldName AS short_name,
+                    $dimensionTableAlias.$longNameFieldName AS long_name
                 FROM $dimensionTableName AS $dimensionTableAlias
                 WHERE 1
                 ORDER BY $dimensionTableAlias.$this->orderIdFieldName
             "
         );
+
+        $this->_id_field_name = $idFieldName;
+        $this->_short_name_field_name = $shortNameFieldName;
+        $this->_long_name_field_name = $longNameFieldName;
     }
 
     public static function getLabel()
@@ -60,17 +64,17 @@ class GroupByFundingAgency extends GroupBy
 
         $dimensionIdField = new TableField(
             $this->dimensionTable,
-            $this->idFieldName,
+            $this->_id_field_name,
             $this->getIdColumnName($multiGroup)
         );
         $dimensionShortNameField = new TableField(
             $this->dimensionTable,
-            $this->shortNameFieldName,
+            $this->_short_name_field_name,
             $this->getShortNameColumnName($multiGroup)
         );
         $dimensionLongNameField = new TableField(
             $this->dimensionTable,
-            $this->longNameFieldName,
+            $this->_long_name_field_name,
             $this->getLongNameColumnName($multiGroup)
         );
         $dimensionOrderIdField = new TableField(
@@ -110,7 +114,7 @@ class GroupByFundingAgency extends GroupBy
 
         $dimensionIdField = new TableField(
             $this->dimensionTable,
-            $this->idFieldName,
+            $this->_id_field_name,
             $this->getIdColumnName($multiGroup)
         );
         $dataTableDimensionIdField = new TableField(
@@ -150,11 +154,11 @@ class GroupByFundingAgency extends GroupBy
             $request,
             "
                 SELECT
-                    $this->longNameFieldName AS field_label
+                    $this->_long_name_field_name AS field_label
                 FROM
                     $dimensionTableFromClause
                 WHERE
-                    $this->idFieldName IN (_filter_)
+                    $this->_id_field_name IN (_filter_)
                 ORDER BY
                     $this->orderIdFieldName
             "

@@ -18,7 +18,7 @@ class GroupByPI extends GroupBy
     public function __construct()
     {
         $dimensionTableAlias = 'p';
-        $this->idFieldName = 'id';
+        $idFieldName = 'id';
         $this->shortNameFieldFormula = "CONCAT(
             $dimensionTableAlias.last_name,
             ', ',
@@ -44,7 +44,7 @@ class GroupByPI extends GroupBy
             array(),
             "
                 SELECT
-                    $dimensionTableAlias.$this->idFieldName AS id,
+                    $dimensionTableAlias.$idFieldName AS id,
                     $this->shortNameFieldFormula AS short_name,
                     $this->longNameFieldFormula AS long_name
                 FROM $dimensionTableName AS $dimensionTableAlias
@@ -52,6 +52,8 @@ class GroupByPI extends GroupBy
                 ORDER BY $this->orderIdFieldFormula
             "
         );
+
+        $this->_id_field_name = $idFieldName;
     }
 
     public static function getLabel()
@@ -70,7 +72,7 @@ class GroupByPI extends GroupBy
 
         $idField = new TableField(
             $this->dimensionTable,
-            $this->idFieldName,
+            $this->_id_field_name,
             $this->getIdColumnName($multiGroup)
         );
         $shortNameField = new FormulaField(
@@ -117,7 +119,7 @@ class GroupByPI extends GroupBy
 
         $idField = new TableField(
             $this->dimensionTable,
-            $this->idFieldName,
+            $this->_id_field_name,
             $this->getIdColumnName($multiGroup)
         );
         $dataTableIdField = new TableField(
@@ -161,7 +163,7 @@ class GroupByPI extends GroupBy
                 FROM
                     $dimensionTableFromClause
                 WHERE
-                    $this->idFieldName IN (_filter_)
+                    $this->_id_field_name IN (_filter_)
                 ORDER BY
                     $this->orderIdFieldFormula
             "
