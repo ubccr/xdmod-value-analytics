@@ -19,7 +19,7 @@ class GroupByPI extends GroupBy
     {
         $dimensionTableAlias = 'p';
         $idFieldName = 'id';
-        $this->shortNameFieldFormula = "CONCAT(
+        $shortNameFieldFormula = "CONCAT(
             $dimensionTableAlias.last_name,
             ', ',
             $dimensionTableAlias.first_name,
@@ -29,15 +29,9 @@ class GroupByPI extends GroupBy
                 ''
             )
         )";
-        $this->longNameFieldFormula = $this->shortNameFieldFormula;
-        $this->orderIdFieldFormula = $this->shortNameFieldFormula;
-        $this->dimensionSchema = new Schema('modw_value_analytics');
+        $longNameFieldFormula = $shortNameFieldFormula;
+        $orderIdFieldFormula = $shortNameFieldFormula;
         $dimensionTableName = 'people';
-        $this->dimensionTable = new Table(
-            $this->dimensionSchema,
-            $dimensionTableName,
-            $dimensionTableAlias
-        );
 
         parent::__construct(
             'va_pi',
@@ -45,15 +39,24 @@ class GroupByPI extends GroupBy
             "
                 SELECT
                     $dimensionTableAlias.$idFieldName AS id,
-                    $this->shortNameFieldFormula AS short_name,
-                    $this->longNameFieldFormula AS long_name
+                    $shortNameFieldFormula AS short_name,
+                    $longNameFieldFormula AS long_name
                 FROM $dimensionTableName AS $dimensionTableAlias
                 WHERE 1
-                ORDER BY $this->orderIdFieldFormula
+                ORDER BY $orderIdFieldFormula
             "
         );
 
         $this->_id_field_name = $idFieldName;
+        $this->shortNameFieldFormula = $shortNameFieldFormula;
+        $this->longNameFieldFormula = $longNameFieldFormula;
+        $this->orderIdFieldFormula = $orderIdFieldFormula;
+        $this->dimensionSchema = new Schema('modw_value_analytics');
+        $this->dimensionTable = new Table(
+            $this->dimensionSchema,
+            $dimensionTableName,
+            $dimensionTableAlias
+        );
     }
 
     public static function getLabel()

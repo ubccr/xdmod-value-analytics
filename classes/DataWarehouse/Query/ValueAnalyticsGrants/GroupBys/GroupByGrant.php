@@ -20,19 +20,13 @@ class GroupByGrant extends GroupBy
         $dimensionTableAlias = 'fa';
         $idFieldName = 'id';
         $shortNameFieldName = 'organization_grant_number';
-        $this->longNameFieldFormula = "CONCAT(
+        $longNameFieldFormula = "CONCAT(
             $dimensionTableAlias.organization_grant_number,
             ': ',
             $dimensionTableAlias.title
         )";
-        $this->orderIdFieldName = 'organization_grant_number';
-        $this->dimensionSchema = new Schema('modw_value_analytics');
+        $orderIdFieldName = 'organization_grant_number';
         $dimensionTableName = 'grants';
-        $this->dimensionTable = new Table(
-            $this->dimensionSchema,
-            $dimensionTableName,
-            $dimensionTableAlias
-        );
 
         parent::__construct(
             'va_grant',
@@ -41,15 +35,23 @@ class GroupByGrant extends GroupBy
                 SELECT
                     $dimensionTableAlias.$idFieldName AS id,
                     $dimensionTableAlias.$shortNameFieldName AS short_name,
-                    $this->longNameFieldFormula AS long_name
+                    $longNameFieldFormula AS long_name
                 FROM $dimensionTableName AS $dimensionTableAlias
                 WHERE 1
-                ORDER BY $dimensionTableAlias.$this->orderIdFieldName
+                ORDER BY $dimensionTableAlias.$orderIdFieldName
             "
         );
 
         $this->_id_field_name = $idFieldName;
         $this->_short_name_field_name = $shortNameFieldName;
+        $this->longNameFieldFormula = $longNameFieldFormula;
+        $this->orderIdFieldName = $orderIdFieldName;
+        $this->dimensionSchema = new Schema('modw_value_analytics');
+        $this->dimensionTable = new Table(
+            $this->dimensionSchema,
+            $dimensionTableName,
+            $dimensionTableAlias
+        );
     }
 
     public static function getLabel()

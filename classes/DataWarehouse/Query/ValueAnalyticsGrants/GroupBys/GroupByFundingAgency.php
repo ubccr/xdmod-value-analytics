@@ -19,15 +19,9 @@ class GroupByFundingAgency extends GroupBy
         $idFieldName = 'id';
         $shortNameFieldName = 'name';
         $longNameFieldName = 'name';
-        $this->orderIdFieldName = 'name';
-        $this->dimensionSchema = new Schema('modw_value_analytics');
+        $orderIdFieldName = 'name';
         $dimensionTableName = 'funding_agencies';
         $dimensionTableAlias = 'fa';
-        $this->dimensionTable = new Table(
-            $this->dimensionSchema,
-            $dimensionTableName,
-            $dimensionTableAlias
-        );
 
         parent::__construct(
             'va_funding_agency',
@@ -39,13 +33,20 @@ class GroupByFundingAgency extends GroupBy
                     $dimensionTableAlias.$longNameFieldName AS long_name
                 FROM $dimensionTableName AS $dimensionTableAlias
                 WHERE 1
-                ORDER BY $dimensionTableAlias.$this->orderIdFieldName
+                ORDER BY $dimensionTableAlias.$orderIdFieldName
             "
         );
 
         $this->_id_field_name = $idFieldName;
         $this->_short_name_field_name = $shortNameFieldName;
         $this->_long_name_field_name = $longNameFieldName;
+        $this->orderIdFieldName = $orderIdFieldName;
+        $this->dimensionSchema = new Schema('modw_value_analytics');
+        $this->dimensionTable = new Table(
+            $this->dimensionSchema,
+            $dimensionTableName,
+            $dimensionTableAlias
+        );
     }
 
     public static function getLabel()
