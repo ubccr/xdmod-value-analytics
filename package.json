@@ -1,0 +1,24 @@
+{
+    "name": "xdmod-value-analytics",
+    "version": "0.1.0",
+    "description": "The Value Analytics module for Open XDMoD.",
+    "dependencies": {},
+    "devDependencies": {
+        "eslint": "^3.16.1",
+        "eslint-config-airbnb-base": "^11.1.0",
+        "eslint-plugin-import": "^2.2.0"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ubccr/xdmod-value-analytics.git"
+    },
+    "author": "The XDMoD Team <ccr-xdmod-help@buffalo.edu>",
+    "license": "LGPL-3.0",
+    "bugs": {
+        "url": "https://github.com/ubccr/xdmod-value-analytics/issues"
+    },
+    "homepage": "http://value-analytics.xdmod.org"
+}
