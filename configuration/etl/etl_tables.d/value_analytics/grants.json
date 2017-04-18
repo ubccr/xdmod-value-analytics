@@ -94,8 +94,6 @@
             {
                 "name": "unique_grant_number",
                 "columns": [
-                    "agency_id",
-                    "agency_grant_number",
                     "organization_grant_number"
                 ],
                 "is_unique": true
