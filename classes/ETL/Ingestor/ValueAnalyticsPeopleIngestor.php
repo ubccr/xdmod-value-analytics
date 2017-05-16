@@ -133,6 +133,24 @@ class ValueAnalyticsPeopleIngestor extends StructuredFileIngestor
                 person_identity_provider_id = VALUES(person_identity_provider_id)
         ";
 
+        $peopleJobsIdSql = "
+            UPDATE
+                $destinationTable AS p
+                JOIN $destinationSchema.people_organizations AS po
+                    ON p.id = po.person_id
+                JOIN $destinationSchema.organizations AS vao
+                    ON vao.id = po.organization_id
+                JOIN modw.systemaccount AS sa
+                    ON sa.username = po.person_organization_id
+                JOIN modw.resourcefact AS rf
+                    ON sa.resource_id = rf.id
+                JOIN modw.organization AS o
+                    ON rf.organization_id = o.id
+                    AND o.name = vao.name
+            SET
+                p.jobs_person_id = sa.person_id
+        ";
+
         try {
             $destinationHandle = $this->destinationHandle;
             list(
@@ -141,6 +159,7 @@ class ValueAnalyticsPeopleIngestor extends StructuredFileIngestor
                 $peopleOrganizationsStatement,
                 $peopleGroupsStatement,
                 $peopleIdentifiersStatement,
+                $peopleJobsIdStatement,
             ) = array_map(function ($sql) use ($destinationHandle) {
                 return $destinationHandle->prepare($sql);
             }, array(
@@ -149,6 +168,7 @@ class ValueAnalyticsPeopleIngestor extends StructuredFileIngestor
                 $peopleOrganizationsSql,
                 $peopleGroupsSql,
                 $peopleIdentifiersSql,
+                $peopleJobsIdSql,
             ));
         } catch (PDOException $e) {
             $this->logAndThrowException("Failed to prepare statement. ({$e->getMessage()})");
@@ -275,6 +295,17 @@ class ValueAnalyticsPeopleIngestor extends StructuredFileIngestor
             $numRecordsProcessed++;
 
         }  // foreach ($sourceValues as $sourceValue)
+
+        // Update each person's Jobs realm ID.
+        try {
+            $peopleJobsIdStatement->execute();
+        } catch (PDOException $e) {
+            $this->logAndThrowSqlException(
+                $peopleJobsIdSql,
+                $e,
+                "Error updating Jobs realm IDs for VA person data."
+            );
+        }
 
         return $numRecordsProcessed;
     }  // _execute()

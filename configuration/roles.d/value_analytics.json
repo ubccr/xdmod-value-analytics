@@ -8,6 +8,10 @@
                 },
                 {
                     "realm": "ValueAnalyticsGrants",
+                    "group_by": "pi"
+                },
+                {
+                    "realm": "ValueAnalyticsGrants",
                     "group_by": "va_funding_agency"
                 },
                 {

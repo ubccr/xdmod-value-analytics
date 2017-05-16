@@ -12,6 +12,12 @@
                 "comment": "The ID for a person (assigned by XDMoD)."
             },
             {
+                "name": "jobs_person_id",
+                "type": "int(11)",
+                "nullable": true,
+                "comment": "The ID for a person in the Jobs realm data."
+            },
+            {
                 "name": "first_name",
                 "type": "varchar(100)",
                 "nullable": false,
@@ -41,6 +47,12 @@
                 "name": "PRIMARY",
                 "columns": [
                     "id"
+                ]
+            },
+            {
+                "name": "jobs_person_id",
+                "columns": [
+                    "jobs_person_id"
                 ]
             }
         ]

@@ -37,6 +37,10 @@
                 {
                     "name": "va_pi",
                     "class": "GroupByPI"
+                },
+                {
+                    "name": "pi",
+                    "class": "GroupByJobsPI"
                 }
             ],
             "statistics": [
