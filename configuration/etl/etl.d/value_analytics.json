@@ -13,7 +13,7 @@
                     "type": "mysql",
                     "name": "Value Analytics DB",
                     "config": "datawarehouse",
-                    "schema": "modw_value_analytics_etltest",
+                    "schema": "modw_value_analytics",
                     "create_schema_if_not_exists": true
                 }
             }
@@ -276,7 +276,7 @@
                     "type": "mysql",
                     "name": "Value Analytics DB",
                     "config": "datawarehouse",
-                    "schema": "modw_value_analytics_etltest"
+                    "schema": "modw_value_analytics"
                 },
                 "destination": {
                     "type": "mysql",
