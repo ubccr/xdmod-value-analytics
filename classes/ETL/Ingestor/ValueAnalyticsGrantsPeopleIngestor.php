@@ -21,6 +21,8 @@ class ValueAnalyticsGrantsPeopleIngestor extends StructuredFileIngestor
     /**
      * @see aIngestor::_execute
      */
+
+    // @codingStandardsIgnoreLine
     protected function _execute()
     {
         // Prepare SQL statements for updating various people-related tables.
