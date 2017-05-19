@@ -1,0 +1,136 @@
+{
+    "type": "object",
+    "description": "Grant",
+    "title": "Grant Funding",
+    "properties": {
+        "title": {
+            "type": "string"
+        },
+        "agency": {
+            "type": "string",
+            "description": "The funding agency. Can be any normalized string."
+        },
+        "agency_grant_id": {
+            "type": "string",
+            "description": "Grant ID from funding agency."
+        },
+        "organization_grant_id": {
+            "type": "string",
+            "description": "Grant id from local organization/institution."
+        },
+        "type": {
+            "type": "string",
+            "enum": ["New", "Renewal", "Supplement"],
+            "description": "Grant type."
+        },
+        "start_date": {
+            "type": "string",
+            "format": "full-date",
+            "description": "Award start date in ISO-8601 format (YYYY-MM-DD)."
+        },
+        "end_date": {
+            "type": "string",
+            "format": "full-date",
+            "description": "Award end date in ISO-8601 format (YYYY-MM-DD)."
+        },
+        "agency_update_date": {
+            "type": "string",
+            "format": "full-date",
+            "description": "Date of last update from funding agency in ISO-8601 format (YYYY-MM-DD)."
+        },
+        "total_dollars": {
+            "type": "integer",
+            "description": "Total dollar amount of grant over performance period (start date - end date). This may be normalized to US dollars at the start of the grant, or any other currency as desired as long as it is consistent."
+        },
+        "people": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/person"
+            },
+            "minItems": 1,
+            "uniqueItems": true
+        },
+        "last_modified": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Date data was last updated in in RFC-3339 format (YYYY-MM-DDTHH:mm:ssZ)."
+        }
+    },
+    "definitions": {
+        "role": {
+            "type": "string",
+            "enum": ["PI", "Co-PI", "Key Personnel"],
+            "description": "A Person's role on a grant."
+        },
+        "org_person": {
+            "title": "Affiliated Person",
+            "description": "Person identified by a unique organizational identifier.",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Unique organizational person ID."
+                },
+                "organization": {
+                    "type": "string",
+                    "description": "Organizational affiliation (needed if >1 organization is supported)."
+                }
+            },
+            "required": [
+                "id"
+            ]
+        },
+        "general_person": {
+            "title": "General Person",
+            "description": "Person identified by name and organization.",
+            "type": "object",
+            "properties": {
+                "first_name": {
+                    "type": "string"
+                },
+                "middle_name": {
+                    "type": "string"
+                },
+                "last_name": {
+                    "type": "string"
+                },
+                "organization": {
+                    "type": "string",
+                    "description": "Organizational affiliation."
+                }
+            },
+            "required": [
+                "first_name",
+                "last_name",
+                "organization"
+            ]
+        },
+        "person": {
+            "type": "object",
+            "oneOf": [
+                {"$ref": "#/definitions/org_person"},
+                {"$ref": "#/definitions/general_person"}
+            ],
+            "properties": {
+                "role": {
+                    "$ref": "#/definitions/role"
+                }
+            },
+            "required": [
+                "role"
+            ]
+        }
+    },
+    "required": [
+        "title",
+        "agency",
+        "agency_grant_id",
+        "organization_grant_id",
+        "type",
+        "start_date",
+        "end_date",
+        "total_dollars",
+        "people",
+        "last_modified"
+    ]
+}
