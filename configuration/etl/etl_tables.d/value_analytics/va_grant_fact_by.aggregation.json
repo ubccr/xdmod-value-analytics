@@ -1,6 +1,7 @@
 {
     "table_definition": {
         "name": "va_grant_fact_by_",
+        "table_prefix": "va_grant_fact_by_",
         "engine": "MyISAM",
         "comment": "Value Analytics grant facts aggregated by ${AGGREGATION_UNIT}.",
         "columns": [
