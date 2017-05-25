@@ -13,7 +13,8 @@
                     "type": "mysql",
                     "name": "Value Analytics DB",
                     "config": "datawarehouse",
-                    "schema": "modw_value_analytics"
+                    "schema": "modw_value_analytics",
+                    "create_schema_if_not_exists": true
                 }
             }
         }
@@ -29,7 +30,7 @@
                     "type": "jsonfile",
                     "name": "Value Analytics Organizations Input File",
                     "path": "value_analytics/organizations.json",
-                    "array_element_schema_path": "value_analytics/organization.schema.json"
+                    "record_schema_path": "value_analytics/organization.schema.json"
                 }
             }
         },
@@ -42,9 +43,14 @@
                     "type": "jsonfile",
                     "name": "Value Analytics People Input File (Filtered to Organizations)",
                     "path": "value_analytics/people.json",
-                    "filter": {
-                        "jq": "map({name: .organizations[].name}) | unique"
-                    }
+                    "filters": [
+                        {
+                            "type": "external",
+                            "name": "jq",
+                            "path": "jq",
+                            "arguments": "'map({name: .organizations[].name}) | unique'"
+                        }
+                    ]
                 }
             }
         },
@@ -57,9 +63,14 @@
                     "type": "jsonfile",
                     "name": "Value Analytics Grants Input File (Filtered to Organizations)",
                     "path": "value_analytics/grants.json",
-                    "filter": {
-                        "jq": "map(.people[] | select(has(\"organization\")) | {name: .organization}) | unique"
-                    }
+                    "filters": [
+                        {
+                            "type": "external",
+                            "name": "jq",
+                            "path": "jq",
+                            "arguments" :"'map(.people[] | select(has(\"organization\")) | {name: .organization}) | unique'"
+                        }
+                    ]
                 }
             }
         },
@@ -72,9 +83,14 @@
                     "type": "jsonfile",
                     "name": "Value Analytics Grants Input File (Filtered to Funding Agencies)",
                     "path": "value_analytics/grants.json",
-                    "filter": {
-                        "jq": "map({name: .agency}) | unique"
-                    }
+                    "filters": [
+                        {
+                            "type": "external",
+                            "name": "jq",
+                            "path": "jq",
+                            "arguments": "'map({name: .agency}) | unique'"
+                        }
+                    ]
                 }
             }
         },
@@ -87,9 +103,14 @@
                     "type": "jsonfile",
                     "name": "Value Analytics People Input File (Filtered to Identity Providers)",
                     "path": "value_analytics/people.json",
-                    "filter": {
-                        "jq": "map(select(has(\"identifiers\")) | {name: .identifiers[].type}) | unique"
-                    }
+                    "filters": [
+                        {
+                            "type": "external",
+                            "name": "jq",
+                            "path": "jq",
+                            "arguments": "'map(select(has(\"identifiers\")) | {name: .identifiers[].type}) | unique'"
+                        }
+                    ]
                 }
             }
         },
@@ -102,9 +123,14 @@
                     "type": "jsonfile",
                     "name": "Value Analytics People Input File (Filtered to Organization Groups)",
                     "path": "value_analytics/people.json",
-                    "filter": {
-                        "jq": "map(.organizations[] | select(has(\"groups\")) | {o_name: .name, g_name: .groups[]}) | unique"
-                    }
+                    "filters": [
+                        {
+                            "type": "external",
+                            "name": "jq",
+                            "path": "jq",
+                            "arguments": "'map(.organizations[] | select(has(\"groups\")) | {o_name: .name, g_name: .groups[]}) | unique'"
+                        }
+                    ]
                 }
             }
         },
@@ -148,7 +174,7 @@
                     "type": "jsonfile",
                     "name": "Value Analytics People Input File",
                     "path": "value_analytics/people.json",
-                    "array_element_schema_path": "value_analytics/person.schema.json"
+                    "record_schema_path": "value_analytics/person.schema.json"
                 }
             }
         },
@@ -162,9 +188,14 @@
                     "type": "jsonfile",
                     "name": "Value Analytics Grants Input File",
                     "path": "value_analytics/grants.json",
-                    "filter": {
-                        "jq": "map(.people[] | select(has(\"id\") | not)) | unique | map(. + {organizations: [{name: .organization, id: null}]})"
-                    }
+                    "filters": [
+                        {
+                            "type": "external",
+                            "name": "jq",
+                            "path": "jq",
+                            "arguments": "'map(.people[] | select(has(\"id\") | not)) | unique | map(. + {organizations: [{name: .organization, id: null}]})'"
+                        }
+                    ]
                 }
             }
         },
@@ -177,9 +208,14 @@
                     "type": "jsonfile",
                     "name": "Value Analytics Grants Input File",
                     "path": "value_analytics/grants.json",
-                    "filter": {
-                        "jq": "map({name: .type}) | unique"
-                    }
+                    "filters": [
+                        {
+                            "type": "external",
+                            "name": "jq",
+                            "path": "jq",
+                            "arguments": "'map({name: .type}) | unique'"
+                        }
+                    ]
                 }
             }
         },
@@ -192,9 +228,14 @@
                     "type": "jsonfile",
                     "name": "Value Analytics Grants Input File",
                     "path": "value_analytics/grants.json",
-                    "filter": {
-                        "jq": "map({name: .people[].role}) | unique"
-                    }
+                    "filters": [
+                        {
+                            "type": "external",
+                            "name": "jq",
+                            "path": "jq",
+                            "arguments": "'map({name: .people[].role}) | unique'"
+                        }
+                    ]
                 }
             }
         },
@@ -207,7 +248,7 @@
                     "type": "jsonfile",
                     "name": "Value Analytics Grants Input File",
                     "path": "value_analytics/grants.json",
-                    "array_element_schema_path": "value_analytics/grant.schema.json"
+                    "record_schema_path": "value_analytics/grant.schema.json"
                 }
             }
         },

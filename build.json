@@ -4,7 +4,6 @@
     "release": "1.0",
     "files": {
         "include_paths": [
-            "specs/schemas"
         ],
         "include_patterns": [
         ],
@@ -31,8 +30,7 @@
             {"README.md": "README"}
         ],
         "etc": {
-            "configuration/": "",
-            "specs/schemas": "etl/etl_specs.d/value_analytics"
+            "configuration/": ""
         }
     }
 }

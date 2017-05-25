@@ -42,7 +42,7 @@
             },
             {
                 "name": "primary",
-                "type": "boolean",
+                "type": "tinyint(1)",
                 "nullable": false,
                 "default": false,
                 "comment": "An indicator of if this is a person's primary organization."

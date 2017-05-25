@@ -21,12 +21,19 @@ class ValueAnalyticsPeopleIngestor extends StructuredFileIngestor
     /**
      * @see aIngestor::_execute
      */
+
+    // @codingStandardsIgnoreLine
     protected function _execute()
     {
         // Prepare SQL statements for updating various people-related tables.
         $destColumns = $this->executionData['destColumns'];
         $destColumnsToSourceKeys = $this->executionData['destColumnsToSourceKeys'];
         $sourceValues = $this->executionData['sourceValues'];
+
+        // If no data was provided in the file, use the StructuredFile endpoint
+        if ( null === $sourceValues ) {
+            $sourceValues = $this->sourceEndpoint;
+        }
 
         $destinationSchema = $this->destinationEndpoint->getSchema();
         $destinationTable = $this->etlDestinationTable->getFullName();
@@ -147,6 +154,12 @@ class ValueAnalyticsPeopleIngestor extends StructuredFileIngestor
             $this->logAndThrowException("Failed to prepare statement. ({$e->getMessage()})");
         }
 
+        $numRecordsProcessed = 0;
+
+        if ( $this->getEtlOverseerOptions()->isDryrun() ) {
+            return $numRecordsProcessed;
+        }
+
         // For every person in the source data...
         foreach ($sourceValues as $sourceValue) {
             // Check if the person exists already in the database.
@@ -191,6 +204,7 @@ class ValueAnalyticsPeopleIngestor extends StructuredFileIngestor
                         "Error inserting person data."
                     );
                 }
+
             }
 
             // Update the person's organization data.
@@ -236,7 +250,7 @@ class ValueAnalyticsPeopleIngestor extends StructuredFileIngestor
                         }
                     }
                 }
-            }
+            }  // foreach ($sourceValue->organizations as $personOrganization)
 
             // Update the person's identifiers.
             $personIdentifiersExist = property_exists($sourceValue, 'identifiers');
@@ -257,8 +271,11 @@ class ValueAnalyticsPeopleIngestor extends StructuredFileIngestor
                     }
                 }
             }
-        }
 
-        return count($sourceValues);
-    }
-}
+            $numRecordsProcessed++;
+
+        }  // foreach ($sourceValues as $sourceValue)
+
+        return $numRecordsProcessed;
+    }  // _execute()
+}  // class ValueAnalyticsPeopleIngestor

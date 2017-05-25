@@ -1,6 +1,7 @@
 {
     "table_definition": {
         "name": "va_grant_fact_by_",
+        "table_prefix": "va_grant_fact_by_",
         "engine": "MyISAM",
         "comment": "Value Analytics grant facts aggregated by ${AGGREGATION_UNIT}.",
         "columns": [
@@ -66,7 +67,7 @@
             },
             {
                 "name": "time_proportional_dollars",
-                "type": "decimal(14, 4)",
+                "type": "decimal(14,4)",
                 "nullable": false,
                 "comment": "The time-proportional amount of money associated with a set of grants."
             },
@@ -149,7 +150,7 @@
             "agency_id": "g.agency_id",
             "grant_type_id": "g.grant_type_id",
             "grant_id": "g.id",
-            "pi_id": "COALESCE((SELECT gp.person_id FROM modw_value_analytics.grants_people AS gp WHERE gp.grant_id = g.id AND gp.grant_role_id = (SELECT gr.id FROM modw_value_analytics.grant_roles AS gr WHERE gr.name = \"PI\" LIMIT 1) LIMIT 1), -1)",
+            "pi_id": "COALESCE((SELECT gp.person_id FROM ${SOURCE_SCHEMA}.grants_people AS gp WHERE gp.grant_id = g.id AND gp.grant_role_id = (SELECT gr.id FROM modw_value_analytics.grant_roles AS gr WHERE gr.name = \"PI\" LIMIT 1) LIMIT 1), -1)",
             "num_grants": "COUNT(*)",
             "num_grants_started": "SUM(g.start_time_ts BETWEEN ${:PERIOD_START_TS} AND ${:PERIOD_END_TS})",
             "num_grants_ended": "SUM(g.end_time_ts BETWEEN ${:PERIOD_START_TS} AND ${:PERIOD_END_TS})",

@@ -21,10 +21,17 @@ class ValueAnalyticsGrantsPeopleIngestor extends StructuredFileIngestor
     /**
      * @see aIngestor::_execute
      */
+
+    // @codingStandardsIgnoreLine
     protected function _execute()
     {
         // Prepare SQL statements for updating various people-related tables.
         $sourceValues = $this->executionData['sourceValues'];
+
+        // If no data was provided in the file, use the StructuredFile endpoint
+        if ( null === $sourceValues ) {
+            $sourceValues = $this->sourceEndpoint;
+        }
 
         $destinationSchema = $this->destinationEndpoint->getSchema();
         $destinationTable = $this->etlDestinationTable->getFullName();
@@ -71,8 +78,14 @@ class ValueAnalyticsGrantsPeopleIngestor extends StructuredFileIngestor
             $this->logAndThrowException("Failed to prepare statement. ({$e->getMessage()})");
         }
 
-        // For every grant in the source data...
         $numRecordsProcessed = 0;
+
+        if ( $this->getEtlOverseerOptions()->isDryrun() ) {
+            return $numRecordsProcessed;
+        }
+
+        // For every grant in the source data...
+
         foreach ($sourceValues as $sourceValue) {
             // Get the grant ID.
             $grantId = ValueAnalyticsDataFinder::findGrant(
@@ -153,5 +166,5 @@ class ValueAnalyticsGrantsPeopleIngestor extends StructuredFileIngestor
         }
 
         return $numRecordsProcessed;
-    }
-}
+    }  // _execute()
+}  // class ValueAnalyticsGrantsPeopleIngestor
