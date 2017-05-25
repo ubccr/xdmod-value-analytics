@@ -67,7 +67,7 @@
             },
             {
                 "name": "time_proportional_dollars",
-                "type": "decimal(14, 4)",
+                "type": "decimal(14,4)",
                 "nullable": false,
                 "comment": "The time-proportional amount of money associated with a set of grants."
             },
