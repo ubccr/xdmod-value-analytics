@@ -48,6 +48,12 @@
                 "comment": "The person ID of the PI."
             },
             {
+                "name": "pi_jobs_person_id",
+                "type": "int(11)",
+                "nullable": false,
+                "comment": "The person ID of the PI in the Jobs realm."
+            },
+            {
                 "name": "num_grants",
                 "type": "int(11)",
                 "nullable": false,
@@ -132,6 +138,12 @@
                 "columns": [
                     "pi_id"
                 ]
+            },
+            {
+                "name": "index_pi_jobs_person_id",
+                "columns": [
+                    "pi_jobs_person_id"
+                ]
             }
         ]
     },
@@ -151,6 +163,7 @@
             "grant_type_id": "g.grant_type_id",
             "grant_id": "g.id",
             "pi_id": "COALESCE((SELECT gp.person_id FROM ${SOURCE_SCHEMA}.grants_people AS gp WHERE gp.grant_id = g.id AND gp.grant_role_id = (SELECT gr.id FROM modw_value_analytics.grant_roles AS gr WHERE gr.name = \"PI\" LIMIT 1) LIMIT 1), -1)",
+            "pi_jobs_person_id": "COALESCE((SELECT p.jobs_person_id FROM ${SOURCE_SCHEMA}.people AS p WHERE p.id = (SELECT gp.person_id FROM ${SOURCE_SCHEMA}.grants_people AS gp WHERE gp.grant_id = g.id AND gp.grant_role_id = (SELECT gr.id FROM ${SOURCE_SCHEMA}.grant_roles AS gr WHERE gr.name = \"PI\" LIMIT 1) LIMIT 1)), -1)",
             "num_grants": "COUNT(*)",
             "num_grants_started": "SUM(g.start_time_ts BETWEEN ${:PERIOD_START_TS} AND ${:PERIOD_END_TS})",
             "num_grants_ended": "SUM(g.end_time_ts BETWEEN ${:PERIOD_START_TS} AND ${:PERIOD_END_TS})",
@@ -166,7 +179,8 @@
             "agency_id",
             "grant_type_id",
             "grant_id",
-            "pi_id"
+            "pi_id",
+            "pi_jobs_person_id"
         ],
         "joins": [
             {
