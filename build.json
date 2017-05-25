@@ -31,8 +31,7 @@
             {"README.md": "README"}
         ],
         "etc": {
-            "configuration/": "",
-            "specs/schemas": "etl/etl_specs.d/value_analytics"
+            "configuration/": ""
         }
     }
 }
