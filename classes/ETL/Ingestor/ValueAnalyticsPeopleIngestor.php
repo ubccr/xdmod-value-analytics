@@ -67,7 +67,10 @@ class ValueAnalyticsPeopleIngestor extends StructuredFileIngestor
                     person_id,
                     organization_id,
                     person_organization_id,
+                    appointment_type,
+                    division,
                     title,
+                    `primary`,
                     last_modified
                 )
             VALUES (
@@ -78,12 +81,18 @@ class ValueAnalyticsPeopleIngestor extends StructuredFileIngestor
                     WHERE name = :organization_name
                 ),
                 :person_organization_id,
+                :appointment_type,
+                :division,
                 :title,
+                :primary,
                 :last_modified
             )
             ON DUPLICATE KEY UPDATE
                 person_organization_id = VALUES(person_organization_id),
+                appointment_type = VALUES(appointment_type),
+                division = VALUES(division),
                 title = VALUES(title),
+                `primary` = VALUES(`primary`),
                 last_modified = VALUES(last_modified)
         ";
 
@@ -238,11 +247,26 @@ class ValueAnalyticsPeopleIngestor extends StructuredFileIngestor
                         ':person_id' => $personId,
                         ':organization_name' => $personOrganization->name,
                         ':person_organization_id' => $personOrganization->id,
+                        ':appointment_type' => (
+                            property_exists($personOrganization, 'appointment_type')
+                            ? $personOrganization->appointment_type
+                            : null
+                        ),
+                        ':division' => (
+                            property_exists($personOrganization, 'division')
+                            ? $personOrganization->division
+                            : null
+                        ),
                         ':title' =>
                             property_exists($personOrganization, 'title')
                             ? $personOrganization->title
                             : null
                         ,
+                        ':primary' => (
+                            property_exists($personOrganization, 'primary')
+                            ? $personOrganization->primary
+                            : false
+                        ),
                         ':last_modified' =>
                             property_exists($personOrganization, 'last_modified')
                             ? $personOrganization->last_modified
