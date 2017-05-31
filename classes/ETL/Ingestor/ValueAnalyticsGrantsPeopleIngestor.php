@@ -92,7 +92,7 @@ class ValueAnalyticsGrantsPeopleIngestor extends StructuredFileIngestor
                 $sourceValue,
                 $destinationSchema,
                 $destinationHandle,
-                array($this, 'logAndThrowSqlException')
+                array($this, 'logAndThrowException')
             );
             if ($grantId === null) {
                 $this->logAndThrowException(
@@ -128,7 +128,7 @@ class ValueAnalyticsGrantsPeopleIngestor extends StructuredFileIngestor
                     $personSearchValue,
                     $destinationSchema,
                     $destinationHandle,
-                    array($this, 'logAndThrowSqlException')
+                    array($this, 'logAndThrowException')
                 );
 
                 // If the person could not be found, throw a warning and continue.
@@ -154,10 +154,12 @@ class ValueAnalyticsGrantsPeopleIngestor extends StructuredFileIngestor
                             : null,
                     ));
                 } catch (PDOException $e) {
-                    $this->logAndThrowSqlException(
-                        $insertSql,
-                        $e,
-                        "Error inserting person-grant mapping."
+                    $this->logAndThrowException(
+                        "Error inserting person-grant mapping.",
+                        array(
+                            'sql' => $insertSql,
+                            'exception' => $e,
+                        )
                     );
                 }
 
