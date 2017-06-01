@@ -187,7 +187,7 @@ class ValueAnalyticsPeopleIngestor extends StructuredFileIngestor
                 $sourceValue,
                 $destinationSchema,
                 $destinationHandle,
-                array($this, 'logAndThrowSqlException')
+                array($this, 'logAndThrowException')
             );
 
             // If the person does not exist in the database, add them.
@@ -201,10 +201,12 @@ class ValueAnalyticsPeopleIngestor extends StructuredFileIngestor
                 try {
                     $insertPeopleStatement->execute($peopleValues);
                 } catch (PDOException $e) {
-                    $this->logAndThrowSqlException(
-                        $insertPeopleSql,
-                        $e,
-                        "Error inserting person data."
+                    $this->logAndThrowException(
+                        "Error inserting person data.",
+                        array(
+                            'sql' => $insertPeopleSql,
+                            'exception' => $e,
+                        )
                     );
                 }
 
@@ -218,10 +220,12 @@ class ValueAnalyticsPeopleIngestor extends StructuredFileIngestor
                     $peopleValues[] = $personId;
                     $updatePeopleStatement->execute($peopleValues);
                 } catch (PDOException $e) {
-                    $this->logAndThrowSqlException(
-                        $updatePeopleSql,
-                        $e,
-                        "Error inserting person data."
+                    $this->logAndThrowException(
+                        "Error inserting person data.",
+                        array(
+                            'sql' => $updatePeopleSql,
+                            'exception' => $e,
+                        )
                     );
                 }
 
@@ -246,10 +250,12 @@ class ValueAnalyticsPeopleIngestor extends StructuredFileIngestor
                         ,
                     ));
                 } catch (PDOException $e) {
-                    $this->logAndThrowSqlException(
-                        $peopleOrganizationsSql,
-                        $e,
-                        "Error inserting/updating a person's organization data."
+                    $this->logAndThrowException(
+                        "Error inserting/updating a person's organization data.",
+                        array(
+                            'sql' => $peopleOrganizationsSql,
+                            'exception' => $e,
+                        )
                     );
                 }
 
@@ -262,10 +268,12 @@ class ValueAnalyticsPeopleIngestor extends StructuredFileIngestor
                                 ':group_name' => $personGroup,
                             ));
                         } catch (PDOException $e) {
-                            $this->logAndThrowSqlException(
-                                $peopleGroupsSql,
-                                $e,
-                                "Error inserting/updating a person's group data."
+                            $this->logAndThrowException(
+                                "Error inserting/updating a person's group data.",
+                                array(
+                                    'sql' => $peopleGroupsSql,
+                                    'exception' => $e,
+                                )
                             );
                         }
                     }
@@ -283,10 +291,12 @@ class ValueAnalyticsPeopleIngestor extends StructuredFileIngestor
                             ':person_identity_provider_id' => $personIdentifier->id,
                         ));
                     } catch (PDOException $e) {
-                        $this->logAndThrowSqlException(
-                            $peopleIdentifiersSql,
-                            $e,
-                            "Error inserting/updating a person's identifiers."
+                        $this->logAndThrowException(
+                            "Error inserting/updating a person's identifiers.",
+                            array(
+                                'sql' => $peopleIdentifiersSql,
+                                'exception' => $e,
+                            )
                         );
                     }
                 }
@@ -300,10 +310,12 @@ class ValueAnalyticsPeopleIngestor extends StructuredFileIngestor
         try {
             $peopleJobsIdStatement->execute();
         } catch (PDOException $e) {
-            $this->logAndThrowSqlException(
-                $peopleJobsIdSql,
-                $e,
-                "Error updating Jobs realm IDs for VA person data."
+            $this->logAndThrowException(
+                "Error updating Jobs realm IDs for VA person data.",
+                array(
+                    'sql' => $peopleJobsIdSql,
+                    'exception' => $e,
+                )
             );
         }
 

@@ -137,9 +137,11 @@ class ValueAnalyticsDataFinder
         } catch (PDOException $e) {
             call_user_func(
                 $sqlExceptionCallback,
-                $checkPeopleOrganizationsSql,
-                $e,
-                "Error checking for existing person using organizational data."
+                "Error checking for existing person using organizational data.",
+                array(
+                    'sql' => $checkPeopleOrganizationsSql,
+                    'exception' => $e,
+                )
             );
         }
 
@@ -182,9 +184,11 @@ class ValueAnalyticsDataFinder
             } catch (PDOException $e) {
                 call_user_func(
                     $sqlExceptionCallback,
-                    $checkPeopleIdentifiersSql,
-                    $e,
-                    "Error checking for existing person using identity provider data."
+                    "Error checking for existing person using identity provider data.",
+                    array(
+                        'sql' => $checkPeopleIdentifiersSql,
+                        'exception' => $e,
+                    )
                 );
             }
         }
@@ -238,9 +242,11 @@ class ValueAnalyticsDataFinder
         } catch (PDOException $e) {
             call_user_func(
                 $sqlExceptionCallback,
-                $findGrantSql,
-                $e,
-                "Error finding grant in database."
+                "Error finding grant in database.",
+                array(
+                    'sql' => $findGrantSql,
+                    'exception' => $e,
+                )
             );
         }
 
