@@ -19,22 +19,35 @@ use ETL\Utilities\ValueAnalyticsDataFinder;
 class ValueAnalyticsGrantsPeopleIngestor extends StructuredFileIngestor
 {
     /**
-     * @see aIngestor::_execute
+     * @see aIngestor::_execute()
      */
 
     // @codingStandardsIgnoreLine
     protected function _execute()
     {
-        // Prepare SQL statements for updating various people-related tables.
-        $sourceValues = $this->executionData['sourceValues'];
+        $numRecordsProcessed = 0;
 
-        // If no data was provided in the file, use the StructuredFile endpoint
-        if ( null === $sourceValues ) {
-            $sourceValues = $this->sourceEndpoint;
+        $this->sourceEndpoint->parse();
+        $recordFieldNames = $this->sourceEndpoint->getRecordFieldNames();
+        $this->logger->debug(
+            sprintf("Requested %d record fields: %s", count($recordFieldNames), implode(', ', $recordFieldNames))
+        );
+
+        if ( 0 == count($recordFieldNames) ) {
+            return $numRecordsProcessed;
         }
 
+        // This is a specialized ingestor so we are only using the first entry in the
+        // field map and destination table list. Also note that we are not generating a
+        // destination_field_map here because we are doing custom lookups below.
+
+        reset($this->etlDestinationTableList);
+        $etlDestinationTable = current($this->etlDestinationTableList);
+
         $destinationSchema = $this->destinationEndpoint->getSchema();
-        $destinationTable = $this->etlDestinationTable->getFullName();
+        $destinationTable = $etlDestinationTable->getFullName();
+
+        // Prepare SQL statements for updating various people-related tables.
 
         $insertSql = "
             INSERT INTO
@@ -78,15 +91,17 @@ class ValueAnalyticsGrantsPeopleIngestor extends StructuredFileIngestor
             $this->logAndThrowException("Failed to prepare statement. ({$e->getMessage()})");
         }
 
-        $numRecordsProcessed = 0;
-
         if ( $this->getEtlOverseerOptions()->isDryrun() ) {
             return $numRecordsProcessed;
         }
 
-        // For every grant in the source data...
+        // The records returned from a StructuredFile endpoint will be Traversable as
+        // ($key, $value) pairs, however this does not mean that we can assume they can be
+        // treated as arrays (e.g., $sourceRecord[$sourceField]) because they may be
+        // objects or store data in private members that are exposed by the Iterator
+        // interface.
 
-        foreach ($sourceValues as $sourceValue) {
+        foreach ($this->sourceEndpoint as $sourceValue) {
             // Get the grant ID.
             $grantId = ValueAnalyticsDataFinder::findGrant(
                 $sourceValue,
@@ -165,7 +180,7 @@ class ValueAnalyticsGrantsPeopleIngestor extends StructuredFileIngestor
 
                 $numRecordsProcessed++;
             }
-        }
+        }  // foreach ($this->sourceEndpoint as $sourceValue)
 
         return $numRecordsProcessed;
     }  // _execute()

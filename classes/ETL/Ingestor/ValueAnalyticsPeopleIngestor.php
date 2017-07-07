@@ -19,37 +19,57 @@ use ETL\Utilities\ValueAnalyticsDataFinder;
 class ValueAnalyticsPeopleIngestor extends StructuredFileIngestor
 {
     /**
-     * @see aIngestor::_execute
+     * @see aIngestor::_execute()
      */
 
     // @codingStandardsIgnoreLine
     protected function _execute()
     {
-        // Prepare SQL statements for updating various people-related tables.
-        $destColumns = $this->executionData['destColumns'];
-        $destColumnsToSourceKeys = $this->executionData['destColumnsToSourceKeys'];
-        $sourceValues = $this->executionData['sourceValues'];
+        $numRecordsProcessed = 0;
 
-        // If no data was provided in the file, use the StructuredFile endpoint
-        if ( null === $sourceValues ) {
-            $sourceValues = $this->sourceEndpoint;
+        $this->sourceEndpoint->parse();
+        $recordFieldNames = $this->sourceEndpoint->getRecordFieldNames();
+        $this->logger->debug(
+            sprintf("Requested %d record fields: %s", count($recordFieldNames), implode(', ', $recordFieldNames))
+        );
+
+        if ( 0 == count($recordFieldNames) ) {
+            return $numRecordsProcessed;
         }
 
-        $destinationSchema = $this->destinationEndpoint->getSchema();
-        $destinationTable = $this->etlDestinationTable->getFullName();
+        $this->parseDestinationFieldMap($recordFieldNames);
 
-        $insertPeopleSql = "
-            INSERT INTO
-                $destinationTable
-                (" . implode(', ', $destColumns) . ")
-            VALUES (
-                " . implode(', ', array_fill(0, count($destColumns), '?')) . "
+        // This is a specialized ingestor so we are only using the first entry in the
+        // field map and destination table list.
+
+        reset($this->destinationFieldMappings);
+        $destFieldToSourceFieldMap = current($this->destinationFieldMappings);
+        $destinationFields = array_keys($destFieldToSourceFieldMap);
+
+        reset($this->etlDestinationTableList);
+        $etlDestinationTable = current($this->etlDestinationTableList);
+
+        $destinationSchema = $this->destinationEndpoint->getSchema();
+        $destinationTable = $etlDestinationTable->getFullName();
+
+        // Prepare SQL statements for updating various people-related tables.
+
+        $insertPeopleSql = sprintf(
+            "INSERT INTO %s (%s) VALUES (%s)",
+            $destinationTable,
+            implode(', ', $destinationFields),
+            implode(', ',
+                    array_map(function ($destColumn) {
+                        return '?';
+                    }, $destinationFields)
             )
-        ";
+        );
+
+        $this->logger->debug("Insert SQL: " . $insertPeopleSql);
 
         $updatePeopleSetClauses = array_map(function ($destColumn) {
             return "$destColumn = ?";
-        }, $destColumns);
+        }, $destinationFields);
         $updatePeopleSetClausesStr = implode(",\n", $updatePeopleSetClauses);
         $updatePeopleSql = "
             UPDATE
@@ -183,29 +203,46 @@ class ValueAnalyticsPeopleIngestor extends StructuredFileIngestor
             $this->logAndThrowException("Failed to prepare statement. ({$e->getMessage()})");
         }
 
-        $numRecordsProcessed = 0;
-
         if ( $this->getEtlOverseerOptions()->isDryrun() ) {
             return $numRecordsProcessed;
         }
 
-        // For every person in the source data...
-        foreach ($sourceValues as $sourceValue) {
+        // The destination field map may specify that the same source field is mapped to
+        // multiple destination fields and the order that the source record fields is
+        // returned may be different from the order the fields were specified in the
+        // map. Maintain a mapping between source fields and the position (index) that
+        // they were specified in the map so we cam properly build the SQL parameter list.
+
+        $sourceFieldIndexes = array_values($destFieldToSourceFieldMap);
+
+        // The records returned from a StructuredFile endpoint will be Traversable as
+        // ($key, $value) pairs, however this does not mean that we can assume they can be
+        // treated as arrays (e.g., $sourceRecord[$sourceField]) because they may be
+        // objects or store data in private members that are exposed by the Iterator
+        // interface.
+
+        foreach ($this->sourceEndpoint as $sourceRecord) {
             // Check if the person exists already in the database.
             $personId = ValueAnalyticsDataFinder::findPerson(
-                $sourceValue,
+                $sourceRecord,
                 $destinationSchema,
                 $destinationHandle,
                 array($this, 'logAndThrowException')
             );
 
+            $peopleValues = array();
+
+            foreach ($sourceRecord as $sourceField => $sourceValue) {
+                // Find all indexes that match the current source field
+                $indexes = array_keys(array_intersect($sourceFieldIndexes, array($sourceField)));
+                foreach ( $indexes as $i ) {
+                    $peopleValues[$i] = $sourceValue;
+                }
+            }
+
             // If the person does not exist in the database, add them.
             // Otherwise, update their data.
-            $peopleValues = $this->convertSourceValueToRow(
-                $sourceValue,
-                $destColumns,
-                $destColumnsToSourceKeys
-            );
+
             if ($personId === null) {
                 try {
                     $insertPeopleStatement->execute($peopleValues);
@@ -241,7 +278,7 @@ class ValueAnalyticsPeopleIngestor extends StructuredFileIngestor
             }
 
             // Update the person's organization data.
-            foreach ($sourceValue->organizations as $personOrganization) {
+            foreach ($sourceRecord->organizations as $personOrganization) {
                 try {
                     $peopleOrganizationsStatement->execute(array(
                         ':person_id' => $personId,
@@ -302,12 +339,12 @@ class ValueAnalyticsPeopleIngestor extends StructuredFileIngestor
                         }
                     }
                 }
-            }  // foreach ($sourceValue->organizations as $personOrganization)
+            }  // foreach ($sourceRecord->organizations as $personOrganization)
 
             // Update the person's identifiers.
-            $personIdentifiersExist = property_exists($sourceValue, 'identifiers');
+            $personIdentifiersExist = property_exists($sourceRecord, 'identifiers');
             if ($personIdentifiersExist) {
-                foreach ($sourceValue->identifiers as $personIdentifier) {
+                foreach ($sourceRecord->identifiers as $personIdentifier) {
                     try {
                         $peopleIdentifiersStatement->execute(array(
                             ':person_id' => $personId,
@@ -328,7 +365,7 @@ class ValueAnalyticsPeopleIngestor extends StructuredFileIngestor
 
             $numRecordsProcessed++;
 
-        }  // foreach ($sourceValues as $sourceValue)
+        }  // foreach ($this->sourceEndpoint as $sourceRecord)
 
         // Update each person's Jobs realm ID.
         try {
