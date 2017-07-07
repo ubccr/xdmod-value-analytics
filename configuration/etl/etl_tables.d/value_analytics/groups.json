@@ -48,9 +48,11 @@
         ]
     },
 
-    "destination_columns": {
-        "organization_id": "o_name",
-        "name": "g_name"
+    "destination_record_map": {
+        "groups": {
+            "organization_id": "o_name",
+            "name": "g_name"
+        }
     },
     "custom_insert_values_components": {
         "organization_id": "(SELECT id FROM modw_value_analytics.organizations WHERE name = ?)"

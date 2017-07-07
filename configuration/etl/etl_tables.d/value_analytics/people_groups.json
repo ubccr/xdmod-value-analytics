@@ -32,10 +32,5 @@
                 ]
             }
         ]
-    },
-
-    "destination_columns": {
-        "person_id": "person_id",
-        "group_id": "group_id"
     }
 }

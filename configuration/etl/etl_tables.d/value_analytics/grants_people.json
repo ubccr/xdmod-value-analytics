@@ -45,12 +45,5 @@
                 ]
             }
         ]
-    },
-
-    "destination_columns": {
-        "grant_id": "grant_id",
-        "person_id": "person_id",
-        "grant_role_id": "grant_role_id",
-        "organization_id": "organization_id"
     }
 }

@@ -38,11 +38,5 @@
                 ]
             }
         ]
-    },
-
-    "destination_columns": {
-        "person_id": "person_id",
-        "identity_provider_id": "identity_provider_id",
-        "person_identity_provider_id": "person_identity_provider_id"
     }
 }
