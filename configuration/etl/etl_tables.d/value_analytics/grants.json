@@ -113,19 +113,21 @@
         ]
     },
 
-    "destination_columns": {
-        "agency_id": "agency",
-        "agency_grant_number": "agency_grant_id",
-        "organization_grant_number": "organization_grant_id",
-        "grant_type_id": "type",
-        "title": "title",
-        "start_date": "start_date",
-        "start_time_ts": "start_date",
-        "end_date": "end_date",
-        "end_time_ts": "end_date",
-        "agency_update_date": "agency_update_date",
-        "total_dollars": "total_dollars",
-        "last_modified": "last_modified"
+    "destination_record_map": {
+        "grants": {
+            "agency_id": "agency",
+            "agency_grant_number": "agency_grant_id",
+            "organization_grant_number": "organization_grant_id",
+            "grant_type_id": "type",
+            "title": "title",
+            "start_date": "start_date",
+            "start_time_ts": "start_date",
+            "end_date": "end_date",
+            "end_time_ts": "end_date",
+            "agency_update_date": "agency_update_date",
+            "total_dollars": "total_dollars",
+            "last_modified": "last_modified"
+        }
     },
     "custom_insert_values_components": {
         "agency_id": "(SELECT id FROM modw_value_analytics.funding_agencies WHERE name = ?)",

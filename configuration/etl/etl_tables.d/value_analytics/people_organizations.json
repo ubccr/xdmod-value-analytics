@@ -67,18 +67,13 @@
                 "columns": [
                     "organization_id"
                 ]
-            }
+            },
+            {
+                "name": "person_organization_id",
+                "columns": [
+                        "person_organization_id"
+                ]
+            }      
         ]
-    },
-
-    "destination_columns": {
-        "person_id": "person_id",
-        "organization_id": "organization_id",
-        "person_organization_id": "person_organization_id",
-        "appointment_type": "appointment_type",
-        "division": "division",
-        "title": "title",
-        "primary": "primary",
-        "last_modified": "last_modified"
     }
 }

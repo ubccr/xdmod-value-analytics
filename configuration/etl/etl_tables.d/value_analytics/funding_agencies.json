@@ -33,9 +33,5 @@
                 "is_unique": true
             }
         ]
-    },
-
-    "destination_columns": {
-        "name": "name"
     }
 }

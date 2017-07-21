@@ -2,7 +2,7 @@
     "#": "Value Analytics Ingestion and Aggregation",
 
     "defaults": {
-        "value_analytics": {
+        "value-analytics": {
             "enabled": true,
             "truncate_destination": false,
             "namespace": "ETL\\Ingestor",
@@ -20,7 +20,7 @@
         }
     },
 
-    "value_analytics": [
+    "value-analytics": [
         {
             "name": "ValueAnalyticsOrganizationsIngestor",
             "description": "Ingests organization data for the Value Analytics module.",
@@ -248,7 +248,9 @@
                     "type": "jsonfile",
                     "name": "Value Analytics Grants Input File",
                     "path": "value_analytics/grants.json",
-                    "record_schema_path": "value_analytics/grant.schema.json"
+                    "record_schema_path": "value_analytics/grant.schema.json",
+                    "#": "Must specify field names because 'agency_update_date' is optional",
+                    "field_names": ["agency", "agency_grant_id", "organization_grant_id", "type", "title", "start_date", "end_date", "agency_update_date", "total_dollars", "last_modified"]
                 }
             }
         },
