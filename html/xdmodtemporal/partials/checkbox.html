@@ -1,0 +1,30 @@
+<div class="md-padding" ng-cloak>
+    <div>
+        <fieldset class="demo-fieldset">
+            <legend class="demo-legend">{{ title }}</legend>
+            <div layout="row" layout-wrap flex>
+                <div flex-xs flex="100">
+                    <span ng-if="items.length > 1 && !radio">
+                    <span ng-if="allowSelectAll">
+                        <md-checkbox aria-label="Select All" ng-checked="isChecked()" md-indeterminate="isIndeterminate()" ng-click="toggleAll()">
+                            <span ng-if="isChecked()">Des</span><span ng-if="!isChecked()">S</span>elect All
+                        </md-checkbox>
+                    </span>
+                </div>
+                <div class="demo-select-all-checkboxes" flex="100" ng-repeat="item in items">
+                    <md-checkbox ng-checked="exists(item, selected)" ng-click="toggle(item, selected)">
+                        {{ item }}
+                    </md-checkbox>
+                    <!--                     
+                    <md-radio-group ng-model="selected">
+                      <md-radio-button ng-repeat="item in items">
+                             {{ item }}
+                      </md-radio-button>
+                    </md-radio-group>
+ -->
+                </div>
+            </div>
+            <md-button class="submit-btn md-raised"> Filter </md-button>
+        </fieldset>
+    </div>
+</div>

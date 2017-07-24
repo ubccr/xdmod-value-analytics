@@ -1,0 +1,23 @@
+.box {
+    border: 1px solid #ccc;
+    margin: 15px 0px;
+    width: 100%;
+    height: 100%;
+
+}
+
+.box-header h3 {
+    font-weight: 400;
+    font-size: 18px;
+    background-color: rgb(39, 38, 38);
+    color: #fff !important;
+    padding: 5px;
+    margin: 0px;
+}
+
+.box-content {
+    overflow:auto;
+    width: 100%;
+    height: 100%;
+    /*padding-top:20px;*/
+}

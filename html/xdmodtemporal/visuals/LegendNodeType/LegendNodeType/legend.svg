@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.4, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="140px" height="200px" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet">
+    <text id="title" transform="matrix(1 0 0 1 20 17)" font-size="15"></text>
+    <g transform="translate(20,0)">
+        <g id="maxG" transform="translate(0, 46)">
+            <rect stroke="#FFFFFF" fill="white" stroke-width="2" stroke-miterlimit="10" width="35" height="17" />
+            <text transform="translate(150,13)" text-anchor="end" font-size="13"></text>
+        </g>
+        <g id="midG" transform="translate(0, 92)">
+            <rect stroke="#FFFFFF" fill="white" stroke-width="2" stroke-miterlimit="10" width="35" height="17" />
+            <text transform="translate(150,13)" text-anchor="end" font-size="13"></text>
+        </g>
+        <g id="minG" transform="translate(0,138)">
+            <rect stroke="#FFFFFF" fill="white" stroke-width="2" stroke-miterlimit="10" width="35" height="17" />
+            <text transform="translate(150,13)" text-anchor="end" font-size="13"></text>
+        </g>
+    </g>
+    <text id="note" transform="matrix(1 0 0 1 20 193)" fill="#444445" font-style="italic" font-size="10"></text>    
+</svg>
