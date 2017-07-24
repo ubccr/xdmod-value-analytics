@@ -1,0 +1,303 @@
+.type-1 {
+    stroke: darkred !important;
+}
+.type-2 {
+    stroke: darkblue !important;
+}
+
+
+
+/*//temp axis style*/
+.axis path,
+.axis line {
+    fill: none;
+
+    shape-rendering: crispEdges;
+}
+
+.axis .minor line {
+  stroke: #777;
+  stroke-dasharray: 2,2;
+  opacity: 1;
+}
+
+
+.axis text {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 11px;
+    
+}
+
+.hexagon {
+    cursor: pointer;
+}
+
+.disc-label {
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.background-clickable {
+    cursor: pointer;
+}
+
+.metric-rect {
+    fill: white;
+    stroke: black;
+    stroke-width: .25;
+}
+
+.selected {
+    opacity: 1;
+}
+
+.deselected {
+    cursor: pointer;
+    opacity: .4;
+}
+
+.highlighted {
+    opacity: .85;
+}
+
+.wvf-axis.text {
+    font-family: 'Open Sans', sans-serif !important;
+    text-transform: capitalize;
+
+}
+
+.wvf-axis.path {
+    stroke-dasharray: 20, 20;
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+}
+
+.wvf-axis.line {}
+
+
+/* ---- Node Styles ---- */
+
+.forceNetwork01 .wvf-node {
+    stroke: black;
+    stroke-width: 1px;
+    cursor: pointer;
+    
+}
+
+
+.sankey01 .wvf-node.selected {
+    opacity:1;
+    stroke-width: 1;
+     stroke:black;
+}
+
+.sankey01 .wvf-node {
+     opacity: 0.75;
+    fill: black;
+    stroke:black;
+    stroke-width: 0.5px;
+    cursor: pointer;
+    text-transform: capitalize;
+    font-family: 'Open Sans', sans-serif;
+
+}
+
+.sankey01 .wvf-node.deselected {
+          opacity: 0.75;
+}
+
+
+.subd {
+    display: none;
+    cursor: default;
+    font-size: 6;
+}
+
+.subd.selected {
+    display: block;
+}
+
+.subd.deselected {
+    display: none;
+}
+
+
+.sankey01 .wvf-node.highlighted {
+    opacity: .75;
+}
+
+
+/* ---- Labels ----- */
+
+.wvf-label {
+   
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
+    text-transform: capitalize;
+    font-size: 16px;
+    
+    
+}
+
+.wvf-label:hover {
+    cursor: pointer;
+    
+}
+
+.wvf-label.selected {}
+
+.wvf-label.deselected {
+  
+}
+
+.wvf-label.focused {}
+
+.wvf-label-mid {
+    font-size: 13px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.wvf-label-mid:hover {
+    cursor: pointer;
+    stroke: black;
+    stroke-width: .5px;
+    color: white;
+    font-weight: bold;
+    
+}
+
+.wvf-label-mid.selected {}
+
+.wvf-label-mid.deselected {
+ 
+}
+
+.wvf-label-mid.focused {}
+
+.columnlabel{
+    text-transform: capitalize;
+    font-size: 20px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bolder;
+}
+/* ---- Edge Styles ---- */
+
+
+.forceNetwork01 .wvf-edge{
+    stroke:black !important;
+    
+}
+
+.sankey01 .wvf-edge {
+    opacity: .5;
+    stroke: #c5c5c5;
+    fill: none;
+}
+.sankey01 .wvf-edge.selected {
+    opacity: .8;
+    }
+
+.sankey01 .wvf-edge.deselected {
+    opacity: .2;    
+}
+
+
+.wvf-edge.focused {}
+
+
+/* --- Rectangle Styles ---- */
+
+.wvf-rect {
+ 
+
+}
+
+.wvf-rect.selected {
+    stroke-width: 3px;
+}
+.wvf-rect.deselected {}
+
+.wvf-rect.focused {}
+
+
+/* --- Path Styles  ----- */
+
+
+
+/* --- Area Styles  ----- */
+
+
+.wvf-area.selected {}
+
+.wvf-area.deselected {}
+
+.wvf-area.focused {}
+
+
+/* --- Shape Styles  ----- */
+
+.wvf-shape.selected {}
+
+.wvf-shape.deselected {}
+
+.wvf-shape.focused {}
+[class*="NSF"] rect {
+    fill: #084594 !important;
+}
+
+[class*="NIH"] rect {
+    fill: #005a32 !important;
+}
+
+[class*="NSFPub"] rect {
+    fill: #2171b5 !important;
+}
+
+[class*="NSFPub1"] rect {
+    fill: #4292c6 !important;
+}
+
+[class*="NSFPub2"] rect {
+    fill: #6baed6 !important;
+}
+
+[class*="NSFPub3"] rect {
+    fill: #9ecae1 !important;
+}
+
+[class*="NSFPub4"] rect {
+    fill: #c6dbef !important;
+}
+
+[class*="NIHPub"] rect {
+    fill: #238b45 !important;
+}
+
+[class*="CPU"] rect {
+    fill: #add8e6 !important;
+}
+
+[class*="CPU1"] rect {
+    fill: #f16913 !important;
+}
+
+[class*="CPU2"] rect {
+    fill: #4a1486 !important;
+}
+
+[class*="MASON"] rect {
+    fill: #00B875 !important;
+}
+
+[class*="KARST"] rect {
+    fill: #006600 !important;
+}
+
+
+[class*="BIGRED2"] rect {
+    fill: #85CCCC !important;
+}

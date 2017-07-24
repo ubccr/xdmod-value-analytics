@@ -1,0 +1,68 @@
+.box {
+	border: 1px solid #ccc;
+	margin: 15px 0px;
+}
+
+.box p {
+	padding: 0px 10px;
+}
+
+.box-header h3 {
+	font-family: 'open sans', sans-serif;
+	font-weight: 400;
+	font-size: 18px;
+	background-color: rgb(39, 38, 38);
+	color: #fff;
+	padding: 5px 10px;
+	margin: 0px;
+}
+
+.box-content {
+	overflow: hidden;
+	margin: 15px;
+}
+
+body {
+	font-family: "open sans";
+	font-size: 15px;
+}
+
+.row-1 {
+	width: 192px
+}
+.row-2 {
+	width: 576px
+}
+
+.row-3 {
+	width: 960px;
+}
+
+.row-4 {
+	width: 1344px;
+}
+
+.row-5 {
+	width: 1728px;
+}
+
+.col-1 {
+	height: 120px
+}
+
+.col-2 {
+	height: 360px;
+}
+
+.col-3 {
+	height: 600px;
+}
+
+.col-4 {
+	height: 840px;
+}
+
+.col-5 {
+	height: 1080px;
+}
+
