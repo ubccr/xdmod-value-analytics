@@ -55,7 +55,7 @@ visualizationFunctions.ForceNetwork = function(element, data, opts) {
             .on("tick", tick)
             
 
-            context.SVG.nodeG = context.SVG.selectAll(".node"),
+            context.SVG.nodeG = context.SVG.selectAll(".node")
             context.SVG.edges = context.SVG.selectAll(".link")
 
 
@@ -278,67 +278,7 @@ visualizationFunctions.ForceNetwork = function(element, data, opts) {
 
     }
 
-  /*  this.configSchema = {
-       "nodes": {
-        "styleEncoding": {
-            "size": {
-                "attr": "number_of_grants",
-                "range": [5,11,17],
-                "scale": "linear"
-            },
-            "color": {
-                "attr": "total_amount",
-                "range": ["#FFFFFF","#3182bd"] //optional. Must be a minimum of two values. Will use the attr color.attr property to fill in bars on the defined scale.
-            }
-        },
-        "identifier": {
-            "attr": "name" //Unique identifier
-        }
-    },
-    "edges": {
-        "styleEncoding": {
-            "strokeWidth": {
-                "attr": "number_of_grants",
-                "range": [1,3.5,8]
-            },
-            "opacity": {
-                "attr": "value",
-                "range": [.5, 1]
-            },
-            "color": {
-                "attr": "",
-                "range": ["black"]
-            }
-        },
-        "identifier": {
-            "attr": "id" //Unique identifier
-        }
-    },
-    "labels": {
-        "identifier": {
-            "attr": "name" //Unique identifier
-        },
-        "styleEncoding": {
-            "size": {
-                "attr": "numPapers",
-                "range": [23, 35],
-                "scale": "linear"
-            }
-        }
-    },
-    "visualization": { //optional
-        "forceLayout": {
-            "linkStrength": 0.9,
-            "friction": .9,
-            "linkDistance": 50,
-            "charge": null,
-            "chargeDistance": null,
-            "gravity": null,
-            "theta": 0,
-            "alpha": 0.2
-        }
-    }
-};*/
+ 
 this.config = this.CreateBaseConfig();
 
 

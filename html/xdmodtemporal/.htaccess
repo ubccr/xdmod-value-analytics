@@ -1,0 +1,3 @@
+DirectoryIndex portal.html index.html
+RewriteEngine On
+RewriteRule ^([^\.]+)$ $1.html [NC,L]
