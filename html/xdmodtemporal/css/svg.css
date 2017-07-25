@@ -11,7 +11,6 @@
 .axis path,
 .axis line {
     fill: none;
-
     shape-rendering: crispEdges;
 }
 
@@ -19,6 +18,14 @@
   stroke: #777;
   stroke-dasharray: 2,2;
   opacity: 1;
+}
+
+
+.legend line   {
+  stroke: #acacac;
+  stroke-dasharray: 10;
+  opacity: 1;
+  stroke-width: 2px;
 }
 
 
@@ -83,6 +90,7 @@
     stroke: black;
     stroke-width: 1px;
     cursor: pointer;
+    z-index: 2;
     
 }
 
@@ -95,13 +103,18 @@
 
 .sankey01 .wvf-node {
      opacity: 0.75;
-    fill: black;
+    fill: #ffe8c8;
     stroke:black;
     stroke-width: 0.5px;
-    cursor: pointer;
+    cursor: move;
     text-transform: capitalize;
     font-family: 'Open Sans', sans-serif;
 
+}
+
+
+.sankey01 .wvf-node:onclick{
+  
 }
 
 .sankey01 .wvf-node.deselected {
@@ -137,7 +150,7 @@
     font-weight: bold;
     text-transform: capitalize;
     font-size: 16px;
-    
+
     
 }
 
@@ -189,8 +202,10 @@
 
 .forceNetwork01 .wvf-edge{
     stroke:black !important;
+    z-index: 9000000000000000000;
     
 }
+
 
 .sankey01 .wvf-edge {
     opacity: .5;
@@ -198,11 +213,14 @@
     fill: none;
 }
 .sankey01 .wvf-edge.selected {
-    opacity: .8;
+
+    opacity: 0.7;
+  
+
     }
 
 .sankey01 .wvf-edge.deselected {
-    opacity: .2;    
+    opacity: 0;    
 }
 
 
@@ -212,8 +230,7 @@
 /* --- Rectangle Styles ---- */
 
 .wvf-rect {
- 
-
+ fill:lightgrey;
 }
 
 .wvf-rect.selected {
@@ -246,11 +263,11 @@
 
 .wvf-shape.focused {}
 [class*="NSF"] rect {
-    fill: #084594 !important;
+    fill: #b40000 !important;
 }
 
 [class*="NIH"] rect {
-    fill: #005a32 !important;
+    fill: #a52115 !important;
 }
 
 [class*="NSFPub"] rect {
@@ -290,14 +307,18 @@
 }
 
 [class*="MASON"] rect {
-    fill: #00B875 !important;
+    fill: #2e6a34 !important;
 }
 
 [class*="KARST"] rect {
-    fill: #006600 !important;
+    fill: #1a421f !important;
 }
 
 
 [class*="BIGRED2"] rect {
-    fill: #85CCCC !important;
+    fill: #519f65 !important;
+}
+
+[class*="QUARRY"] rect {
+    fill: #a6d6ca !important;
 }

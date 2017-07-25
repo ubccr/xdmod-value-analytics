@@ -1,0 +1,85 @@
+<DOCTYPE! html>
+
+<head>
+    <meta charset=UTF-8 />
+    <link rel='shortcut icon' type='image/x-icon' href='images/favicon.ico' />
+    <title>XDMoD Grant-Publication-Resource Connections</title>
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/head.js"></script>
+    <script src="src/Init.js"></script>
+</head>
+
+<body>
+ 
+<div class="sankey">
+    <div class="container" id="container">
+       <div ng-controller="ngCnsVisual" 
+               ng-vis-type="Sankey" 
+               id="sankey01" 
+               ng-data-field="sankeyData" 
+               ng-identifier="sankey01"
+               ng-config="visuals/sankey01-configs.js">
+        </div>
+   <!-- <div class="legend-container legend">
+    <button >
+        <span>Legend</span>
+    </button>
+        <div class="legend-row">
+        <div flex layout="row">
+            <div flex="75" layout="column">
+                <div flex class="legend-item-label" id = "nodes">Nodes</div>
+                <div flex layout="row">
+                    <div flex class="legend-item">
+                        <div layout="column" layout-fill class="wrapper" ng-controller="ngCnsVisual" ng-data-attr="ng-cns-visual" ng-vis-type="LegendNodeSize" id="nodeSize" ng-identifier="nodeSize">
+                        </div>
+                    </div>
+                    <div flex class="legend-item">
+                        <div layout="column" layout-fill class="wrapper" ng-controller="ngCnsVisual" ng-data-attr="ng-cns-visual" ng-vis-type="LegendNodeColor" id="nodeColor" ng-identifier="nodeColor">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div flex layout="column">
+                <div flex class="legend-item-label" id ="edges">Edges</div>
+                <div flex layout="row">
+                    <div flex class="legend-item">
+                        <div layout="column" layout-fill class="wrapper" ng-controller="ngCnsVisual" ng-data-attr="ng-cns-visual" ng-vis-type="LegendEdgeSize" id="edgeSize" ng-identifier="edgeSize">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div> -->
+</div>
+</div>
+
+</body>
+<script>
+
+ var legendToggleOff = true;
+ setTimeout(function() {
+    $(document).ready(function() {
+        $(".legend-container").click(function() {
+            toggleLegend();
+        });
+    });
+}, 2000)
+
+ function toggleLegend() {
+    if (legendToggleOff) {
+        $(".legend-container").animate({
+            bottom: '0px'
+        }, 20);
+        legendToggleOff = false;
+    } else {
+        $(".legend-container").animate({
+            bottom: '-195px'
+        }, 75);
+        legendToggleOff = true;
+    }
+
+}
+</script>
+</html>
