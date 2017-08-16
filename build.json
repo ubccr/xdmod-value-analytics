@@ -17,7 +17,9 @@
     },
     "file_maps": {
         "data": [
-            "classes"
+            "classes",
+            "db",
+            "patches"
         ],
         "bin": [
         ],
