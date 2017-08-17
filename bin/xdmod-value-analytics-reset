@@ -1,0 +1,48 @@
+#!/usr/bin/env php
+<?php
+
+require_once __DIR__ . '/../configuration/linker.php';
+
+use CCR\DB;
+
+// Confirm reset before proceeding. If not confirmed, exit.
+// (Code taken from xdmod-admin script.)
+$response = null;
+while ($response === null) {
+    $response = readline("Reset Value Analytics data? (yes/no): [no] ");
+
+    if (!in_array($response, array('yes', 'no', ''))) {
+        echo "\n'$response' is not a valid option.\n\n";
+        $response = null;
+    }
+}
+
+if ($response !== 'yes') {
+    exit(0);
+}
+
+// Drop Value Analytics tables.
+$db = DB::factory('datawarehouse');
+
+$vaTableRows = $db->query("
+    SELECT
+        t.TABLE_SCHEMA AS tableSchema,
+        t.TABLE_NAME AS tableName
+    FROM information_schema.TABLES AS t
+    WHERE
+        (
+            t.TABLE_SCHEMA = 'modw_value_analytics'
+        )
+        OR (
+            t.TABLE_SCHEMA = 'modw_aggregates'
+            AND t.TABLE_NAME LIKE 'va_grant_fact_by_%'
+        )
+    ;
+");
+
+foreach ($vaTableRows as $vaTableRow) {
+    $tableSchema = $vaTableRow['tableSchema'];
+    $tableName = $vaTableRow['tableName'];
+
+    $db->execute("DROP TABLE IF EXISTS `$tableSchema`.`$tableName`;");
+}

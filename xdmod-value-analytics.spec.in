@@ -36,6 +36,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
+%{_bindir}/xdmod-*
 %{_datadir}/xdmod/
 %{_docdir}/%{name}-%{version}/
 
