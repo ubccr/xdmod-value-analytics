@@ -39,6 +39,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/xdmod-*
 %{_datadir}/xdmod/
 %{_docdir}/%{name}-%{version}/
+%{_sysconfdir}/xdmod/modules.d/*
 
 %config(noreplace) %{_sysconfdir}/xdmod/*.d/value_analytics.json
 %config(noreplace) %{_sysconfdir}/xdmod/etl/etl.d/value_analytics.json
