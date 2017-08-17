@@ -8,8 +8,7 @@
         "include_patterns": [
         ],
         "exclude_paths": [
-            "specs",
-            "tools"
+            "specs"
         ],
         "exclude_patterns": [
             "#/\\.#"
@@ -19,7 +18,8 @@
         "data": [
             "classes",
             "db",
-            "patches"
+            "patches",
+            {"tools": "tools/value-analytics"}
         ],
         "bin": [
             "bin/"
