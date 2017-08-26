@@ -67,13 +67,13 @@ visualizationFunctions.LegendEdgeSize = function(element, data, opts) {
         context.updateEdgeSize = function(arr) {          
             var minEdge = context.getMinEdge();
             var midEdge = context.getMidEdge();
-            var maxEdge = context.getMaxEdge();
+            
             var minEdgeSize = (64 * arr[0]) / arr[1];
             var midEdgeSize = (64 + minEdgeSize) / 2;
 
-            minEdge.style("stroke-width", "1")
-            midEdge.style("stroke-width", "4")
-            maxEdge.style("stroke-width", "8")
+          
+            minEdge.attr("stroke-width", minEdgeSize)
+            midEdge.attr("stroke-width", midEdgeSize)
 
             
         }
@@ -85,7 +85,10 @@ visualizationFunctions.LegendEdgeSize = function(element, data, opts) {
         }
 
         context.updateTextFromFunc = function(f) {
-            edgeSize.updateText(["1", "4", "8"]);
+             var max = f(96);
+            var mean = f(57.6);
+            var min = f(19.2);
+            edgeSize.updateText([min, mean, max]);
         }
 
 

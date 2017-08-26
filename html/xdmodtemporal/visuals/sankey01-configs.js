@@ -11,7 +11,7 @@ configs.sankey01 = {
             },
 
             "color": {
-                "attr": "PubID",
+                "attr": "PublicationTitle",
                 "range": ["#dfebf7 ","#023958"] //optional. Must be a minimum of two values. Will use the attr color.attr property to fill in bars on the defined scale.
             }
         },
@@ -29,25 +29,30 @@ configs.sankey01 = {
             },
             "prettyMap": { 
                 'ResourceID':'IT Resources',
-                'ResourceUnitsUsed':'ResourceUnitsUsed',
+                'ResourceUnitsUsed':'Resource Units Used',
                 'GrantSource':'Funding',
-                'GrantID':'GrantID',
-                'GrantSize':'GrantSize',
-                'PubID':'Publications'
+                'GrantID':'Grant ID',
+                'GrantSize':'Grant Size',
+                'PublicationTitle':'Publications'
             }
         },
         "other": {
             "categories": [
-            'ResourceID',
-            'GrantSource',
-            'PubID', // 'GrantID', // 'PubID',
-            
-            ],
+                'ResourceID',
+                'GrantSource',
+                'PublicationTitle'
+                ],
             "allcategories": [
-            'GrantSource',
-            'GrantID',
-            'PubID',
-            'ResourceID'
+                'GrantSize',
+                'ResourceID',
+                'PubID',
+                'GrantSource',
+                'GrantID',
+                'ResourceUnitsUsed',
+                'AuthorID',
+                'PublicationTitle',
+                'Date',
+                'PublicationJournal'
             ]
         }
     }

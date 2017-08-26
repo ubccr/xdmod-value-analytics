@@ -15,23 +15,23 @@
 }
 
 .axis .minor line {
-  stroke: #777;
-  stroke-dasharray: 2,2;
+  stroke: #828282;
+  stroke-dasharray: 10;
   opacity: 1;
 }
 
 
 .legend line   {
-  stroke: #acacac;
+  stroke: #828282;
   stroke-dasharray: 10;
   opacity: 1;
-  stroke-width: 2px;
+/*  stroke-width: 2px;*/
 }
 
 
 .axis text {
     font-family: 'Open Sans', sans-serif;
-    font-size: 11px;
+    font-size: 13px;
     
 }
 
@@ -90,19 +90,17 @@
     stroke: black;
     stroke-width: 1px;
     cursor: pointer;
-    z-index: 2;
-    
 }
 
 
 .sankey01 .wvf-node.selected {
     opacity:1;
     stroke-width: 1;
-     stroke:black;
+    stroke: black;
 }
 
 .sankey01 .wvf-node {
-     opacity: 0.75;
+    opacity: 0.75;
     fill: #ffe8c8;
     stroke:black;
     stroke-width: 0.5px;
@@ -112,6 +110,9 @@
 
 }
 
+.sankey01 text {
+    bottom: 20px;
+}
 
 .sankey01 .wvf-node:onclick{
   
@@ -147,9 +148,10 @@
 .wvf-label {
    
     font-family: 'Open Sans', sans-serif;
-    font-weight: bold;
+    font-weight: 600;
     text-transform: capitalize;
     font-size: 16px;
+    z-index: 999999999999999999999999999999999999999999;
 
     
 }
@@ -170,16 +172,15 @@
 .wvf-label-mid {
     font-size: 13px;
     font-family: 'Open Sans', sans-serif;
-    font-weight: bold;
+    font-weight: 600;
     text-transform: capitalize;
 }
 
 .wvf-label-mid:hover {
     cursor: pointer;
-    stroke: black;
-    stroke-width: .5px;
-    color: white;
-    font-weight: bold;
+/*    stroke: black;
+    stroke-width: .05px;
+    color: white;*/
     
 }
 
@@ -195,16 +196,18 @@
     text-transform: capitalize;
     font-size: 20px;
     font-family: 'Open Sans', sans-serif;
-    font-weight: bolder;
+    font-weight: 600;
 }
 /* ---- Edge Styles ---- */
 
 
 .forceNetwork01 .wvf-edge{
-    stroke:black !important;
-    z-index: 9000000000000000000;
+    stroke: rgb(187,197,202) !important;
+  
     
 }
+
+
 
 
 .sankey01 .wvf-edge {
@@ -212,6 +215,15 @@
     stroke: #c5c5c5;
     fill: none;
 }
+
+.sankey01 .wvf-label {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0px;
+    text-transform: capitalize;
+    font-size: 16px;
+}
+
 .sankey01 .wvf-edge.selected {
 
     opacity: 0.7;

@@ -1,5 +1,5 @@
 head.js('visuals/Sankey/Sankey/sankey-plugin.js')
-
+var stringSizeLimit  = 25;
 Array.prototype.getUnique = function() {
     var u = {},
     a = [];
@@ -63,12 +63,12 @@ visualizationFunctions.Sankey = function(element, data, opts) {
 
         applySVGEvents();
         function createColumnLabels() {
-           context.SVG.columnLabels = context.SVG.group.append("g");
-           context.config.meta.other.categories.forEach(function(d, i) {
+         context.SVG.columnLabels = context.SVG.group.append("g");
+         context.config.meta.other.categories.forEach(function(d, i) {
             var currNode = context.SVG.selectAll(".col-" + i)[0][0];
             var currNodeData = d3.select(currNode).data()[0];
-            context.SVG.columnLabels.append("text")
-            .attr("class", "columnlabel l")
+            var textNode = context.SVG.columnLabels.append("text")
+            textNode.attr("class", "columnlabel l")
             .attr("x", function() {
                 if (i == 0) {
                     return currNodeData.x
@@ -94,14 +94,98 @@ visualizationFunctions.Sankey = function(element, data, opts) {
                 }
                 return d;
             })
+            if(textNode.text()=="Funding"){
+                textNode
+                .append("tspan")
+                .attr("x", function() {
+                    if (i == 0) {
+                        return currNodeData.x
+                    }
+                    if (i == context.config.meta.other.categories.length - 1) {
+                        return currNodeData.x + context.config.meta.nodes.styleEncoding.size.value
+                    }
+                    return currNodeData.x + context.config.meta.nodes.styleEncoding.size.value / 2
+                })
+                .attr("y", 0)
+                .text("Total Funding: "+Utilities.formatValue["currency"](context.filteredData.grant_total,'$'))
+                .style("text-anchor","mid")
+                .style("font-size",14)
+            }
+
+            if(textNode.text()=="IT Resources"){
+                textNode
+                .append("tspan")
+                .attr("x", function() {
+                    if (i == 0) {
+                        return currNodeData.x
+                    }
+                    if (i == context.config.meta.other.categories.length - 1) {
+                        return currNodeData.x + context.config.meta.nodes.styleEncoding.size.value
+                    }
+                    return currNodeData.x + context.config.meta.nodes.styleEncoding.size.value / 2
+                })
+                .attr("y", 0)
+                .text("Total Users: "+Utilities.formatValue["number"](context.filteredData.resource_users.total))
+                .style("text-anchor","mid")
+                .style("font-size",14)
+            }
+
+            if(textNode.text()=="Publications"){
+                textNode
+                .append("tspan")
+                .attr("x", function() {
+                    if (i == 0) {
+                        return currNodeData.x
+                    }
+                    if (i == context.config.meta.other.categories.length - 1) {
+                        return currNodeData.x + context.config.meta.nodes.styleEncoding.size.value
+                    }
+                    return currNodeData.x + context.config.meta.nodes.styleEncoding.size.value / 2
+                })
+                .attr("y", 0)
+                .text("Total Publications: "+context.filteredData.publication_total)
+                .style("text-anchor","mid")
+                .style("font-size",14)
+            }    
         })
-           return d3.selectAll(".columnlabel")
-       }
 
 
-       function applySVGEvents() {
+         return d3.selectAll(".columnlabel")
+     }
 
 
+
+     function applySVGEvents() {
+
+        function customEdgeFilter(node, edge){
+            switch(node.i){
+                case 0: if(node.name == edge.uid.split("|")[1])
+                return edge; 
+                else break;    
+                case 1: if(node.name == edge.uid.split("|")[2])
+                return edge;
+                else break;     
+                case 2: if((node.name.indexOf(edge.uid.split("|")[3]))!=-1)
+                return edge;
+                else break;   
+
+            }
+        } 
+
+        function customNodeFilter(node, edge){
+            switch(node.i){
+                case 0: if(node.name == edge.uid.split("|")[1])
+                return node; 
+                else break;    
+                case 1: if(node.name == edge.uid.split("|")[2])
+                return node;
+                else break;     
+                case 2: if((node.name.indexOf(edge.uid.split("|")[3]))!=-1)
+                return node;
+                else break;   
+
+            }
+        } 
         context.SVG.nodes.selectAll("rect")
 
         .on("mouseout", function(d, i) {
@@ -110,53 +194,58 @@ visualizationFunctions.Sankey = function(element, data, opts) {
                 if(d7.click==0)
                     return d7;
             }).classed("selected",false);
-            context.SVG.edges.filter("[class*='" + d.name + "']").each(function(d2, i2) {
-                if (d2.click==0)
-                    d3.select(this).classed("selected", false).classed("deselected", false).style("stroke", defaultEdgeColor);
+            context.SVG.edges.filter(function(d5){
+               return customEdgeFilter(d,d5);
+           }).each(function(d2, i2) {
+            if (d2.click==0)
+                d3.select(this).classed("selected", false).classed("deselected", false).style("stroke", defaultEdgeColor);
 
-            });  
-            context.SVG.edges.filter(function(d){
-                if(d.click == 1)
-                {
-                    d3.select(this).moveToFront();
-                    context.SVG.nodes.selectAll("rect").filter(function(d5){
-                        if ((d5.name == d.uid.split("|")[1])||(d5.name == d.uid.split("|")[2])||(d5.name == d.uid.split("|")[3]))
-                            return d5;
-                    }).classed("selected",true);
-                }
-            }); 
+        });  
+           context.SVG.edges.filter(function(d){
+            if(d.click == 1)
+            {
+                d3.select(this).moveToFront();
+                context.SVG.nodes.selectAll("rect").filter(function(d5){
+                  return customEdgeFilter(d,d5);
+              }).classed("selected",true);
+            }
+        }); 
 
-        })
+       })
         .on("mouseover", function(d) {
             d.color = d3.select(this).style("fill");
             d3.select(this).classed("selected", true);
-            context.SVG.edges.filter("[class*='" + d.name + "|']").each(function(d1, i1) {
-                if(d1.click == 0)
-                    {   d1.selected = true;
-                        d3.select(this).style("stroke", d.color).classed("selected", true).moveToFront();
-                        context.SVG.nodes.selectAll("rect").filter(function(d5){
-                            if ((d5.name == d1.uid.split("|")[1])||(d5.name == d1.uid.split("|")[2])||(d5.name == d1.uid.split("|")[3]))
-                                return d5;
-                        }).classed("selected",true);
-                    }
-                })
+            context.SVG.edges.filter(function(d2){
+             return customEdgeFilter(d,d2);
+         }
+         ).each(function(d1, i1) {
+            if(d1.click == 0)
+                {   d1.selected = true;
+                    d3.select(this).style("stroke", d.color).classed("selected", true).moveToFront();
+                    context.SVG.nodes.selectAll("rect").filter(function(d5){
+                     return customNodeFilter(d5,d1);
+                 }).classed("selected",true);
+                }
+            })
 
-        })
+     })
         .on("click", function(d) {
 
             d.click=1;
             d.color = d3.select(this).style("fill");
             d3.select(this).classed("selected", true);
 
-            context.SVG.edges.filter("[class*='" + d.name + "|']").each(function(d1, i1) {
+            context.SVG.edges.filter(function(d5){
+                return customEdgeFilter(d,d5);
+                
+            }).each(function(d1, i1) {
                 if (d1.click==0)
                     {   d1.click = 1;
                         d1.selected = true;
                         d3.select(this).style("stroke", d.color).classed("selected", true).moveToFront();
-                        context.SVG.nodes.selectAll("rect").filter(function(d5){
-                            if ((d5.name == d1.uid.split("|")[1])||(d5.name == d1.uid.split("|")[2])||(d5.name == d1.uid.split("|")[3]))
-                                return d5;
-                        }).classed("selected",true); 
+                        context.SVG.nodes.selectAll("rect").filter(function(d8){
+                         return customNodeFilter(d8,d1);
+                     }).classed("selected",true); 
                     }
                 })
 
@@ -166,13 +255,15 @@ visualizationFunctions.Sankey = function(element, data, opts) {
 
             d.click=0; 
             d3.select(this).classed("selected", false);
-            context.SVG.edges.filter("[class*='" + d.name + "|']").each(function(d2) {
+            context.SVG.edges.filter(function(d5){
+                return customEdgeFilter(d,d5);
+            }).each(function(d2) {
 
                 if(d2.click==1)
                 {
                     d2.click = 0;
                     d3.select(this).classed("selected", false).classed("deselected", false).style("stroke", defaultEdgeColor);
-                    // console.log(d2.uid+d2.click); 
+                    
                 }
 
             }); 
@@ -183,224 +274,172 @@ visualizationFunctions.Sankey = function(element, data, opts) {
             .each(function(d2,i2){
 
 
-               context.SVG.edges.filter("[class*='" + d2.name + "|']").each(function(d4) {
+             context.SVG.edges.filter(function(d5){
+                return customEdgeFilter(d2,d5);
+            }).each(function(d4) {
                 if(d4.click==0)
                 {
                     d4.click=1;
                     d3.select(this).style("stroke", d2.color).classed("selected", true).moveToFront();
                     context.SVG.nodes.selectAll("rect").filter(function(d9,i9){
-                        if ((d9.name == d4.uid.split("|")[1]) || (d9.name == d4.uid.split("|")[2]) || (d9.name == d4.uid.split("|")[3]))
-                            return d9;
-                    }).classed("selected",true);                
+                       return customNodeFilter(d9,d4);
+                   }).classed("selected",true);                
 
                 }
             });   
-           })
+        })
             
         })
-/*    context.SVG.nodes.selectAll("node")
-    .on("click", function() {
-
-console.log("clicked!");
-});
-*/
 
 
-context.SVG.edges
-.on("mouseover", function(d, i) {
-    context.SVG.nodes.filter(function(d1){
-        if(d1.click==0)
-            return d1;
-    }).classed("selected", false);
-    var color;
-    var className;
-    var clickedLocal=false;
-    d3.select(this).data().forEach(function(d1, i1) {      
+        context.SVG.edges
+        .on("mouseover", function(d, i) {
+            context.SVG.nodes.filter(function(d1){
+                if(d1.click==0)
+                    return d1;
+            }).classed("selected", false);
+            var color;
+            var className;
+            var clickedLocal=false;
+            d3.select(this).data().forEach(function(d1, i1) {      
 
-        className = d1.uid;
+                className = d1.uid;
 
-        if (d1.click != 0)
-            clickedLocal = true;
-        else clickedLocal = false;
+                if (d1.click != 0)
+                    clickedLocal = true;
+                else clickedLocal = false;
 
-    })
-    if (!clickedLocal)
-    {
-        context.SVG.edges.filter("[class*='" + className + "']").each(function(d2, i2) {
+            })
+            if (!clickedLocal)
+            {
+                context.SVG.edges.filter("[class*='" + className + "']").each(function(d2, i2) {
 
-            d2.selected = true;
-            var uidTokens = d2.uid.split("|");
+                    d2.selected = true;
+                    var uidTokens = d2.uid.split("|");
 
-            context.SVG.nodes.selectAll("rect").filter(function(d4,i4){
+                    context.SVG.nodes.selectAll("rect").filter(function(d4,i4){
 
-             if (d2.source.i == 0){
-               if(d4.name == uidTokens[1])
-               {
-                color = d3.select(this).style("fill");
-                return d4;
+                       if (d2.source.i == 0){
+                         if(d4.name == uidTokens[1])
+                         {
+                            color = d3.select(this).style("fill");
+                            return d4;
+                        }
+                    }
+                    if (d2.source.i == 1){
+                     if(d4.name == uidTokens[2])
+                     {
+                        color = d3.select(this).style("fill");
+                        return d4;
+                    }
+                }
+
+
+            })
+                    .classed("selected",true)
+                    context.SVG.nodes.selectAll("rect").filter(function(d8,i8){
+                        if (d8.name.indexOf(uidTokens[3])!=-1)
+                            return d8;
+                    }).classed("selected",true);
+
+                    d3.select(this).style("stroke", color).classed("selected", true).moveToFront();
+                }) 
             }
-        }
-        if (d2.source.i == 1){
-           if(d4.name == uidTokens[2])
+        })
+        .on("mouseout", function(d, i) {
+
+
+           if(d.click==0)
            {
-            color = d3.select(this).style("fill");
-            return d4;
+            context.SVG.edges.filter("[class*='" + d.uid + "']").each(function(d4,i4){
+                d3.select(this).classed("selected", false).classed("deselected", false).style("stroke", defaultEdgeColor);
+                context.SVG.nodes.selectAll("rect").filter(function(d9,i9){
+                 return customNodeFilter(d9,d);
+             }).classed("selected",false);  
+            });
+
         }
-    }
 
 
-})
-            .classed("selected",true)
-            context.SVG.nodes.selectAll("rect").filter(function(d8,i8){
-                if (d8.name == uidTokens[3])
-                    return d8;
-            }).classed("selected",true);
-            d3.select(this).style("stroke", color).classed("selected", true).moveToFront();
-        }) 
-    }
-})
-.on("mouseout", function(d, i) {
-
-
- if(d.click==0)
- {
-    context.SVG.edges.filter("[class*='" + d.uid + "']").each(function(d4,i4){
-        d3.select(this).classed("selected", false).classed("deselected", false).style("stroke", defaultEdgeColor);
-        context.SVG.nodes.selectAll("rect").filter(function(d9,i9){
-            if ((d9.name == d.uid.split("|")[1]) || (d9.name == d.uid.split("|")[2]) || (d9.name == d.uid.split("|")[3]))
-                return d9;
-        }).classed("selected",false);  
-    });
-
-}
-
-
-context.SVG.edges.filter(function(d1){
-    if(d1.click == 1){
-        d3.select(this).moveToFront();
-        context.SVG.nodes.selectAll("rect").filter(function(d9,i9){
-            if ((d9.name == d1.uid.split("|")[1]) || (d9.name == d1.uid.split("|")[2]) || (d9.name == d1.uid.split("|")[3]))
-                return d9;
-        }).classed("selected",true);
-    }  
-});
+        context.SVG.edges.filter(function(d1){
+            if(d1.click == 1){
+                d3.select(this).moveToFront();
+                context.SVG.nodes.selectAll("rect").filter(function(d9,i9){
+                 return customNodeFilter(d9,d1);
+             }).classed("selected",true);
+            }  
+        });
 
 
 
-})
-/*.on("click", function(d,i){
-    context.SVG.nodes.filter(function(d1){
-        if(d1.click==0)
-            return d1;
-    }).classed("selected", false);
-    d.click = 1;
-    var color;
-    var className;
-
-    d3.select(this).data().forEach(function(d1, i1) {      
-        if(d1.source.i == 0)
-            className = d1.uid.split("|")[1];
-        if(d1.source.i == 1)
-            className = d1.uid.split("|")[2];
-
-    })
-    context.SVG.edges.filter("[class*='" + className + "']").each(function(d2, i2) {
-        d2.selected = true;
-        var uidTokens = d2.uid.split("|");
-
-        context.SVG.nodes.selectAll("rect").filter(function(d4,i4){
-
-           if (d2.source.i == 0){
-             if(d4.name == uidTokens[1])
-             {
-                color = d3.select(this).style("fill");
-                d4.click = 1;
-                return d4;
-            }
-        }
-        if (d2.source.i == 1){
-         if(d4.name == uidTokens[2])
-         {
-            color = d3.select(this).style("fill");
-            d4.click=1;
-            return d4;
-        }
-    }
-
-})
-        .classed("selected",true)
-        d3.select(this).style("stroke", color).classed("selected", true).moveToFront();
-        d3.select(this).click = 1;
     })
 
 
-})*/
+        context.SVG.background
+        .on("dblclick", function() {
+            context.SVG.edges.classed("selected", false).classed("deselected", false).style("stroke", defaultEdgeColor);
 
-context.SVG.background
-.on("dblclick", function() {
-    context.SVG.edges.classed("selected", false).classed("deselected", false).style("stroke", defaultEdgeColor);
-    
-    context.SVG.nodes.selectAll("rect").classed("selected", false).classed("deselected", false)
-    
-    context.SVG.edges.each(function(d2,i2){
-        d2.click=0;
-    })
+            context.SVG.nodes.selectAll("rect").classed("selected", false).classed("deselected", false)
 
-    context.SVG.nodes.selectAll("rect").each(function(d4,i4){
-        d4.click=0;
-    })
+            context.SVG.edges.each(function(d2,i2){
+                d2.click=0;
+            })
+
+            context.SVG.nodes.selectAll("rect").each(function(d4,i4){
+                d4.click=0;
+            })
     //d3.event.stopPropagation();
 })
 
 
-}
+    }
 
-function createEdges() {
-    return context.SVG.group.append("g").selectAll(".link")
-    .data(graph.links)
-    .enter().append("path")
-    .attr("class", function(d, i) {
-        return "wvf-edge e" + " " + d.uid + " " + d.classList;
-    })
-    .property("uid", function(d, i) {
-        return d.uid;
-    })
-    .attr("id", function(d, i) {
-        d.id = i;
-        return "link-" + i;
-    })
-    .attr("d", path)
-    .style("stroke-width", function(d) {
-        return Math.max(1, d.dy);
-    });
-    console.log()
-}
+    function createEdges() {
+        return context.SVG.group.append("g").selectAll(".link")
+        .data(graph.links)
+        .enter().append("path")
+        .attr("class", function(d, i) {
+            return "wvf-edge e" + " " + d.uid + " " + d.classList;
+        })
+        .property("uid", function(d, i) {
+            return d.uid;
+        })
+        .attr("id", function(d, i) {
+            d.id = i;
+            return "link-" + i;
+        })
+        .attr("d", path)
+        .style("stroke-width", function(d) {
+            return Math.max(1, d.dy);
+        });
+        console.log()
+    }
 
 
 
-function createNodes() {
-    context.SVG.nodes = context.SVG.group.append("g").selectAll(".node")
-    .data(graph.nodes)
-    .enter().append("g")
-    .attr("class", function(d, i) {
-        return " " + d.name.replaceAll("|", "") + " col-" + d.i
-    })
-    .attr("transform", function(d) {
-        return "translate(" + d.x + "," + d.y + ")";
-    })
+    function createNodes() {
+        context.SVG.nodes = context.SVG.group.append("g").selectAll(".node")
+        .data(graph.nodes)
+        .enter().append("g")
+        .attr("class", function(d, i) {
+            return " " + d.name.replaceAll("|", "")+" col-" + d.i
+        })
+        .attr("transform", function(d) {
+            return "translate(" + d.x + "," + d.y + ")";
+        })
 
-    .call(d3.behavior.drag()
-      .origin(function(d) { return d; })
-      .on("drag", dragmove))
+        .call(d3.behavior.drag()
+          .origin(function(d) { return d; })
+          .on("drag", dragmove))
    // the function for moving the nodes
    function dragmove(d) {
     if (this.nextSibling) this.parentNode.appendChild(this);
     d3.select(this).attr("transform", 
         "translate(" + (
-         d.x = Math.max(0, Math.min(context.config.dims.fixedWidth - offsetW - d.dx, d3.event.x))
-         ) + "," + (
-         d.y = Math.max(0, Math.min(context.config.dims.fixedHeight , d3.event.y))
-         ) + ")");
+           d.x = Math.max(0, Math.min(context.config.dims.fixedWidth - offsetW - d.dx, d3.event.x))
+           ) + "," + (
+           d.y = Math.max(0, Math.min(context.config.dims.fixedHeight , d3.event.y))
+           ) + ")");
 // sankey.relayout();
 context.SVG.edges.attr("d", path);
 
@@ -423,12 +462,53 @@ context.SVG.nodes.append("text")
 .attr("text-anchor", "end")
 .attr("transform", null)
 .text(function(d) {
+    var stats=""
+    if(d.i == 0){
+        switch(d.name)
+        {
+            case "BIGRED2":stats = context.filteredData.resource_users.BIGRED2;break;
+            case "QUARRY": stats = context.filteredData.resource_users.QUARRY;break;
+            case "MASON":stats = context.filteredData.resource_users.MASON;break;
+            case "KARST":stats = context.filteredData.resource_users.KARST;break;
 
-    var txt = d.name.replaceAll("|", " ").replaceAll("dotdot", ".");
-    if (context.config.meta.labels.prettyMap[txt.trim()]) {
-        return context.config.meta.labels.prettyMap[txt.trim()]
+        }
+
+        var txt = d.name.replaceAll("|", "").replaceAll("dotdot", ".");
+        if (context.config.meta.labels.prettyMap[txt.trim()]) {
+            return context.config.meta.labels.prettyMap[txt.trim()]+" (#Users: "+stats+")";
+        }
+        if ((txt.length>stringSizeLimit) && (d.i==2))
+            {return txt.slice(0, stringSizeLimit)+"...";
     }
-    return txt;
+    else return txt+" (#Users: "+Utilities.formatValue["number"](stats)+")";
+}
+else{
+    var stats1=""
+     switch(d.name)
+        {
+            case "NIH-NIGMS":stats1 = context.filteredData.grant_sizes.NIHNIGMS;break;
+            case "NIH-NIA": stats1 = context.filteredData.grant_sizes.NIHNIA;break;
+            case "NIH-NCI":stats1 = context.filteredData.grant_sizes.NIHNCI;break;
+            case "UNIV OF WASHINGTON":stats1 = context.filteredData.grant_sizes.UNIVOFWASHINGTON;break;
+            case "N CALIFORNIA INST FOR RES":stats1 = context.filteredData.grant_sizes.NCALIFORNIAINSTFORRES;break;
+            case "NIH-NIBIB":stats1 = context.filteredData.grant_sizes.NIHNIBIB;break;
+            case "NIH-NIAAA":stats1 = context.filteredData.grant_sizes.NIHNIAAA;break;
+            case "NIH-NIAID":stats1 = context.filteredData.grant_sizes.NIHNIAID;break;
+            case "NIH-NIAMS":stats1 = context.filteredData.grant_sizes.NIHNIAMS;break;
+            case "DUKE UNIVERSITY":stats1 = context.filteredData.grant_sizes.DUKEUNIVERSITY;break;
+            case "NIH-NIMH":stats1 = context.filteredData.grant_sizes.NIHNIMH;break;
+            case "NIH-NICHD":stats1 = context.filteredData.grant_sizes.NIHNICHD;break;
+
+        }
+    var txt = d.name.replaceAll("|", "").replaceAll("dotdot", ".");
+    if (context.config.meta.labels.prettyMap[txt.trim()]) {
+        return context.config.meta.labels.prettyMap[txt.trim()]+" ($"+stats1+")";
+    }
+    if ((txt.length>15) && (d.i==2))
+        {return txt.slice(0,15)+"...";
+}
+else return txt+" ("+Utilities.formatValue["currency"](stats1,'$')+")";
+}
 
 })
 .filter(function(d) {
@@ -486,21 +566,23 @@ function formatData() {
         "nodes": [],
         "links": []
     };
+    
     context.filteredData.records.data.map(function(d, i) {
         var pre = "";
         context.config.meta.other.categories.forEach(function(d1, i1) {
-            d[d1] = pre + d[d1].replaceAll(" ", "").replaceAll(/\//g, "").replaceAll(/\./g, "dotdot")
-            pre += ""
+            d[d1] = pre + d[d1].replaceAll(/\//g, "").replaceAll(/\./g, "dotdot")
+            pre += "";
         })
     })
 
     var stepOne = {};
     context.filteredData.records.data.forEach(function(d, i) {
         var str = "|"
-        var str2 = "|"
+
         context.config.meta.other.categories.forEach(function(d1, i1) {
-            str += d[d1] + "|"
-            str2 += d[d1] + "|"
+            if (d[d1].length < stringSizeLimit)
+                str += d[d1]+ "|"
+            else str +=d[d1].slice(0,stringSizeLimit)+"|"
         })
         if (has(stepOne, str)) {
             stepOne[str].children.push(d)
@@ -571,26 +653,37 @@ function formatData() {
         })
         .map(graph.nodes));
 
-    graph.links.forEach(function(d, i) {
-        graph.links[i].source = graph.nodes.indexOf(graph.links[i].source);
-        graph.links[i].target = graph.nodes.indexOf(graph.links[i].target);
-    });
+    /*var expensesCount = d3.nest()
+  .key(function(d) { return d.name; })
+  .rollup(function(v) { return v.GrantSize; })
+ 
+  console.log(JSON.stringify(expensesCount));*/
 
-    graph.nodes.forEach(function(d, i) {
-        graph.nodes[i] = { "name": d, "click": 0 };
-    });
+  graph.links.forEach(function(d, i) {
+    graph.links[i].source = graph.nodes.indexOf(graph.links[i].source);
+    graph.links[i].target = graph.nodes.indexOf(graph.links[i].target);
+});
+
+  graph.nodes.forEach(function(d, i) {
+    graph.nodes[i] = { "name": d, "click": 0 };
+});
         // console.log(graph.nodes)
         graph.links.sort(function(a, b) {
             if (a.value == b.value) return -1
                 return a.value - b.value;
         });
 
+      /*  var k = d3.nest()
+        .key(function(d) { return d.PubID; })
+        .entries(context.filteredData.records.data);
+        console.log(JSON.stringify(k));*/
         return graph;
     }
 
     function has(object, key) {
         return object ? hasOwnProperty.call(object, key) : false;
     }
+
 }
 return context;
 }
