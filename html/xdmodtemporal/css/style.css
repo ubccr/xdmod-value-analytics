@@ -3,12 +3,9 @@
 html,body {
   width: 100%;
   height: 100%;
-  text-transform: capitalize;
   font-family: 'Open Sans', sans-serif;
-  
   overflow-x:hidden;
   background: #FFF;
-  
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -252,7 +249,6 @@ dl, dd, dt{
 
 /*Labels (text)*/
 .l {
-  letter-spacing: 1px !important;
   color: #555;
   cursor: pointer;
   text-shadow: 0 2px 3px rgba(255,255,255,.6);
@@ -280,17 +276,15 @@ dl, dd, dt{
   background: #fff;
 /*  border: 1px solid #222;*/
   border: .5px solid #afafaf;
-  padding: 5px 10px;
+  padding: 5px 0px 10px 2px;
 }
 
 .sankey .legend-row{
-   top: 0px;
-  height: 190px;
-  border-style: solid;
-  border-color: black; 
-  border-width: 0.5px;
-  box-shadow: 10px 10px 5px #888888;
-  background:white;
+  top: 0px;
+  background: #fff;
+/*  border: 1px solid #222;*/
+  border: .5px solid #afafaf;
+  padding: 5px 0px 10px 2px;
 }
 
 .legend-item {
@@ -308,7 +302,8 @@ dl, dd, dt{
   margin-right: 15px;
 }
 
-
+.nodes {
+}
 
 .legend-space {
   margin: 0 auto;
@@ -334,22 +329,20 @@ dl, dd, dt{
 }
 
 .sankey .legend-container{
-   background: transparent;
- position: fixed;
- width: 420px;
- z-index: 10000;
- text-align: center;
- /*height: 500px;*/
- font-size: 18px;
- color: #000;
- justify-content: center;
- /* align horizontal */
- border-top-left-radius: 25px;
- border-top-right-radius: 25px;
- left: 0;
- margin-right: auto;
- margin-left: auto;
- bottom: -195px;
+  width: 470px;
+  z-index: 10000;
+  text-align: center;
+  /*height: 500px;*/
+  font-size: 18px;
+  color: #000;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+  display: block;
+  text-align: center;
+  position: fixed;
+  bottom: -205px;
+  left: 50%;
+  transform: translate(-50%, 0);
 }
 
 .legend-container button {
@@ -441,7 +434,6 @@ dl, dd, dt{
 }
 
 #filterLabel {
-  text-transform: capitalize;
   font-weight: 600;
   font-size: 16px;
 }
@@ -520,3 +512,236 @@ dl, dd, dt{
   right: 0px;
 }
 
+/*#nodeSize{
+  position: absolute;
+  top:75px;
+}
+#nodeColor{
+  position: absolute;
+  top:75px;
+  left:145px;
+}
+#edgeSize{
+ position: absolute;
+ top:75px;
+ left:280px;
+}
+*/
+
+/*thead {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  background: #222;
+  color: #d6d9d8;
+  width: inherit;
+}
+
+tbody {
+  display: block;
+  width: inherit;
+}
+
+td {
+  padding: 5px !important;
+}
+
+thead > tr,
+tbody > tr,
+tfoot > tr {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+thead {
+  padding: 4px;
+}
+
+th {
+  font-weight: normal !important;
+  color: white;
+}
+
+thead,
+tfoot {
+  flex-shrink: 0;
+}
+
+th,
+tbody td {
+  width: 100%;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  text-align:left;
+}
+
+tfoot {
+  display: inline-block;
+}
+
+tfoot td {
+  width: 100%;
+  display: inline-block;
+}
+
+.table>tbody>tr:nth-child(odd)>td,
+.table>tbody>tr:nth-child(odd)>th {
+  background-color: #eaeaea;
+}
+
+.how-to {
+  margin: 0;
+  text-align: left !important;
+  width: 300px;
+  float: left;
+}
+
+.how-to h3 {
+  font-weight: 400 !important;
+  line-height: 1.25em;
+  font-size: 1.25em;
+  bottom: 0;
+}
+
+.how-to p {
+  top: 0;
+  line-height: 1.2em;
+  font-size: 1em;
+  text-align: left;
+}
+
+#main-vis-node-size-legend {
+  width: 19%;
+  height: 100px;
+  float: left;
+  padding-left: 50px;
+}
+
+#main-vis-node-color-legend {
+  width: 24%;
+  height: 100px;
+  left: 25%;
+  float: left;
+}
+
+#main-vis-edge-opacity-legend {
+  width: 24%;
+  height: 100px;
+  left: 50%;
+  float: left;
+}
+
+#main-vis-edge-width-legend {
+  width: 24%;
+  height: 100px;
+  left: 80%;
+  float: left;
+}
+
+.help {
+  left: 0px;
+}
+
+.logos {
+  max-width: 20% !important;
+  right: 20px !important;
+  padding-top: 890px;
+  float: right !important;
+  display: block;
+  position: absolute;
+  background:none;
+}*/
+
+/* Tool Tip */
+
+/* Add this attribute to the element that needs a tooltip */
+/*[data-tooltip] {
+  position: relative;
+  z-index: 2;
+  cursor: pointer;
+  float: left;
+  left: 40px;
+}*/
+
+/* Hide the tooltip content by default */
+/*[data-tooltip]:before,
+[data-tooltip]:after {
+  visibility: hidden;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: progid: DXImageTransform.Microsoft.Alpha(Opacity=0);
+  opacity: 0;
+  pointer-events: none;
+}*/
+
+/* Position tooltip above the element */
+/*[data-tooltip]:before {
+  position: absolute;
+  bottom: 150%;
+  left: 50%;
+  margin-bottom: 5px;
+  margin-left: -80px;
+  padding: 7px;
+  width: 160px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  border: 1px solid #888;
+  background-color:rgba(255,255,255,.9);
+  padding: 10px 0px;
+  color: #555;
+  content: attr(data-tooltip);
+  text-align: center;
+  font-size: 16px;
+  line-height: 1.2;
+}
+*/
+/* Triangle hack to make tooltip look like a speech bubble */
+/*[data-tooltip]:after {
+  position: absolute;
+  bottom: 150%;
+  left: 50%;
+  margin-left: -5px;
+  width: 0;
+  border-top: 5px solid #000;
+  border-top: 5px solid hsla(0, 0%, 20%, 0.9);
+  border-right: 5px solid transparent;
+  border-left: 5px solid transparent;
+  content: " ";
+  font-size: 0;
+  line-height: 0;
+}*/
+
+/* Show tooltip content on hover */
+/*[data-tooltip]:hover:before,
+[data-tooltip]:hover:after {
+  visibility: visible;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  filter: progid: DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+  float: right;
+}
+*/
+/*.question {
+  padding: 0px;
+  left: 0px;
+  bottom: 0px;
+  float: left;
+  max-width: 55%;
+
+}*/
+/*
+.question-1 {
+  position:absolute;
+  top:5px;
+  left: 200px;
+
+  .question-2 {
+    max-width: 55%;
+  }
+  .question-container {
+    width: 24%;
+  }
+
+*/

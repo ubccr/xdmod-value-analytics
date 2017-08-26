@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="140px" height="200px" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet">
-    <text id="title" transform="matrix(1 0 0 1 20 17)" font-size="15">Title</text>
+    <text id="title" transform="matrix(1 0 0 1 13 17)" font-size="18">Title</text>
     <g transform="translate(20,0)">
         <linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="34" y1="65" x2="34" y2="177">
             <stop id="stop-color-0" offset="0" style="stop-color:#61899E" />
@@ -10,14 +10,14 @@
         </linearGradient>
         <rect y="46" fill="url(#SVGID_1_)" stroke="#000000" stroke-width="2" stroke-miterlimit="10" width="35" height="111" />
         <g id="maxG">
-            <text transform="translate(80,59)" text-anchor="end" font-size="13">3</text>
+            <text transform="translate(90,59)" text-anchor="end" font-size="16">3</text>
         </g>
         <g id="midG">
-            <text transform="translate(80,105)" text-anchor="end" font-size="13">2</text>
+            <text transform="translate(90,105)" text-anchor="end" font-size="16">2</text>
         </g>
         <g id="minG">
-            <text transform="translate(80,151)" text-anchor="end" font-size="13">1</text>
+            <text transform="translate(90,151)" text-anchor="end" font-size="16">1</text>
         </g>
     </g>
-    <text id="note" transform="matrix(1 0 0 1 20 193)" fill="#444445" font-style="italic" font-size="12"></text>
+    <text id="note" transform="matrix(1 0 0 1 20 193)" fill="#444445" font-style="italic" font-size="14"></text>
 </svg>
