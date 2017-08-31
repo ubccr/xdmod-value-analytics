@@ -107,9 +107,9 @@ visualizationFunctions.LegendNodeColor = function(element, data, opts) {
                             if (minVal == midVal || midVal == maxVal) {
                                 midVal = "";
                             }
-                            context.setMinVal("$ "+context.MoneyFormat(minVal));
-                            context.setMidVal("$ "+context.MoneyFormat(midVal));
-                            context.setMaxVal("$ "+context.MoneyFormat(maxVal));
+                            context.setMinVal("$"+context.MoneyFormat(minVal));
+                            context.setMidVal("$"+context.MoneyFormat(midVal));
+                            context.setMaxVal("$"+context.MoneyFormat(maxVal));
 
                         }
 

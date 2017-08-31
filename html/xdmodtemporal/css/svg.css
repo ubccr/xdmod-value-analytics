@@ -15,16 +15,20 @@
 }
 
 .axis .minor line {
-  stroke: #828282;
-  stroke-dasharray: 10;
-  opacity: 1;
 }
+
+.tick line {
+    stroke: #a4a4a4 !important;
+    stroke-dasharray: 10;
+    opacity: 1;
+  }
 
 
 .legend line   {
-  stroke: #828282;
+  stroke: #a4a4a4;
   stroke-dasharray: 10;
   opacity: 1;
+  stroke: 1;
 /*  stroke-width: 2px;*/
 }
 
@@ -32,8 +36,10 @@
 .axis text {
     font-family: 'Open Sans', sans-serif;
     font-size: 13px;
-    
+    font-weight: 600;
 }
+
+
 
 .hexagon {
     cursor: pointer;
@@ -146,9 +152,8 @@
 /* ---- Labels ----- */
 
 .wvf-label {
-   
     font-family: 'Open Sans', sans-serif;
-    font-weight: 600;
+    font-weight: 400;
     text-transform: capitalize;
     font-size: 16px;
     z-index: 999999999999999999999999999999999999999999;
@@ -178,6 +183,7 @@
 
 .wvf-label-mid:hover {
     cursor: pointer;
+    font-weight: 600;
 /*    stroke: black;
     stroke-width: .05px;
     color: white;*/
@@ -332,5 +338,41 @@
 }
 
 [class*="QUARRY"] rect {
+    fill: #a6d6ca !important;
+}
+
+
+
+[class*="Chemical"] rect {
+    fill: rgb(97,255,255) !important;
+}
+[class*="Electrical"] rect {
+    fill: rgb(255,133,255) !important;
+}
+[class*="Health"] rect {
+    fill: rgb(255,128,77) !important;
+}
+[class*="Chemistry"] rect {
+    fill: rgb(0,0,255) !important;
+}
+[class*="Social"] rect {
+    fill: rgb(255,255,0) !important;
+}
+[class*="Medical"] rect {
+    fill: rgb(255,0,0) !important;
+}
+[class*="Biology"] rect {
+    fill: rgb(55,153,8) !important;
+}
+[class*="Biotechnology"] rect {
+    fill: rgb(0,255,128)!important;
+}
+[class*="Brain"] rect {
+    fill: rgb(255,181,41) !important;
+}
+[class*="Infectious"] rect {
+    fill: rgb(184,21,11) !important;
+}
+[class*="Other"] rect {
     fill: #a6d6ca !important;
 }

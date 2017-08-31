@@ -3,9 +3,12 @@
 html,body {
   width: 100%;
   height: 100%;
+  text-transform: capitalize;
   font-family: 'Open Sans', sans-serif;
+  
   overflow-x:hidden;
   background: #FFF;
+  
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -41,15 +44,16 @@ html,body {
   font-size:25px
 }
 
+
 .inline-p {
  display: inline;
 }
 
 line {
-  fill: none;
-  stroke: #666;
+
+/*  stroke: #666;*/
   shape-rendering: crispEdges;
-  opacity: 0.3;
+
 }
 
 .brush{
@@ -93,7 +97,7 @@ line {
 
 .d3-tip {
   line-height: 1;
-  font-weight: bold;
+  font-weight: 600;
   padding: 12px;
   background: rgba(0, 0, 0, 0.8);
   color: #fff;
@@ -120,11 +124,13 @@ line {
   left: 0;
 }
 
-.axis 
-.minor {
-  stroke: #777;
-  stroke-dasharray: 2,2;
-  stroke-width: 0.4px;
+
+
+.axis .minor line {
+  stroke: #a4a4a4 !important;
+  stroke-dasharray: 10;
+  opacity: 1;
+
 }
 
 .notseen {
@@ -168,7 +174,7 @@ line {
 
 h1 {
   text-align: center;
-  text-decoration: bolder;
+  text-decoration: 600;
   font-family: open sans !important;
 }
 
@@ -276,15 +282,18 @@ dl, dd, dt{
   background: #fff;
 /*  border: 1px solid #222;*/
   border: .5px solid #afafaf;
+  
   padding: 5px 0px 10px 2px;
 }
 
 .sankey .legend-row{
-  top: 0px;
-  background: #fff;
-/*  border: 1px solid #222;*/
-  border: .5px solid #afafaf;
-  padding: 5px 0px 10px 2px;
+   top: 0px;
+  height: 260px;
+  border-style: solid;
+  border-color: black; 
+  border-width: 0.5px;
+  box-shadow: 10px 10px 5px #888888;
+  background:white;
 }
 
 .legend-item {
@@ -298,12 +307,11 @@ dl, dd, dt{
   background: white;
   font-family: 'Open Sans', sans-serif;
   text-transform: capitalize;
-  font-weight: bold;
+  font-weight: 600;
   margin-right: 15px;
 }
 
-.nodes {
-}
+
 
 .legend-space {
   margin: 0 auto;
@@ -329,20 +337,24 @@ dl, dd, dt{
 }
 
 .sankey .legend-container{
-  width: 470px;
-  z-index: 10000;
-  text-align: center;
-  /*height: 500px;*/
-  font-size: 18px;
-  color: #000;
-  border-top-left-radius: 25px;
-  border-top-right-radius: 25px;
-  display: block;
-  text-align: center;
-  position: fixed;
-  bottom: -205px;
-  left: 50%;
-  transform: translate(-50%, 0);
+   background: transparent;
+ position: fixed;
+ width: 820px;
+
+ z-index: 10000;
+ text-align: center;
+ /*height: 500px;*/
+ font-size: 18px;
+ color: #000;
+ justify-content: center;
+ /* align horizontal */
+ border-top-left-radius: 25px;
+ border-top-right-radius: 25px;
+ 
+ margin-right: auto;
+ margin-left: auto;
+ bottom: -280px;
+ left:45%;
 }
 
 .legend-container button {
@@ -410,7 +422,7 @@ dl, dd, dt{
 .zoom-level-text{
   text-transform: capitalize;
   font-family: 'Open Sans', sans-serif;
-  font-weight: bold;
+  font-weight: 600;
 }
 
 .axis-text{
@@ -434,6 +446,7 @@ dl, dd, dt{
 }
 
 #filterLabel {
+  text-transform: capitalize;
   font-weight: 600;
   font-size: 16px;
 }

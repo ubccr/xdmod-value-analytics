@@ -78,6 +78,7 @@ visualizationFunctions.ForceNetwork = function(element, data, opts) {
 
                 d3.selectAll("text.node").style("display", "block").style("font-size", 
                     function(d) {return  d3.select(this.parentNode.childNodes[0]).attr("r");});
+                
             }
 
             context.SVG.force.restart = function() {
@@ -99,7 +100,7 @@ visualizationFunctions.ForceNetwork = function(element, data, opts) {
                         barChart01.SVG.barGroups.selectAll("text").forEach(function(d6,i6){
                             if (d6[0].innerHTML == d.name.toString().toLowerCase()){
                                 d6[0].setAttribute("opacity",1);
-                                d6[0].style.fontWeight = "bold";
+                                d6[0].style.fontWeight = "normal";
                                 d6[0].style.stroke = "black";
                                 d6[0].style.strokeWidth = ".5px";
                                 d6.parentNode.childNodes[0].style.fill = "darkgrey";
@@ -157,7 +158,7 @@ visualizationFunctions.ForceNetwork = function(element, data, opts) {
 
                        barChart01.SVG.selectAll("text").attr("opacity",1);
                        barChart01.SVG.selectAll("text").style("stroke-width","0px");
-                       barChart01.SVG.selectAll("text").style("font-weight","bold");            
+                       barChart01.SVG.selectAll("text").style("font-weight","normal");            
                        barChart01.SVG.selectAll("rect").style("fill","lightgrey");
 
 

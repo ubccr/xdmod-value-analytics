@@ -33,14 +33,14 @@ configs.sankey01 = {
                 'GrantSource':'Funding',
                 'GrantID':'Grant ID',
                 'GrantSize':'Grant Size',
-                'PublicationTitle':'Publications'
+                'Discipline':'Scientific Disciplines'
             }
         },
         "other": {
             "categories": [
                 'ResourceID',
                 'GrantSource',
-                'PublicationTitle'
+                'Discipline'
                 ],
             "allcategories": [
                 'GrantSize',
@@ -57,13 +57,16 @@ configs.sankey01 = {
         }
     }
     dataprep.sankey01 = function(ntwrk) {
+      
        ntwrk.filteredData.records.data.forEach(function(d, i) {
            Object.keys(d).forEach(function(d1, i1) {
                d[d1] = d[d1].toString();
+              
                if (d[d1].indexOf("Unknown") > -1) {
                   console.log("ding")
                   delete d
               }
           })
        })
+      
    }
