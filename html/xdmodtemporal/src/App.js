@@ -5,6 +5,7 @@ var visualizationFunctions = {};
 var configs = {};
 var events = {};
 var dataprep = {};
+var visualizations = {};
 
 app.service('Data', ['$rootScope', '$http', function($rootScope, $http) {
     var service = {

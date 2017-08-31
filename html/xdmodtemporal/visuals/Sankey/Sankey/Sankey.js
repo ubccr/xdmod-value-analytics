@@ -78,7 +78,7 @@ visualizationFunctions.Sankey = function(element, data, opts) {
                 }
                 return currNodeData.x + context.config.meta.nodes.styleEncoding.size.value / 2
             })
-            .attr("y", -20)
+            .attr("y", -30)
             .style("text-anchor", function() {
                 if (i == 0) {
                     return "start";
@@ -106,7 +106,7 @@ visualizationFunctions.Sankey = function(element, data, opts) {
                     }
                     return currNodeData.x + context.config.meta.nodes.styleEncoding.size.value / 2
                 })
-                .attr("y", 0)
+                .attr("y", -12)
                 .text("Total Funding: "+Utilities.formatValue["currency"](context.filteredData.grant_total,'$'))
                 .style("text-anchor","mid")
                 .style("font-size",14)
@@ -124,13 +124,15 @@ visualizationFunctions.Sankey = function(element, data, opts) {
                     }
                     return currNodeData.x + context.config.meta.nodes.styleEncoding.size.value / 2
                 })
-                .attr("y", 0)
-                .text("Total Users: "+Utilities.formatValue["number"](context.filteredData.resource_users.total))
+                .attr("y", -12)
+
+                .text("Total # Times Used: "+Utilities.formatValue["number"](context.filteredData.resource_users.total))
+
                 .style("text-anchor","mid")
                 .style("font-size",14)
             }
 
-            if(textNode.text()=="Publications"){
+            if(textNode.text()=="Scientific Disciplines"){
                 textNode
                 .append("tspan")
                 .attr("x", function() {
@@ -142,8 +144,10 @@ visualizationFunctions.Sankey = function(element, data, opts) {
                     }
                     return currNodeData.x + context.config.meta.nodes.styleEncoding.size.value / 2
                 })
-                .attr("y", 0)
-                .text("Total Publications: "+context.filteredData.publication_total)
+                .attr("y", -12)
+
+                .text("Total Publications: "+context.filteredData.publication_disciplines.total)
+
                 .style("text-anchor","mid")
                 .style("font-size",14)
             }    
@@ -464,9 +468,10 @@ context.SVG.nodes.append("text")
 .text(function(d) {
     var stats=""
     if(d.i == 0){
-        switch(d.name)
+        name = d.name.replace(/\s/g, '').toUpperCase()
+        switch(name)
         {
-            case "BIGRED2":stats = context.filteredData.resource_users.BIGRED2;break;
+            case "BIGREDII":stats = context.filteredData.resource_users.BIGREDII;break;
             case "QUARRY": stats = context.filteredData.resource_users.QUARRY;break;
             case "MASON":stats = context.filteredData.resource_users.MASON;break;
             case "KARST":stats = context.filteredData.resource_users.KARST;break;
@@ -475,39 +480,74 @@ context.SVG.nodes.append("text")
 
         var txt = d.name.replaceAll("|", "").replaceAll("dotdot", ".");
         if (context.config.meta.labels.prettyMap[txt.trim()]) {
-            return context.config.meta.labels.prettyMap[txt.trim()]+" (#Users: "+stats+")";
+            return context.config.meta.labels.prettyMap[txt.trim()]+" (#Users: "+Utilities.formatValue["number"](stats)+")";
         }
         if ((txt.length>stringSizeLimit) && (d.i==2))
             {return txt.slice(0, stringSizeLimit)+"...";
     }
-    else return txt+" (#Users: "+Utilities.formatValue["number"](stats)+")";
+    else return txt+" (#"+Utilities.formatValue["number"](stats)+")";
 }
-else{
+if(d.i == 1){
     var stats1=""
      switch(d.name)
         {
-            case "NIH-NIGMS":stats1 = context.filteredData.grant_sizes.NIHNIGMS;break;
-            case "NIH-NIA": stats1 = context.filteredData.grant_sizes.NIHNIA;break;
+            case "NIH-FDA":stats1 = context.filteredData.grant_sizes.NIHFDA;break;
+            case "NIH-NCCIH":stats1 = context.filteredData.grant_sizes.NIHNCCIH;break;
             case "NIH-NCI":stats1 = context.filteredData.grant_sizes.NIHNCI;break;
-            case "UNIV OF WASHINGTON":stats1 = context.filteredData.grant_sizes.UNIVOFWASHINGTON;break;
-            case "N CALIFORNIA INST FOR RES":stats1 = context.filteredData.grant_sizes.NCALIFORNIAINSTFORRES;break;
-            case "NIH-NIBIB":stats1 = context.filteredData.grant_sizes.NIHNIBIB;break;
+            case "NIH-NHLBI":stats1 = context.filteredData.grant_sizes.NIHNHLBI;break;
+            case "NIH-NIA": stats1 = context.filteredData.grant_sizes.NIHNIA;break;
             case "NIH-NIAAA":stats1 = context.filteredData.grant_sizes.NIHNIAAA;break;
             case "NIH-NIAID":stats1 = context.filteredData.grant_sizes.NIHNIAID;break;
+            case "NIH-NIGMS":stats1 = context.filteredData.grant_sizes.NIHNIGMS;break;
+            case "NIH-NIBIB":stats1 = context.filteredData.grant_sizes.NIHNIBIB;break;
             case "NIH-NIAMS":stats1 = context.filteredData.grant_sizes.NIHNIAMS;break;
-            case "DUKE UNIVERSITY":stats1 = context.filteredData.grant_sizes.DUKEUNIVERSITY;break;
+            case "NIH-NIDA":stats1 = context.filteredData.grant_sizes.NIHNIDA;break;
             case "NIH-NIMH":stats1 = context.filteredData.grant_sizes.NIHNIMH;break;
             case "NIH-NICHD":stats1 = context.filteredData.grant_sizes.NIHNICHD;break;
+            case "NIH-NIDCD":stats1 = context.filteredData.grant_sizes.NIHNIDCD;break;
+            case "NIH-NIDDK":stats1 = context.filteredData.grant_sizes.NIHNIDDK;break;
+            case "NIH-NLM":stats1 = context.filteredData.grant_sizes.NIHNLM;break;
+            case "NIH-OD":stats1 = context.filteredData.grant_sizes.NIHOD;break;
+            case "NIH-ODCDC":stats1 = context.filteredData.grant_sizes.NIHODCDC;break;
 
+                 
         }
     var txt = d.name.replaceAll("|", "").replaceAll("dotdot", ".");
     if (context.config.meta.labels.prettyMap[txt.trim()]) {
-        return context.config.meta.labels.prettyMap[txt.trim()]+" ($"+stats1+")";
+        return context.config.meta.labels.prettyMap[txt.trim()]+" ("+Utilities.formatValue["currency"](stats1,'$')+")";
     }
     if ((txt.length>15) && (d.i==2))
         {return txt.slice(0,15)+"...";
-}
+        }
 else return txt+" ("+Utilities.formatValue["currency"](stats1,'$')+")";
+}
+
+if(d.i == 2){
+    var stats2=""
+     switch(d.name)
+        {
+            case "Other":stats2 = context.filteredData.publication_disciplines.Other;break; 
+            case "Infectious Diseases":stats2 = context.filteredData.publication_disciplines.InfectiousDiseases;break;
+            case "Brain Research":stats2 = context.filteredData.publication_disciplines.BrainResearch;break;
+            case "Biotechnology":stats2 = context.filteredData.publication_disciplines.Biotechnology;break;
+            case "Biology":stats2 = context.filteredData.publication_disciplines.Biology;break;
+            case "Medical Specialties":stats2 = context.filteredData.publication_disciplines.MedicalSpecialties;break;
+            case "Social Sciences":stats2 = context.filteredData.publication_disciplines.SocialSciences;break;
+            case "Chemistry":stats2 = context.filteredData.publication_disciplines.Chemistry;break;
+            case "Social Sciences":stats2 = context.filteredData.publication_disciplines.SocialSciences;break;
+            case "Health Professionals":stats2 = context.filteredData.publication_disciplines.HealthProfessionals;break;
+            case "Electrical Engineering & Computer Science":stats2 = context.filteredData.publication_disciplines.ElectricalEngineeringComputerScience;break;
+            case "Chemical, Mechanical, & Civil Engineering":stats2 = context.filteredData.publication_disciplines.ChemicalMechanicalCivilEngineering;break;
+            
+
+                 
+        }
+    var txt = d.name.replaceAll("|", "").replaceAll("dotdot", ".");
+    if (context.config.meta.labels.prettyMap[txt.trim()]) {
+        return context.config.meta.labels.prettyMap[txt.trim()]+" (#Publications: "+Utilities.formatValue["number"](stats2)+")";
+    }
+    
+ return txt+" ("+Utilities.formatValue["number"](stats2)+")";
 }
 
 })

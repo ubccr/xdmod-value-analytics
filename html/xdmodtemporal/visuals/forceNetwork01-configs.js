@@ -134,21 +134,21 @@ events.forceNetwork01 = function(ntwrk){
         
         var sliderFormElem = $("#sliderForm");
         var sliderFormScope = angular.element(sliderFormElem).scope();
-        nodeSize.setTitle("Number of Grants")
-        nodeSize.setNote("Based on Zoom Level (" + Utilities.round(ntwrk.zoom.scale(), 1) + "x)")
+        nodeSize.setTitle("Number of grants")
+        nodeSize.setNote("Based on zoom level (" + Utilities.round(ntwrk.zoom.scale(), 1) + "x)")
         nodeSize.updateNodeSize(configs.forceNetwork01.nodes.styleEncoding.size.range);
         nodeSize.updateTextFromFunc(function(d) {
             return ntwrk.Scales.nodeSizeScale.invert(d / 2) / ntwrk.zoom.scale();
         });  
 
         edgeSize.setTitle("#Co-authored Grants")
-        edgeSize.setNote("Based on Zoom Level (" + Utilities.round(ntwrk.zoom.scale(), 1) + "x)")
+        edgeSize.setNote("Based on zoom level (" + Utilities.round(ntwrk.zoom.scale(), 1) + "x)")
         edgeSize.updateEdgeSize(configs.forceNetwork01.edges.styleEncoding.strokeWidth.range);
         edgeSize.updateTextFromFunc(function(d) {
             return ntwrk.Scales.edgeSizeScale.invert(d / 2) / ntwrk.zoom.scale();
         });
 
-        nodeColor.setTitle("Total Amount")
+        nodeColor.setTitle("Total Amount in $")
         nodeColor.updateStopColors(configs.forceNetwork01.nodes.styleEncoding.color.range)
         nodeColor.updateText([d3.min(ntwrk.Scales.nodeColorScale.domain()), d3.mean(ntwrk.Scales.nodeColorScale.domain()), d3.max(ntwrk.Scales.nodeColorScale.domain())])
 
@@ -160,8 +160,8 @@ events.forceNetwork01 = function(ntwrk){
                 edgeSize.updateTextFromFunc(function(d) {
                     return ntwrk.Scales.edgeSizeScale.invert(d / 2) / ntwrk.zoom.scale();
                 });
-                nodeSize.setNote("Based on Zoom Level (" + Utilities.round(ntwrk.zoom.scale(), 1) + "x)")
-                edgeSize.setNote("Based on Zoom Level (" + Utilities.round(ntwrk.zoom.scale(), 1) + "x)")
+                nodeSize.setNote("Based on zoom level (" + Utilities.round(ntwrk.zoom.scale(), 1) + "x)")
+                edgeSize.setNote("Based on zoom level (" + Utilities.round(ntwrk.zoom.scale(), 1) + "x)")
             }, 10);
         });
         

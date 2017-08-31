@@ -183,8 +183,8 @@ function computeNodeDepths(iterations) {
 
         nodesByBreadth.forEach(function(nodes) {
             nodes.forEach(function(node, i) {
-                node.y = i;
-                node.dy = node.value * ky+6;
+                node.y = node.value * 0.03+8;
+                node.dy = node.value * ky +8;
             });
         });
 
