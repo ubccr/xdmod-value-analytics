@@ -1,5 +1,8 @@
 #!/usr/bin/env php
 <?php
+/**
+ * Delete all Value Analytics data from Open XDMoD.
+ */
 
 require_once __DIR__ . '/../configuration/linker.php';
 
@@ -9,7 +12,7 @@ use CCR\DB;
 // (Code taken from xdmod-admin script.)
 $response = null;
 while ($response === null) {
-    $response = readline("Reset Value Analytics data? (yes/no): [no] ");
+    $response = readline("Remove Value Analytics data from Open XDMoD? (yes/no): [no] ");
 
     if (!in_array($response, array('yes', 'no', ''))) {
         echo "\n'$response' is not a valid option.\n\n";

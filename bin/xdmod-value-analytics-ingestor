@@ -1,5 +1,8 @@
 #!/usr/bin/env php
 <?php
+/**
+ * Ingest Value Analytics data into Open XDMoD.
+ */
 
 require_once __DIR__ . '/../configuration/linker.php';
 

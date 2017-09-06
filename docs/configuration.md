@@ -2,10 +2,14 @@
 title: Configuration Guide
 ---
 
-Ensure that [Open XDMoD](http://open.xdmod.org) is installed and configured
-correctly and the [shredder](http://open.xdmod.org/shredder.html) and
+**IMPORTANT**: Ensure that [Open XDMoD](http://open.xdmod.org) is installed and
+configured correctly and the [shredder](http://open.xdmod.org/shredder.html) and
 [ingestor](http://open.xdmod.org/ingestor.html) scripts have been run successfully
-before configuring the Value Analytics module.
+before configuring the Value Analytics module. These steps must be taken
+before the Value Analytics module is configured because once configured,
+Open XDMoD will be unable to ingest job data again until Value Analytics data
+has been ingested. (This limitation is planned to be removed before a
+production-ready version of this module is released.)
 
 Run Configuration Script
 ------------------------

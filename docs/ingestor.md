@@ -32,7 +32,8 @@ If you are using a common financial system to manage your grant data and it is
 not listed above, please contact `ccr-xdmod-help` at `buffalo.edu` for more
 information. Otherwise, you will need to convert your data according to the
 corresponding JSON schemas in
-`[xdmod_etc_dir]/etl/etl_schemas.d/value_analytics`.
+`[xdmod_etc_dir]/etl/etl_schemas.d/value_analytics`. These schemas may also
+be viewed online [here](https://github.com/ubccr/xdmod-value-analytics/tree/master/configuration/etl/etl_schemas.d/value_analytics).
 
 ## Ingestion
 

@@ -5,12 +5,14 @@ title: Installation Guide
 This guide will outline how to install the Value Analytics module for Open
 XDMoD.
 
-**IMPORTANT**: We *strongly* suggest using a separate, testing-only instance of
-Open XDMoD for beta testing this module. This will avoid any risks to your
-production instance of Open XDMoD.
+**IMPORTANT**: We *strongly* advise against using a production Open XDMoD
+instance for beta testing this module. Please conduct the beta test of
+Value Analytics using a separate Open XDMoD instance dedicated to the beta test.
+This will avoid risking unwanted changes to your production instance of
+Open XDMoD.
 
 If you have a previous version of the Value Analytics module installed, then
-follow the instructions in the [Upgrade Guide](upgrade.html)
+follow the instructions in the [Upgrade Guide](upgrade.html).
 
 RPM Installation
 ----------------
