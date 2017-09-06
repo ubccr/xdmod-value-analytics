@@ -1,0 +1,71 @@
+diff --git a/classes/OpenXdmod/DataWarehouseInitializer.php b/classes/OpenXdmod/DataWarehouseInitializer.php
+index ded7d4b..f94e103 100644
+--- a/classes/OpenXdmod/DataWarehouseInitializer.php
++++ b/classes/OpenXdmod/DataWarehouseInitializer.php
+@@ -449,16 +449,59 @@ class DataWarehouseInitializer
+         $sql = "
+             CREATE TABLE minmaxdate AS SELECT
+                 LEAST(
+-                    MIN(start_time),
+-                    MIN(end_time),
+-                    MIN(submit_time)
++                    (
++                        SELECT
++                            MIN(start_time)
++                        FROM modw.jobfact
++                    ),
++                    (
++                        SELECT
++                            MIN(end_time)
++                        FROM modw.jobfact
++                    ),
++                    (
++                        SELECT
++                            MIN(submit_time)
++                        FROM modw.jobfact
++                    ),
++                    (
++                        SELECT
++                            CAST(MIN(start_date) AS DATETIME)
++                        FROM modw_value_analytics.grants
++                    ),
++                    (
++                        SELECT
++                            CAST(MIN(end_date) AS DATETIME)
++                        FROM modw_value_analytics.grants
++                    )
+                 ) AS min_job_date,
+                 GREATEST(
+-                    MAX(start_time),
+-                    MAX(end_time),
+-                    MAX(submit_time)
++                    (
++                        SELECT
++                            MAX(start_time)
++                        FROM modw.jobfact
++                    ),
++                    (
++                        SELECT
++                            MAX(end_time)
++                        FROM modw.jobfact
++                    ),
++                    (
++                        SELECT
++                            MAX(submit_time)
++                        FROM modw.jobfact
++                    ),
++                    (
++                        SELECT
++                            CAST(MAX(start_date) AS DATETIME)
++                        FROM modw_value_analytics.grants
++                    ),
++                    (
++                        SELECT
++                            CAST(MAX(end_date) AS DATETIME)
++                        FROM modw_value_analytics.grants
++                    )
+                 ) AS max_job_date
+-            FROM jobfact
+         ";
+         $this->logger->debug('Create statement: ' . $sql);
+         $this->warehouseDb->execute($sql);

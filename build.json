@@ -1,15 +1,14 @@
 {
     "name": "xdmod-value-analytics",
-    "version": "0.1.0",
-    "release": "1.0",
+    "version": "7.0.0",
+    "release": "beta.1",
     "files": {
         "include_paths": [
         ],
         "include_patterns": [
         ],
         "exclude_paths": [
-            "specs",
-            "tools"
+            "specs"
         ],
         "exclude_patterns": [
             "#/\\.#"
@@ -17,9 +16,13 @@
     },
     "file_maps": {
         "data": [
-            "classes"
+            "classes",
+            "db",
+            "patches",
+            {"tools": "tools/value-analytics"}
         ],
         "bin": [
+            "bin/"
         ],
         "lib": [
         ],

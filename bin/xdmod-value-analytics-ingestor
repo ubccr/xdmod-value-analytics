@@ -1,0 +1,84 @@
+#!/usr/bin/env php
+<?php
+/**
+ * Ingest Value Analytics data into Open XDMoD.
+ */
+
+require_once __DIR__ . '/../configuration/linker.php';
+
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\ProcessBuilder;
+
+use CCR\DB;
+use OpenXdmod\DataWarehouseInitializer;
+
+// Disable PHP's memory limit.
+ini_set('memory_limit', -1);
+
+// Create a reusable Symfony process builder.
+$processBuilder = new ProcessBuilder();
+$processBuilder->setTimeout(null);
+
+// Create an output handler for Symfony processes that passes a child process's
+// outputs to this process's corresponding output pipes.
+$passthroughOutputProcessCallback = function ($type, $buffer) {
+    $outputHandle = (
+        $type === Process::ERR
+        ? STDERR
+        : STDOUT
+    );
+    fwrite($outputHandle, $buffer);
+};
+
+// Ingest the Value Analytics data.
+$vaIngestAndAggregateProcessArguments = array(
+    'php',
+    DATA_DIR . '/tools/etl/etl_overseer.php',
+    '-c', CONFIG_DIR . '/etl/etl.json',
+    '-p', 'value-analytics',
+);
+$processBuilder->setArguments($vaIngestAndAggregateProcessArguments);
+$processBuilder->getProcess()->mustRun($passthroughOutputProcessCallback);
+
+// Initialize the time period tables.
+$shredderDb = DB::factory('shredder');
+$hpcdbDb    = DB::factory('hpcdb');
+$dwDb       = DB::factory('datawarehouse');
+
+$dwi = new DataWarehouseInitializer($shredderDb, $hpcdbDb, $dwDb);
+$dwi->initializeAggregation('1970-01-01', '2049-12-31');
+
+// Ensure the aggregate job fact tables are present.
+$aggregationUnits = array(
+    'day',
+    'month',
+    'quarter',
+    'year'
+);
+foreach ($aggregationUnits as $aggUnit) {
+    $jobfactTables = $dwDb->query("SHOW TABLES FROM modw_aggregates LIKE 'jobfact_by_${aggUnit}'");
+    if (!empty($jobfactTables)) {
+        continue;
+    }
+
+    $jta = new JobTimeseriesAggregator($aggUnit);
+
+    $reflection = new ReflectionClass($jta);
+    $method = $reflection->getMethod('createTables');
+    $method->setAccessible(true);
+    $method->invoke($jta, $dwDb, 'modw_aggregates', false, false);
+}
+
+// Aggregate the Value Analytics data.
+$processBuilder->setArguments($vaIngestAndAggregateProcessArguments);
+$processBuilder->getProcess()->mustRun($passthroughOutputProcessCallback);
+
+// Build filter lists for the Value Analytics data.
+$filterListBuilder = new FilterListBuilder();
+$valueAnalyticsRealmNames = array(
+    'ValueAnalyticsGrants',
+);
+
+foreach ($valueAnalyticsRealmNames as $realmName) {
+    $filterListBuilder->buildRealmLists($realmName);
+}
