@@ -42,14 +42,16 @@ def load_grants(fields):
             CAST(a.CGAWD_TOT_AMT AS INT),
             TO_CHAR(a.CGAWD_BEG_DT, 'YYYY-MM-DD'),
             TO_CHAR(a.CGAWD_END_DT, 'YYYY-MM-DD'),
-            PRSN_ROLE_ID_DESC, CG_AGENCY_RPT_NM, CG_AGENCY_AWD_NBR,
+            PRSN_ROLE_ID_DESC, CG_AGENCY_RPT_NM, COALESCE(CG_AGENCY_AWD_NBR, 'None'),
             CGAWD_PROJ_TTL, a.KC_AWD_NBR,
              (case a.cgprpsl_awd_typ_cd when '2' then 'Renew' else 'New' end)
         from DSS_KC.KC_AWD_ALL_PRSN_V a
-        where a.CGAWD_BEG_DT < :1 and a.CGAWD_END_DT > :2 and a.kc_awd_node = 'B' and ROWNUM < 100"""
+        where a.CGAWD_BEG_DT < :1 and a.CGAWD_END_DT > :2 and a.kc_awd_node = 'B'
+        and a.PERSON_USER_ID is not null
+        """
     conn = cx_Oracle.connect(user_name, pw, config.get('Database', 'connectstring'))
     cursor = conn.cursor()
-    cursor.execute(query, (datetime.date(2016, 1, 1), datetime.date(2015, 1, 1)))
+    cursor.execute(query, (datetime.date(2017, 7, 1), datetime.date(2015, 7, 1)))
     data_set = cursor.fetchall()
     conn.close()
     field_names = [f[0] for f in fields]
@@ -66,9 +68,23 @@ def write_csv(data, fields):
 
 def build_json_grant(grant_fields, user_fields, grant, users):
     grant_dict = dict(zip(grant_fields, grant))
-    grant_dict['people'] = [dict(zip(user_fields, u)) for u in users]
+    people = (dict(zip(user_fields, u)) for u in users)
     grant_dict['last_modified'] = datetime.datetime.now(UTC()).isoformat()
+    grant_dict['people'] = normalize_people(people)
+    if grant_dict['type'] == 'Renew':
+        grant_dict['type'] = 'Renewal'
     return grant_dict
+
+
+def normalize_people(people):
+    unique_people = [dict(s) for s in set(frozenset(d.items()) for d in people)]
+    d = {'Principal Investigator': 'PI',
+         'Co-Principal Investigator': 'Co-PI',
+         'Key Person': 'Key Personnel'}
+    for p in unique_people:
+        if p['role'] in d:
+            p['role'] = d[p['role']]
+    return unique_people
 
 
 def write_json(data, fields):
@@ -83,6 +99,12 @@ def write_json(data, fields):
         grant_list = [build_json_grant(grant_fields, user_fields, grant, user) for grant, user in grant_list.iteritems()]
         json.dump(grant_list, jsonfile, indent=4)
 
+def normalize(grant_list):
+    for g in grant_list:
+        g['people'] = list(set(g['people']))
+        for p in g['people']:
+            if p['PRSN_ROLE_ID_DESC'] in d:
+                p['PRSN_ROLE_ID_DESC'] = d[p['PRSN_ROLE_ID_DESC']]
 
 def main():
     fields = config.items('Fields')

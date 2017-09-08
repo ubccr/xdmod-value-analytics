@@ -1,0 +1,10 @@
+[ORCID]
+token: 5266384f-0567-43f0-9cd4-bc6f6a5dc3ea
+url: https://pub.sandbox.orcid.org
+
+[Organization]
+name:ORCID
+abbrev: ORCID
+
+[Output]
+file:users.json
