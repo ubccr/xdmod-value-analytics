@@ -6,9 +6,10 @@ Usage
 ----------------------
 
 XDMoD-VA requires input in the form of two JSON files, one holding grant information and one holding PI information.
-These scripts must be customized for use at an individual site. Currently provided are scripts to gather grant
-data from a Kuali Financial System database, and scripts to gather user information from a local LDAP connection
-and an ORCID database
+Details on the schema of these files may be found at /xdmod-value-analytics/specs/README.md. The scripts in this
+directory generate JSON in the correct format, but must be customized for use at an individual site. Currently 
+provided are scripts to gather grant data from a Kuali Financial System database, and scripts to gather user 
+information from a local LDAP connection and an ORCID database.
 
 Run Configuration Scripts
 ------------------------
@@ -23,11 +24,10 @@ grants.json file made available in the previous step, or a comma-separated file 
 the ID as the first field of each row. Output will be users.json, which will again be in a suitable format for XDMoD-VA
 to import.
 
-To import personnel data from ORCID, run the orcid_users.py script. Similarly, the ldap.cfg file contains information
-concerning loading of personal information via an LDAP connection. Pass as parameters to the script, either the
-grants.json file made available in the previous step, or a comma-separated file of ID's to pull down from LDAP, with 
-the ID as the first field of each row. Output will be users.json, which will again be in a suitable format for XDMoD-VA
-to import.
+To import personnel data from ORCID, run the orcid_users.py script. Similarly, the orcid.cfg file contains information
+concerning loading of personal information from the ORCID scientific user community. Pass a comma-separated file of 
+ORCID ID's to load from the ORCID site, with the ID as the first field of each row. Output will be users.json, which 
+will be in a suitable format for XDMoD-VA to import.
 
 
 

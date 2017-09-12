@@ -10,6 +10,8 @@ import time
 
 
 def get_user_list(id_files):
+    """Parses the files provided and returns a list of user ID's. The files may be in JSON format,
+    or CSV format, in which case the ID is assumed to be the first comma-separated field"""
     result = list()
     for id_file in id_files:
         with open(id_file) as f:
@@ -22,6 +24,9 @@ def get_user_list(id_files):
 
 
 def orcid_request(orcid):
+    """Sends a request to the ORCID server to get information on the ID provided. Relies on configuration from
+    the orcid.cfg file. Configuration details are created as described on the ORCID web site
+    (https://orcid.org/developer-tools )"""
     token = config.get('ORCID', 'token')
     base_url = config.get('ORCID', 'url')
     url = base_url + '/v1.2/search/orcid-bio'
@@ -34,6 +39,8 @@ def orcid_request(orcid):
 
 
 def load_users():
+    """Loads data from the ORCID web site based on configuration and command line options. Returns a list
+    of users found and another list of users not found"""
     ids = list(get_user_list(args.id_files))
     result = []
     not_found = []
@@ -49,6 +56,7 @@ def load_users():
 
 
 def build_json_missing_user(user, organization_name):
+    """Create appropriate JSON data for a user not found in the ORCID database"""
     result = dict(last_name='unknown', first_name='unknown')
     result['organizations'] = [
         dict(id=user,
@@ -59,6 +67,8 @@ def build_json_missing_user(user, organization_name):
 
 
 def build_json_user(d, organization_name):
+    """Convert JSON received from the ORCID database into a data structure suitable for writing
+    correct XDMoD-VA data"""
     f = d['orcid-profile']
     fn = f['orcid-bio']['personal-details']['given-names']['value']
     ln = f['orcid-bio']['personal-details']['family-name']['value']
@@ -74,6 +84,7 @@ def build_json_user(d, organization_name):
 
 
 def write_json(data, not_found):
+    """Write the output JSON file in the correct format"""
     org_name = config.get('Organization', 'name')
     user_list = [build_json_user(r, org_name) for r in data]
     user_list.extend(build_json_missing_user(r, org_name) for r in not_found)
@@ -82,6 +93,7 @@ def write_json(data, not_found):
 
 
 def main():
+    """Load user data and write it"""
     data, not_found = load_users()
     write_json(data, not_found)
 
