@@ -1,0 +1,11 @@
+[NIH]
+projects = RePORTER_PRJ_C_FY2016.csv
+project_publications = RePORTER_PUBLNK_C_2016.csv
+publications = RePORTER_PUB_C_2016.csv
+
+[Grants]
+file: grants.json
+
+[Output]
+file:publications.json
+
