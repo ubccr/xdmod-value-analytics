@@ -6,6 +6,7 @@ import cx_Oracle
 import datetime
 import getpass
 import json
+from datetime import date
 
 
 class UTC(datetime.tzinfo):
@@ -21,6 +22,8 @@ class UTC(datetime.tzinfo):
 
 
 def get_user():
+    """Get database username, either passed on command line or read from the config file. As a last
+    resort, prompt the user to enter the username"""
     if args.user: return args.user
     cfg_user = config.get('Credentials', 'user')
     if cfg_user: return cfg_user
@@ -28,6 +31,8 @@ def get_user():
 
 
 def get_password(user):
+    """Get database password, either passed on command line or read from the config file. As a last
+    resort, prompt the user to enter the password"""
     if args.password: return args.password
     try:
         cfg_pw = config.get('Credentials', 'password')
@@ -38,18 +43,25 @@ def get_password(user):
 
 
 def load_grants(fields):
+    """Connect to an Oracle Kuali database and query for grant data over a given time period. Return
+    an array of dict with the data. The query is assumed to return the fields defined in the
+    config file in order, and each key-value pair consists of the field name and its value in the data."""
     query = """select lower(a.PERSON_USER_ID),
             CAST(a.CGAWD_TOT_AMT AS INT),
             TO_CHAR(a.CGAWD_BEG_DT, 'YYYY-MM-DD'),
             TO_CHAR(a.CGAWD_END_DT, 'YYYY-MM-DD'),
-            PRSN_ROLE_ID_DESC, CG_AGENCY_RPT_NM, CG_AGENCY_AWD_NBR,
+            PRSN_ROLE_ID_DESC, CG_AGENCY_RPT_NM, COALESCE(CG_AGENCY_AWD_NBR, 'None'),
             CGAWD_PROJ_TTL, a.KC_AWD_NBR,
              (case a.cgprpsl_awd_typ_cd when '2' then 'Renew' else 'New' end)
         from DSS_KC.KC_AWD_ALL_PRSN_V a
-        where a.CGAWD_BEG_DT < :1 and a.CGAWD_END_DT > :2 and a.kc_awd_node = 'B' and ROWNUM < 100"""
+        where a.CGAWD_BEG_DT < :1 and a.CGAWD_END_DT > :2 and a.kc_awd_node = 'B'
+        and a.PERSON_USER_ID is not null
+        """
     conn = cx_Oracle.connect(user_name, pw, config.get('Database', 'connectstring'))
     cursor = conn.cursor()
-    cursor.execute(query, (datetime.date(2016, 1, 1), datetime.date(2015, 1, 1)))
+    end_date = args.end_date if args.end_date else date.today()
+    start_date = args.start_date if args.start_date else date(end_date.year-1, end_date.month, end_date.day)
+    cursor.execute(query, (end_date, start_date))
     data_set = cursor.fetchall()
     conn.close()
     field_names = [f[0] for f in fields]
@@ -57,6 +69,7 @@ def load_grants(fields):
 
 
 def write_csv(data, fields):
+    """Write grant data to a csv file, with a header"""
     with open('grants.csv', 'w') as csvfile:
         csv_writer = csv.writer(csvfile, quoting=csv.QUOTE_MINIMAL)
         csv_writer.writerow([f[0] for f in fields])
@@ -65,13 +78,30 @@ def write_csv(data, fields):
 
 
 def build_json_grant(grant_fields, user_fields, grant, users):
+    """Create a dict in the appropriate format for writing to XDMoD-VA compliant JSON"""
     grant_dict = dict(zip(grant_fields, grant))
-    grant_dict['people'] = [dict(zip(user_fields, u)) for u in users]
+    people = (dict(zip(user_fields, u)) for u in users)
     grant_dict['last_modified'] = datetime.datetime.now(UTC()).isoformat()
+    grant_dict['people'] = normalize_people(people)
+    if grant_dict['type'] == 'Renew':
+        grant_dict['type'] = 'Renewal'
     return grant_dict
 
 
+def normalize_people(people):
+    """Modify any Kuali field values that do not match XDMoD-VA enumerated field values"""
+    unique_people = [dict(s) for s in set(frozenset(d.items()) for d in people)]
+    d = {'Principal Investigator': 'PI',
+         'Co-Principal Investigator': 'Co-PI',
+         'Key Person': 'Key Personnel'}
+    for p in unique_people:
+        if p['role'] in d:
+            p['role'] = d[p['role']]
+    return unique_people
+
+
 def write_json(data, fields):
+    """Write grant data to a JSON file, with the appropriate field names"""
     grant_fields = [f[0] for f in fields if f[1] == 'grant']
     user_fields = [f[0] for f in fields if f[1] == 'user']
     grant_list = defaultdict(list)
@@ -85,6 +115,7 @@ def write_json(data, fields):
 
 
 def main():
+    """Load grant data and write it"""
     fields = config.items('Fields')
     data = load_grants(fields)
 
@@ -103,6 +134,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--user", help="DB user")
     parser.add_argument("--password", help="DB password")
+    parser.add_argument('-s', '--start', help='First day for which to gather statistics', dest='start_date')
+    parser.add_argument('-e', '--end', help='Last day for which to gather statistics', dest='end_date')
 
     args = parser.parse_args()
 
