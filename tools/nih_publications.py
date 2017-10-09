@@ -8,15 +8,15 @@ from collections import defaultdict
 
 def load_pub_data(grants):
     """Load publication data and link data between NIH award ID's and publication ID's"""
-    with open(config.get('NIH', 'project_publications')) as f:
+    with open(config.get('NIH', 'link_file')) as f:
         reader = csv.DictReader(f)
         project_publications = dict([r['PROJECT_NUMBER'], r['PMID']] for r in reader)
-    with open(config.get('NIH', 'publications')) as f:
+    with open(config.get('NIH', 'publication_file')) as f:
         reader = csv.DictReader(f)
         publications = dict([r['PMID'], r] for r in reader)
 
     result = list()
-    with open(config.get('NIH', 'projects')) as f:
+    with open(config.get('NIH', 'project_file')) as f:
         reader = csv.DictReader(f)
         for project in reader:
             for grant_id in grants.keys():

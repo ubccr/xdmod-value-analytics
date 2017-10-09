@@ -29,10 +29,15 @@ concerning loading of personal information from the ORCID scientific user commun
 ORCID ID's to load from the ORCID site, with the ID as the first field of each row. Output will be users.json, which 
 will be in a suitable format for XDMoD-VA to import.
 
-To import publication data from the NIH, run the nih_publications script. Input for this script consists of three
-CSV files from the NIH: a projects file, a publications file, and a link file connecting the two. The script compares
-award ID's from the previously generated grants.json file to the NIH files to generate a publications.json file, which
-matches the grant awardee to the publication data.
+To import publication data from the NIH, go to the NIH Exporter web site (https://exporter.nih.gov/ExPORTER_Catalog.aspx) 
+and download three related files: a projects file, a publications file, and a link file connecting the two. For example, 
+to import data from all of 2016, download RePORTER_PRJ_C_FY2016.zip for projects, RePORTER_PUB_C_2016.zip for
+publications, and RePORTER_PUBLNK_C_2016.zip to link the files. The files should be downloaded in CSV format and 
+unzipped.
+
+Copy the file "nih_publications.cfg.template" to "nih_publications.cfg" and, if required, specify paths to the relevant
+files. Then run the nih_publications script. The script will attempt to match grant ID's from grants.json to NIH 
+award ID's and will place the output in the file specified in the config (publications.json by default).
 
 Visualizations
 --------------

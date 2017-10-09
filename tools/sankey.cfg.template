@@ -4,4 +4,4 @@ publications: publications.json
 resources: jobs.csv
 
 [Output]
-file:sankey.json
+file: sankey.json
