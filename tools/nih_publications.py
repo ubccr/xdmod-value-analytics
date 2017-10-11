@@ -40,7 +40,6 @@ def main():
     grants = defaultdict(set)
     for grant in load_grant_data():
         grants[grant['agency_grant_id']].update(person['id'] for person in grant['people'])
-    # grants = set(grant['agency_grant_id'] for grant in load_grant_data())
     publications = load_pub_data(grants)
     with open(config.get('Output', 'file'), 'wb') as jsonfile:
         json.dump(publications, jsonfile, indent=4)
