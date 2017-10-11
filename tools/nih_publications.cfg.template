@@ -1,0 +1,11 @@
+[NIH]
+project_file: RePORTER_PRJ_C_FY2016.csv
+link_file: RePORTER_PUBLNK_C_2016.csv
+publication_file: RePORTER_PUB_C_2016.csv
+
+[Grants]
+file: grants.json
+
+[Output]
+file:publications.json
+
