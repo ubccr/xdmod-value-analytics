@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"  viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet">
-    <text id="title" transform="matrix(1 0 0 1 13 17)" font-size="18" >Title</text>
+    <text id="title" transform="matrix(1 0 0 1 20 17)" font-size="15" >Title</text>
     <g transform="translate(20,0)">
-        <g id="maxG">
-            <text transform="matrix(1 0 0 1 90 60)" text-anchor="start" font-size="16">3</text>
-            <rect x="0" y="54.41" width="80" height="5" />
+        <g id="maxEdge">
+            <text transform="matrix(1 0 0 1 90 60)" text-anchor="start" font-size="13">3</text>
+             <line x1="0" y1="54" x2="80" y2="54" stroke="#434648" />
         </g>
-        <g id="midG">
-            <text transform="matrix(1 0 0 1 90 106)" text-anchor="start" font-size="16">2</text>
-            <rect x="0" y="102.332" width="80" height="3" />
+        <g id="midEdge">
+            <text transform="matrix(1 0 0 1 90 106)" text-anchor="start" font-size="13">2</text>
+            <line x1="0" y1="103" x2="80" y2="103"  stroke="#434648" />
         </g>
-        <g id="minG">
-            <text transform="matrix(1 0 0 1 90 156)" text-anchor="start" font-size="16">1</text>
-            <rect x="0" y="152.585" width="80" height="1" />
+        <g id="minEdge">
+            <text transform="matrix(1 0 0 1 90 156)" text-anchor="start" font-size="13">1</text>
+            <line x1="0" y1="153" x2="80" y2="153"  stroke="#434648" />
         </g>
     </g>
-    <text id="note" transform="matrix(1 0 0 1 13 193)" fill="#444445" font-style="italic" font-size="14"></text>
+    <text id="note" transform="matrix(1 0 0 1 20 193)" fill="#444445" font-style="italic" font-size="12"></text>
 </svg>

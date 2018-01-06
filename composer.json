@@ -1,0 +1,388 @@
+{
+
+  "name": "visualization-composer",
+  "require": {
+    "d3.v3": "3.5.*",
+    "jquery": "^1.12.4",
+    "ionRangeSlider2": "2.2.*",
+    "angularjs": "1.*",
+    "bootstrap": "3.*",
+    "googleFonts/openSans":"*",
+    "immutablejs":"3.7.*",
+    "drawerjs": "3.2.1",
+    "ng-tablejs": "1.0.0",
+    "angularMaterialjs": "1.1.0",
+    "angularMaterialcss": "1.1.0",
+    "angularAnimatejs": "1.5.5",
+    "angularRoutejs": "1.5.5",
+    "angularAriajs": "1.5.5",
+    "angularMessagesjs": "1.5.5"
+
+  },
+  "repositories": [
+
+    {
+      "type": "package",
+      "package": {
+        "name": "d3.v3",
+        "type": "vanilla-plugin",
+        "version": "3.5.17",
+        "license": "BSD-3-Clause",
+        "homepage": "https://d3js.org/",
+        "dist": {
+          "url": "https://d3js.org/d3.v3.min.js",
+          "type": "file"
+        },
+
+        "require": {
+          "composer/installers": "~1.0"
+        },
+        "extra": {
+          "installer-name": "d3.v3"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "jquery",
+        "type": "vanilla-plugin",
+        "version": "1.12.4",
+        "license": "MIT",
+        "homepage": "https://jquery.com",
+        "dist": {
+          "url": "https://code.jquery.com/jquery-1.12.4.min.js",
+          "type": "file"
+        },
+
+        "require": {
+          "composer/installers": "~1.0"
+        },
+        "extra": {
+          "installer-name": "jquery"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "drawerjs",
+        "type": "vanilla-plugin",
+        "version": "3.2.1",
+        "license": "MIT",
+        "homepage": "http://git.blivesta.com/drawer/",
+        "dist": {
+          "url": "https://cdnjs.cloudflare.com/ajax/libs/drawer/3.2.1/js/drawer.min.js",
+          "type": "file"
+        },
+
+        "require": {
+          "composer/installers": "~1.0"
+        },
+        "extra": {
+          "installer-name": "drawerjs"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "ng-tablejs",
+        "type": "vanilla-plugin",
+        "version": "1.0.0",
+        "license": "MIT",
+        "homepage": "https://cdnjs.com/libraries/ng-table",
+        "dist": {
+          "url": "https://cdnjs.cloudflare.com/ajax/libs/ng-table/1.0.0/ng-table.min.js",
+          "type": "file"
+        },
+
+        "require": {
+          "composer/installers": "~1.0"
+        },
+        "extra": {
+          "installer-name": "ng-tablejs"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "angularMaterialjs",
+        "type": "vanilla-plugin",
+        "version": "1.1.0",
+        "license": "MIT",
+        "homepage": "https://material.angularjs.org/1.1.0-rc.5/",
+        "dist": {
+          "url": "https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js",
+          "type": "file"
+        },
+
+        "require": {
+          "composer/installers": "~1.0"
+        },
+        "extra": {
+          "installer-name": "angularMaterialjs"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "angularMaterialcss",
+        "type": "vanilla-plugin",
+        "version": "1.1.0",
+        "license": "MIT",
+        "homepage": "https://material.angularjs.org/1.1.0-rc.5/",
+        "dist": {
+          "url": "https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css",
+          "type": "file"
+        },
+
+        "require": {
+          "composer/installers": "~1.0"
+        },
+        "extra": {
+          "installer-name": "angularMaterialcss"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "ionRangeSlider2",
+        "type": "vanilla-plugin",
+        "version": "2.2.0",
+        "license": "MIT",
+        "homepage": "ionden.com/a/plugins/ion.rangeSlider/en.html",
+        "dist": {
+          "url": "https://github.com/IonDen/ion.rangeSlider/archive/2.2.0.zip",
+          "type": "zip"
+        },
+        "require": {
+          "jquery": "^1.12.4",
+          "composer/installers": "~1.0"
+        },
+
+        "extra": {
+          "installer-name": "ionRangeSlider2"
+        }
+      }
+    },
+
+    {
+      "type": "package",
+      "package": {
+        "name": "angularjs",
+        "type": "vanilla-plugin",
+        "version": "1.5.5",
+        "license": "MIT",
+        "homepage": "https://angularjs.org/",
+        "dist": {
+          "url": "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js",
+          "type": "file"
+        },
+
+        "require": {
+          "composer/installers": "~1.0"
+        },
+        "extra": {
+          "installer-name": "angularjs"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "angularRoutejs",
+        "type": "vanilla-plugin",
+        "version": "1.5.5",
+        "license": "MIT",
+        "homepage": "https://angularjs.org/",
+        "dist": {
+          "url": "https://code.angularjs.org/1.5.5/angular-route.min.js",
+          "type": "file"
+        },
+
+        "require": {
+          "composer/installers": "~1.0"
+        },
+        "extra": {
+          "installer-name": "angularRoutejs"
+        }
+      }
+      },    {
+        "type": "package",
+        "package": {
+          "name": "angularAnimatejs",
+          "type": "vanilla-plugin",
+          "version": "1.5.5",
+          "license": "MIT",
+          "homepage": "https://angularjs.org/",
+          "dist": {
+            "url": "https://code.angularjs.org/1.5.5/angular-animate.min.js",
+            "type": "file"
+          },
+
+          "require": {
+            "composer/installers": "~1.0"
+          },
+          "extra": {
+            "installer-name": "angularAnimatejs"
+          }
+        }
+      },
+      {
+        "type": "package",
+        "package": {
+          "name": "angularAriajs",
+          "type": "vanilla-plugin",
+          "version": "1.5.5",
+          "license": "MIT",
+          "homepage": "https://angularjs.org/",
+          "dist": {
+            "url": "https://code.angularjs.org/1.5.5/angular-aria.min.js",
+            "type": "file"
+          },
+
+          "require": {
+            "composer/installers": "~1.0"
+          },
+          "extra": {
+            "installer-name": "angularAriajs"
+          }
+        }
+      },
+      {
+        "type": "package",
+        "package": {
+          "name": "angularMessagesjs",
+          "type": "vanilla-plugin",
+          "version": "1.5.5",
+          "license": "MIT",
+          "homepage": "https://angularjs.org/",
+          "dist": {
+            "url": "https://code.angularjs.org/1.5.5/angular-messages.min.js",
+            "type": "file"
+          },
+
+          "require": {
+            "composer/installers": "~1.0"
+          },
+          "extra": {
+            "installer-name": "angularMessagesjs"
+          }
+        }
+      },
+      {
+        "type": "package",
+        "package": {
+          "name": "bootstrap",
+          "type": "vanilla-plugin",
+          "version": "3.3.7",
+          "license": "MIT",
+          "homepage": "http://bootstrapdocs.com/v3.0.0/docs/",
+          "dist": {
+            "url": "https://github.com/twbs/bootstrap/archive/v3.0.0.zip",
+            "type": "zip"
+          },
+
+          "require": {
+            "composer/installers": "~1.0"
+          },
+          "extra": {
+            "installer-name": "bootstrap"
+          }
+        }
+      },
+      {
+        "type": "package",
+        "package": {
+          "name": "bootstrap",
+          "type": "vanilla-plugin",
+          "version": "3.3.7",
+          "license": "MIT",
+          "homepage": "http://bootstrapdocs.com/v3.0.0/docs/",
+          "dist": {
+            "url": "https://github.com/twbs/bootstrap/archive/v3.0.0.zip",
+            "type": "zip"
+          },
+
+          "require": {
+            "composer/installers": "~1.0"
+          },
+          "extra": {
+            "installer-name": "bootstrap"
+          }
+        }
+      },
+      {
+        "type": "package",
+        "package": {
+          "name": "googleFonts/openSans",
+          "version":"v3",
+          "type": "vanilla-plugin",
+          "license": "Apache-2.0",
+          "homepage": "https://developers.google.com/fonts/",
+          "dist": {
+            "url": "https://fonts.googleapis.com/css?family=Open+Sans:400,700",
+            "type": "file"
+          },
+
+          "require": {
+            "composer/installers": "~1.0"
+          },
+          "extra": {
+            "installer-name": "googleFonts-openSans"
+          }
+
+        }
+      },
+
+      {
+        "type": "package",
+        "package": {
+          "name": "immutablejs",
+          "version":"3.7.5",
+          "type": "vanilla-plugin",
+          "license": "MIT",
+          "homepage": "https://facebook.github.io/immutable-js/",
+          "dist": {
+            "url":"https://cdnjs.cloudflare.com/ajax/libs/immutable/3.7.5/immutable.js",
+            "type": "file"
+          },
+
+          "require": {
+            "composer/installers": "~1.0"
+          },
+          "extra": {
+            "installer-name": "immutablejs"
+          }
+        }
+      }
+    ],
+    "extra": {
+      "installer-paths": {
+        "html/gui/lib/{$name}": [
+          "d3.v3",
+          "jquery",
+          "ionRangeSlider2",
+          "angularjs",
+          "bootstrap",
+          "googleFonts/openSans",
+          "immutablejs",
+          "drawerjs",
+          "ng-tablejs",
+          "angularMaterialjs",
+          "angularMaterialcss",
+          "angularAriajs",
+          "angularRoutejs",
+          "angularAnimatejs",
+          "angularMessagesjs"
+
+        ]
+
+
+      }
+    }
+  }

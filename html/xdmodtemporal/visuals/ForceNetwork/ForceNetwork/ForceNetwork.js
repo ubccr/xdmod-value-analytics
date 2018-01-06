@@ -1,7 +1,6 @@
 visualizationFunctions.ForceNetwork = function(element, data, opts) {
     var context = this;
     var selected = null;
-    //TODO: Not all events are unbound properly. Resetting the visualization just doesn't work. Do data filters instead if you need :)
     this.ResetVis = function() { console.warn("Cannot reset Force Network visualization.") }
     this.VisFunc = function() {
         context.SVG = context.config.easySVG(element[0], {
@@ -10,11 +9,8 @@ visualizationFunctions.ForceNetwork = function(element, data, opts) {
             background: false,
 
         }).attr("transform", "translate(" + (context.config.margins.left + context.config.dims.width / 2) + "," + (context.config.margins.top + context.config.dims.height / 2) + ")")
-            //Fits the nodes to the canvas a little bit better.
-
-
-
-            context.Scales.nodeSizeScale = Utilities.makeDynamicScaleNew(d3.extent(context.filteredData.nodes.data, function(d, i) {
+            
+	context.Scales.nodeSizeScale = Utilities.makeDynamicScaleNew(d3.extent(context.filteredData.nodes.data, function(d, i) {
                 return d[context.config.meta.nodes.styleEncoding.size.attr]
             }), context.config.meta.nodes.styleEncoding.size.range)
 
@@ -33,8 +29,6 @@ visualizationFunctions.ForceNetwork = function(element, data, opts) {
                 return d[context.config.meta.edges.styleEncoding.opacity.attr]
             }), context.config.meta.edges.styleEncoding.opacity.range)
 
-
-
             var k = Math.sqrt(context.filteredData.nodes.data.length / (context.config.dims.width * context.config.dims.height));
 
             context.SVG.background = context.SVG.append("rect")
@@ -45,7 +39,6 @@ visualizationFunctions.ForceNetwork = function(element, data, opts) {
             .attr("y", 0)
             .attr("transform", "translate(" + -(context.config.margins.left + context.config.dims.width) + "," + -(context.config.margins.top + context.config.dims.height) + ")")
             context.SVG.force = null;
-
 
             context.SVG.force = d3.layout.force()
             .nodes(context.filteredData.nodes.data)
@@ -93,7 +86,95 @@ visualizationFunctions.ForceNetwork = function(element, data, opts) {
                     .on("dragstart", function() {
                         d3.event.sourceEvent.stopPropagation();
                     })
-                    ). on('mouseover', function(d,i){
+                    )
+                    .on('click',function(d,i){
+                         if (!forceNetwork01.click) 
+                        {
+                            forceNetwork01.click = 1;
+                            barChart01.click=1;
+                            forceNetwork01.SVG.selectAll("text").attr("display","none");
+                            d3.select(this).selectAll("text").attr("display","inline");
+                            barChart01.SVG.selectAll("text").attr("opacity",.25);
+                            barChart01.SVG.barGroups.selectAll("text").forEach(function(d6,i6){
+                                if (d6[0].innerHTML == d.name.toString().toLowerCase()){
+                                    d6[0].setAttribute("opacity",1);
+                                    d6[0].style.fontWeight = "bold";
+                                    d6[0].style.stroke = "black";
+                                    d6[0].style.strokeWidth = ".5px";
+                                    d6.parentNode.childNodes[0].style.fill = "darkgrey";
+                                }
+
+
+                            })
+                            context.SVG.nodeG.selectAll("circle")
+                            .attr("opacity", .25)
+                            context.SVG.edges
+                            .attr("opacity", .25)
+                            var matchingEdges = context.SVG.edges.filter(function(d1, i1) {
+                                return d1.source.id == d.id || d1.target.id == d.id;
+                            })
+
+                            matchingEdges.attr("opacity", 1);
+                            matchingEdges.data().forEach(function(d1, i1) {
+                                context.SVG.nodeG.filter(function(d2, i2) {
+
+                                    if(d2.id == d1.source.id || d2.id == d1.target.id) {
+                                        barChart01.SVG.barGroups.selectAll("text").forEach(function(d6,i6){
+                                            if (d6[0].innerHTML == d2.name.toString().toLowerCase()) 
+                                            {
+                                                d6[0].setAttribute("opacity",1);
+                                                d6.parentNode.childNodes[0].style.fill = "darkgrey";
+                                            }
+                                        })
+                                        return d2.id;    
+                                    }
+                                }).selectAll("circle").attr("opacity", 1)
+                            });
+
+                            matchingEdges.data().forEach(function(d4,i4){
+                                context.SVG.nodeG.filter(function(d2,i2){
+                                    if((d4.target.id == d.id) && (d2.id == d4.source.id)) return d2.id;
+                                    else if((d4.source.id == d.id) && (d2.id == d4.target.id)) return d2.id;
+
+                                }).selectAll("text").attr("display","inline");
+                            })
+
+
+                        }
+
+                        else{
+                            forceNetwork01.click=0;
+                            barChart01.click=0;
+                            context.SVG.nodeG.selectAll("text").attr("display", function(d, i) {
+                                if (d[configs.forceNetwork01.nodes.styleEncoding.size.attr] >= parseInt($("#range")["0"].value)) {
+
+                                    return "inline";
+
+                                } else {
+
+                                    return "none";
+                                }
+
+                            });
+
+                            barChart01.SVG.selectAll("text").attr("opacity",1);
+                            barChart01.SVG.selectAll("text").style("stroke-width","0px");
+                            barChart01.SVG.selectAll("text").style("font-weight","bold");            
+                            barChart01.SVG.selectAll("rect").style("fill","lightgrey");
+
+
+                            context.SVG.nodeG.selectAll("circle")
+                            .attr("opacity", 1);
+                            context.SVG.edges
+                            .attr("opacity", 1);
+
+                        }
+
+                    })
+
+                .on('mouseover', function(d,i){
+
+                    if(!forceNetwork01.click){
                         forceNetwork01.SVG.selectAll("text").attr("display","none");
                         d3.select(this).selectAll("text").attr("display","inline");
                         barChart01.SVG.selectAll("text").attr("opacity",.25);
@@ -141,9 +222,10 @@ visualizationFunctions.ForceNetwork = function(element, data, opts) {
                             }).selectAll("text").attr("display","inline");
                         })
 
-
+                    }
 
                     }).on('mouseout', function(d,i){
+                    if(!forceNetwork01.click){
                        context.SVG.nodeG.selectAll("text").attr("display", function(d, i) {
                         if (d[configs.forceNetwork01.nodes.styleEncoding.size.attr] >= parseInt($("#range")["0"].value)) {
 
@@ -167,7 +249,7 @@ visualizationFunctions.ForceNetwork = function(element, data, opts) {
                        context.SVG.edges
                        .attr("opacity", 1);
 
-
+                   }
 
                    }); 
 
@@ -221,33 +303,35 @@ visualizationFunctions.ForceNetwork = function(element, data, opts) {
                 }
 
 
-                context.SVG.nodeG.on("mouseover.labels", function(d, i) {
-                    d3.select(this).selectAll("text").attr("display", "inline");
-                })
-                context.SVG.nodeG.on("mouseout.labels", function(d, i) {
-                    d3.select(this).selectAll("text").attr("display", "none");
-                })
-                context.SVG.nodeG.on("mouseup.pinNodes", function(d, i) {
-                    if (d3.event.shiftKey) {
-                        d.fixed = true;
-                    } else {
-                        d.fixed = false;
-                    }
-                })
-                context.SVG.nodeG.on("click.showEdges", function(d, i) {
+               context.SVG.background
+                .on('click',function(d,i){
+                    forceNetwork01.click=0;
+                    barChart01.click=0;
+                    context.SVG.nodeG.selectAll("text").attr("display", function(d, i) {
+                        if (d[configs.forceNetwork01.nodes.styleEncoding.size.attr] >= parseInt($("#range")["0"].value)) {
+
+                            return "inline";
+
+                        } else {
+
+                            return "none";
+                        }
+
+                    });
+
+                    barChart01.SVG.selectAll("text").attr("opacity",1);
+                    barChart01.SVG.selectAll("text").style("stroke-width","0px");
+                    barChart01.SVG.selectAll("text").style("font-weight","bold");            
+                    barChart01.SVG.selectAll("rect").style("fill","lightgrey");
+
+
+                    context.SVG.nodeG.selectAll("circle")
+                    .attr("opacity", 1);
                     context.SVG.edges
-                    .classed("selected", false)
-                    .classed("deselected", true)
-
-
-                    context.SVG.edges.filter(function(d1, i1) {
-                        return d.id == d1.source.id || d.id == d1.target.id
-                    }).classed("selected", true).classed("deselected", false)
+                    .attr("opacity", 1);
                 })
 
 
-
-        //TODO: Fix this. Is it an issue with the canvas dimensions?
         function forceBoundsCollisionCheck(val, lim, off) {
             var offset = 0;
             if (off) {
@@ -279,69 +363,7 @@ visualizationFunctions.ForceNetwork = function(element, data, opts) {
 
     }
 
-  /*  this.configSchema = {
-       "nodes": {
-        "styleEncoding": {
-            "size": {
-                "attr": "number_of_grants",
-                "range": [5,11,17],
-                "scale": "linear"
-            },
-            "color": {
-                "attr": "total_amount",
-                "range": ["#FFFFFF","#3182bd"] //optional. Must be a minimum of two values. Will use the attr color.attr property to fill in bars on the defined scale.
-            }
-        },
-        "identifier": {
-            "attr": "name" //Unique identifier
-        }
-    },
-    "edges": {
-        "styleEncoding": {
-            "strokeWidth": {
-                "attr": "number_of_grants",
-                "range": [1,3.5,8]
-            },
-            "opacity": {
-                "attr": "value",
-                "range": [.5, 1]
-            },
-            "color": {
-                "attr": "",
-                "range": ["black"]
-            }
-        },
-        "identifier": {
-            "attr": "id" //Unique identifier
-        }
-    },
-    "labels": {
-        "identifier": {
-            "attr": "name" //Unique identifier
-        },
-        "styleEncoding": {
-            "size": {
-                "attr": "numPapers",
-                "range": [23, 35],
-                "scale": "linear"
-            }
-        }
-    },
-    "visualization": { //optional
-        "forceLayout": {
-            "linkStrength": 0.9,
-            "friction": .9,
-            "linkDistance": 50,
-            "charge": null,
-            "chargeDistance": null,
-            "gravity": null,
-            "theta": 0,
-            "alpha": 0.2
-        }
-    }
-};*/
 this.config = this.CreateBaseConfig();
-
 
 return context;
 }

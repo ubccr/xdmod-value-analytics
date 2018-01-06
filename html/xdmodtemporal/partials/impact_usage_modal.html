@@ -1,0 +1,97 @@
+<!-- Modal -->
+<div class="modal fade" id="impactUsageModal" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content " >
+      <div class="modal-header modal-header-info">
+        <button type="button" class="close" data-dismiss="modal" >&times;</button>
+        <h4 class="modal-title">Interface Operations</h4>
+      </div>
+      <div class="modal-body">
+        <table id="aboutTable" class="table table-bordered table-hover"  >
+          <thead>
+
+          </thead>
+          <tbody>
+            <tr>
+              <th>Operation</th>
+              <th>Action</th>
+            </tr>
+            <tr>
+              <td>
+                <img src="images/rectangle.png" alt="Node" height="50" width="50" id="rectangle">
+                <img src="images/leftClick.png" alt="Double Click" height="42" width="42" id="doubleClick"><br>
+                <b>Left Click on a Node</b>
+              </td>
+              <td>
+                Selects the node and highlights its edges and connecting nodes.
+                The color of the edges is same as that of the selected node and shows how data
+                flows from the selected node to other nodes. The selection is not cleared on mouseout.
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <img src="images/rectangle.png" alt="Node" height="50" width="50" id="rectangle">
+                <img src="images/mouseover.png" alt="Mouseover" height="42" width="42" id="mouseover"><br>
+                <b>Mouseover on a Node</b>
+              </td>
+              <td>
+                <ul>
+                  <li>Highlights the node, its connections and connecting nodes.
+                    The color of the edges is same as that of the selected node and shows how data
+                    flows from the selected node to other nodes. The selection is cleared on mouseout.
+                  </li>
+                  <li>Enables a tooltip which shows statistics on the nodes as follows:
+                    <ul>
+                      <li> Node Type - IT Resource (Storage - Units of storage in GB,
+                        Compute - Units of computation in CPU Hours).
+                      </li>
+                      <li>
+                        Node Type - Funding Type, shows number of unique grants from that Funding Resource.
+                      </li>
+                      <li>
+                        Node Type - Publications, shows number of publications under that Discipline.
+                      </li>
+                    </ul>
+                  </li>
+                  <ul>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <img src="images/edge.png" alt="barGraph" height="50" width="50" id="circle">
+                    <img src="images/mouseover.png" alt="Mouseover" height="42" width="42" id="mouseover"><br>
+                    <b>Mouseover on an Edge</b>
+                  </td>
+                  <td>
+                    <ul>
+                      <li>Highlights the edge and connected nodes, and corresponding edges from connected nodes.
+                        The color of the edges is the same as the color of the nodes they start from and shows how data
+                        flows across different nodes. The selection is cleared on mouseout.
+                      </li>
+                      <li>Enables a tooltip which shows how many records are in the data file
+                        corresponding to the selected edge.</li>
+                      </ul>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <img src="images/drag.png" alt="barGraph" height="50" width="50" id="circle">
+                      <img src="images/leftClick.png" alt="Left Click and Drag" height="42" width="42" id="leftClick"><br>
+                      <b>Left Click and Drag on a node</b>
+                    </td>
+                    <td>
+                      Allows for re-positioning of nodes.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+
+        </div>
+      </div>

@@ -54,14 +54,17 @@ visualizationFunctions.Sankey = function(element, data, opts) {
         .nodes(graph.nodes)
         .links(graph.links)
         .layout(0);
-        context.SVG.group = createVisGroup();
-        context.SVG.edges = createEdges();
-        context.SVG.nodes = createNodes();
-        context.SVG.columnLabels = createColumnLabels();
-        context.SVG.tooltips = createToolTips();
+        function setDisciplineColors(colors){
+            context.disciplineColors = colors;
+            context.SVG.group = createVisGroup();
+            context.SVG.edges = createEdges();
+            context.SVG.nodes = createNodes();
+            context.SVG.columnLabels = createColumnLabels();
+            context.SVG.tooltips = createToolTips();
+            applySVGEvents();
+        }
+        d3.json("data/disciplineColors.json", setDisciplineColors);
 
-
-        applySVGEvents();
         function createColumnLabels() {
          context.SVG.columnLabels = context.SVG.group.append("g");
          context.config.meta.other.categories.forEach(function(d, i) {
@@ -94,7 +97,7 @@ visualizationFunctions.Sankey = function(element, data, opts) {
                 }
                 return d;
             })
-            if(textNode.text()=="Funding"){
+            if(textNode.text()=="Funding Type"){
                 textNode
                 .append("tspan")
                 .attr("x", function() {
@@ -107,7 +110,7 @@ visualizationFunctions.Sankey = function(element, data, opts) {
                     return currNodeData.x + context.config.meta.nodes.styleEncoding.size.value / 2
                 })
                 .attr("y", -12)
-                .text("Total Funding: "+Utilities.formatValue["currency"](context.filteredData.grant_total,'$'))
+                .text(context.totalGrants+" grants | Total: "+Utilities.formatValue["currency"](context.filteredData.grant_sizes.total,'$'))
                 .style("text-anchor","mid")
                 .style("font-size",14)
             }
@@ -126,7 +129,7 @@ visualizationFunctions.Sankey = function(element, data, opts) {
                 })
                 .attr("y", -12)
 
-                .text("Total # Times Used: "+Utilities.formatValue["number"](context.filteredData.resource_users.total))
+                .text("Total Users: "+Utilities.formatValue["number"](context.filteredData.resource_users.total))
 
                 .style("text-anchor","mid")
                 .style("font-size",14)
@@ -146,11 +149,11 @@ visualizationFunctions.Sankey = function(element, data, opts) {
                 })
                 .attr("y", -12)
 
-                .text("Total Publications: "+context.filteredData.publication_disciplines.total)
+                .text("Total Publications: "+context.filteredData.publication_numbers_discipline.total)
 
                 .style("text-anchor","mid")
                 .style("font-size",14)
-            }    
+            }
         })
 
 
@@ -164,32 +167,32 @@ visualizationFunctions.Sankey = function(element, data, opts) {
         function customEdgeFilter(node, edge){
             switch(node.i){
                 case 0: if(node.name == edge.uid.split("|")[1])
-                return edge; 
-                else break;    
+                return edge;
+                else break;
                 case 1: if(node.name == edge.uid.split("|")[2])
                 return edge;
-                else break;     
+                else break;
                 case 2: if((node.name.indexOf(edge.uid.split("|")[3]))!=-1)
                 return edge;
-                else break;   
+                else break;
 
             }
-        } 
+        }
 
         function customNodeFilter(node, edge){
             switch(node.i){
                 case 0: if(node.name == edge.uid.split("|")[1])
-                return node; 
-                else break;    
+                return node;
+                else break;
                 case 1: if(node.name == edge.uid.split("|")[2])
                 return node;
-                else break;     
+                else break;
                 case 2: if((node.name.indexOf(edge.uid.split("|")[3]))!=-1)
                 return node;
-                else break;   
+                else break;
 
             }
-        } 
+        }
         context.SVG.nodes.selectAll("rect")
 
         .on("mouseout", function(d, i) {
@@ -204,7 +207,7 @@ visualizationFunctions.Sankey = function(element, data, opts) {
             if (d2.click==0)
                 d3.select(this).classed("selected", false).classed("deselected", false).style("stroke", defaultEdgeColor);
 
-        });  
+        });
            context.SVG.edges.filter(function(d){
             if(d.click == 1)
             {
@@ -213,7 +216,7 @@ visualizationFunctions.Sankey = function(element, data, opts) {
                   return customEdgeFilter(d,d5);
               }).classed("selected",true);
             }
-        }); 
+        });
 
        })
         .on("mouseover", function(d) {
@@ -241,7 +244,7 @@ visualizationFunctions.Sankey = function(element, data, opts) {
 
             context.SVG.edges.filter(function(d5){
                 return customEdgeFilter(d,d5);
-                
+
             }).each(function(d1, i1) {
                 if (d1.click==0)
                     {   d1.click = 1;
@@ -249,7 +252,7 @@ visualizationFunctions.Sankey = function(element, data, opts) {
                         d3.select(this).style("stroke", d.color).classed("selected", true).moveToFront();
                         context.SVG.nodes.selectAll("rect").filter(function(d8){
                          return customNodeFilter(d8,d1);
-                     }).classed("selected",true); 
+                     }).classed("selected",true);
                     }
                 })
 
@@ -257,7 +260,7 @@ visualizationFunctions.Sankey = function(element, data, opts) {
         })
         .on("dblclick", function(d) {
 
-            d.click=0; 
+            d.click=0;
             d3.select(this).classed("selected", false);
             context.SVG.edges.filter(function(d5){
                 return customEdgeFilter(d,d5);
@@ -267,10 +270,10 @@ visualizationFunctions.Sankey = function(element, data, opts) {
                 {
                     d2.click = 0;
                     d3.select(this).classed("selected", false).classed("deselected", false).style("stroke", defaultEdgeColor);
-                    
+
                 }
 
-            }); 
+            });
             context.SVG.nodes.filter(function(d1){
                 if ((d1.name != d.name) && (d1.click==1))
                     return d1;
@@ -287,12 +290,12 @@ visualizationFunctions.Sankey = function(element, data, opts) {
                     d3.select(this).style("stroke", d2.color).classed("selected", true).moveToFront();
                     context.SVG.nodes.selectAll("rect").filter(function(d9,i9){
                        return customNodeFilter(d9,d4);
-                   }).classed("selected",true);                
+                   }).classed("selected",true);
 
                 }
-            });   
+            });
         })
-            
+
         })
 
 
@@ -305,7 +308,7 @@ visualizationFunctions.Sankey = function(element, data, opts) {
             var color;
             var className;
             var clickedLocal=false;
-            d3.select(this).data().forEach(function(d1, i1) {      
+            d3.select(this).data().forEach(function(d1, i1) {
 
                 className = d1.uid;
 
@@ -347,7 +350,7 @@ visualizationFunctions.Sankey = function(element, data, opts) {
                     }).classed("selected",true);
 
                     d3.select(this).style("stroke", color).classed("selected", true).moveToFront();
-                }) 
+                })
             }
         })
         .on("mouseout", function(d, i) {
@@ -359,7 +362,7 @@ visualizationFunctions.Sankey = function(element, data, opts) {
                 d3.select(this).classed("selected", false).classed("deselected", false).style("stroke", defaultEdgeColor);
                 context.SVG.nodes.selectAll("rect").filter(function(d9,i9){
                  return customNodeFilter(d9,d);
-             }).classed("selected",false);  
+             }).classed("selected",false);
             });
 
         }
@@ -371,7 +374,7 @@ visualizationFunctions.Sankey = function(element, data, opts) {
                 context.SVG.nodes.selectAll("rect").filter(function(d9,i9){
                  return customNodeFilter(d9,d1);
              }).classed("selected",true);
-            }  
+            }
         });
 
 
@@ -392,7 +395,6 @@ visualizationFunctions.Sankey = function(element, data, opts) {
             context.SVG.nodes.selectAll("rect").each(function(d4,i4){
                 d4.click=0;
             })
-    //d3.event.stopPropagation();
 })
 
 
@@ -438,13 +440,12 @@ visualizationFunctions.Sankey = function(element, data, opts) {
    // the function for moving the nodes
    function dragmove(d) {
     if (this.nextSibling) this.parentNode.appendChild(this);
-    d3.select(this).attr("transform", 
+    d3.select(this).attr("transform",
         "translate(" + (
            d.x = Math.max(0, Math.min(context.config.dims.fixedWidth - offsetW - d.dx, d3.event.x))
            ) + "," + (
            d.y = Math.max(0, Math.min(context.config.dims.fixedHeight , d3.event.y))
            ) + ")");
-// sankey.relayout();
 context.SVG.edges.attr("d", path);
 
 
@@ -456,6 +457,17 @@ context.SVG.nodes.append("rect")
     return d.dy;
 })
 .attr("width", sankey.nodeWidth())
+ .attr("fill", function(d){
+   if (d.i == 0)
+     return context.disciplineColors[sankey01.resource_map[d.name]];
+   if(d.i == 1){
+     if(d.name.indexOf("NSF")>=0)
+       return context.disciplineColors["NSF"];
+     else return context.disciplineColors["NIH"];
+   }
+   if (d.i == 2)
+     return context.disciplineColors[d.name];
+   });
 
 context.SVG.nodes.append("text")
 .attr("x", -6)
@@ -468,50 +480,19 @@ context.SVG.nodes.append("text")
 .text(function(d) {
     var stats=""
     if(d.i == 0){
-        name = d.name.replace(/\s/g, '').toUpperCase()
-        switch(name)
-        {
-            case "BIGREDII":stats = context.filteredData.resource_users.BIGREDII;break;
-            case "QUARRY": stats = context.filteredData.resource_users.QUARRY;break;
-            case "MASON":stats = context.filteredData.resource_users.MASON;break;
-            case "KARST":stats = context.filteredData.resource_users.KARST;break;
-
-        }
-
+       stats = context.filteredData.resource_users[d.name];
         var txt = d.name.replaceAll("|", "").replaceAll("dotdot", ".");
         if (context.config.meta.labels.prettyMap[txt.trim()]) {
-            return context.config.meta.labels.prettyMap[txt.trim()]+" (#Users: "+Utilities.formatValue["number"](stats)+")";
+            return context.config.meta.labels.prettyMap[txt.trim()]+" (Users: "+Utilities.formatValue["number"](stats)+")";
         }
         if ((txt.length>stringSizeLimit) && (d.i==2))
             {return txt.slice(0, stringSizeLimit)+"...";
     }
-    else return txt+" (#"+Utilities.formatValue["number"](stats)+")";
+    else return txt+" ("+Utilities.formatValue["number"](stats)+")";
 }
 if(d.i == 1){
     var stats1=""
-     switch(d.name)
-        {
-            case "NIH-FDA":stats1 = context.filteredData.grant_sizes.NIHFDA;break;
-            case "NIH-NCCIH":stats1 = context.filteredData.grant_sizes.NIHNCCIH;break;
-            case "NIH-NCI":stats1 = context.filteredData.grant_sizes.NIHNCI;break;
-            case "NIH-NHLBI":stats1 = context.filteredData.grant_sizes.NIHNHLBI;break;
-            case "NIH-NIA": stats1 = context.filteredData.grant_sizes.NIHNIA;break;
-            case "NIH-NIAAA":stats1 = context.filteredData.grant_sizes.NIHNIAAA;break;
-            case "NIH-NIAID":stats1 = context.filteredData.grant_sizes.NIHNIAID;break;
-            case "NIH-NIGMS":stats1 = context.filteredData.grant_sizes.NIHNIGMS;break;
-            case "NIH-NIBIB":stats1 = context.filteredData.grant_sizes.NIHNIBIB;break;
-            case "NIH-NIAMS":stats1 = context.filteredData.grant_sizes.NIHNIAMS;break;
-            case "NIH-NIDA":stats1 = context.filteredData.grant_sizes.NIHNIDA;break;
-            case "NIH-NIMH":stats1 = context.filteredData.grant_sizes.NIHNIMH;break;
-            case "NIH-NICHD":stats1 = context.filteredData.grant_sizes.NIHNICHD;break;
-            case "NIH-NIDCD":stats1 = context.filteredData.grant_sizes.NIHNIDCD;break;
-            case "NIH-NIDDK":stats1 = context.filteredData.grant_sizes.NIHNIDDK;break;
-            case "NIH-NLM":stats1 = context.filteredData.grant_sizes.NIHNLM;break;
-            case "NIH-OD":stats1 = context.filteredData.grant_sizes.NIHOD;break;
-            case "NIH-ODCDC":stats1 = context.filteredData.grant_sizes.NIHODCDC;break;
-
-                 
-        }
+   stats1 = context.filteredData.grant_sizes[d.name];
     var txt = d.name.replaceAll("|", "").replaceAll("dotdot", ".");
     if (context.config.meta.labels.prettyMap[txt.trim()]) {
         return context.config.meta.labels.prettyMap[txt.trim()]+" ("+Utilities.formatValue["currency"](stats1,'$')+")";
@@ -524,29 +505,12 @@ else return txt+" ("+Utilities.formatValue["currency"](stats1,'$')+")";
 
 if(d.i == 2){
     var stats2=""
-     switch(d.name)
-        {
-            case "Other":stats2 = context.filteredData.publication_disciplines.Other;break; 
-            case "Infectious Diseases":stats2 = context.filteredData.publication_disciplines.InfectiousDiseases;break;
-            case "Brain Research":stats2 = context.filteredData.publication_disciplines.BrainResearch;break;
-            case "Biotechnology":stats2 = context.filteredData.publication_disciplines.Biotechnology;break;
-            case "Biology":stats2 = context.filteredData.publication_disciplines.Biology;break;
-            case "Medical Specialties":stats2 = context.filteredData.publication_disciplines.MedicalSpecialties;break;
-            case "Social Sciences":stats2 = context.filteredData.publication_disciplines.SocialSciences;break;
-            case "Chemistry":stats2 = context.filteredData.publication_disciplines.Chemistry;break;
-            case "Social Sciences":stats2 = context.filteredData.publication_disciplines.SocialSciences;break;
-            case "Health Professionals":stats2 = context.filteredData.publication_disciplines.HealthProfessionals;break;
-            case "Electrical Engineering & Computer Science":stats2 = context.filteredData.publication_disciplines.ElectricalEngineeringComputerScience;break;
-            case "Chemical, Mechanical, & Civil Engineering":stats2 = context.filteredData.publication_disciplines.ChemicalMechanicalCivilEngineering;break;
-            
-
-                 
-        }
+    stats2 = context.filteredData.publication_numbers_discipline[d.name]
     var txt = d.name.replaceAll("|", "").replaceAll("dotdot", ".");
     if (context.config.meta.labels.prettyMap[txt.trim()]) {
-        return context.config.meta.labels.prettyMap[txt.trim()]+" (#Publications: "+Utilities.formatValue["number"](stats2)+")";
+        return context.config.meta.labels.prettyMap[txt.trim()]+" (Publications: "+Utilities.formatValue["number"](stats2)+")";
     }
-    
+
  return txt+" ("+Utilities.formatValue["number"](stats2)+")";
 }
 
@@ -576,22 +540,27 @@ function createToolTips() {
             target = target
         }
         var val = source + " to " +
-        target + "\n" + "#"+ Utilities.formatValue["number"](d.value);
+        target + "\n" + ""+ Utilities.formatValue["number"](d.value);
         return val.replaceAll("|", "").replaceAll("dotdot", ".").trim();
     });
     context.SVG.nodes.append("title")
     .attr("class", "tooltip")
     .text(function(d) {
-        var name = d.name.replaceAll("|", "").replaceAll("dotdot", ".").trim();
-        if (context.config.meta.labels.prettyMap[name]) {
-            name = context.config.meta.labels.prettyMap[name]
-        } else {
-            name = name
+        if(d.i==0)
+        {
+            if(sankey01.resource_map[d.name] == "COMPUTE")
+                return Utilities.formatValue["number"](context.filteredData.resource_unit_totals[d.name])+" CPU Hours";
+            if(sankey01.resource_map[d.name] == "STORAGE")
+                return Utilities.formatValue["number"](context.filteredData.resource_unit_totals[d.name])+" GB";
         }
-
-        var val1 = name + "\n" + "#" + Utilities.formatValue[""](d.value);
-        var val2 = val1.replaceAll("|", "").replaceAll("dotdot", ".").trim();
-        return val2;
+        if(d.i==1)
+        {
+            return "#Grants: "+context.uniqueGrants[d.name];
+        }
+        if(d.i==2)
+        {
+            return "#Publications: "+Utilities.formatValue["number"](context.filteredData.publication_numbers_discipline[d.name]);
+        }
     });
     return context.SVG.selectAll(".tooltip")
 }
@@ -606,7 +575,7 @@ function formatData() {
         "nodes": [],
         "links": []
     };
-    
+
     context.filteredData.records.data.map(function(d, i) {
         var pre = "";
         context.config.meta.other.categories.forEach(function(d1, i1) {
@@ -693,12 +662,6 @@ function formatData() {
         })
         .map(graph.nodes));
 
-    /*var expensesCount = d3.nest()
-  .key(function(d) { return d.name; })
-  .rollup(function(v) { return v.GrantSize; })
- 
-  console.log(JSON.stringify(expensesCount));*/
-
   graph.links.forEach(function(d, i) {
     graph.links[i].source = graph.nodes.indexOf(graph.links[i].source);
     graph.links[i].target = graph.nodes.indexOf(graph.links[i].target);
@@ -707,16 +670,11 @@ function formatData() {
   graph.nodes.forEach(function(d, i) {
     graph.nodes[i] = { "name": d, "click": 0 };
 });
-        // console.log(graph.nodes)
         graph.links.sort(function(a, b) {
             if (a.value == b.value) return -1
                 return a.value - b.value;
         });
 
-      /*  var k = d3.nest()
-        .key(function(d) { return d.PubID; })
-        .entries(context.filteredData.records.data);
-        console.log(JSON.stringify(k));*/
         return graph;
     }
 

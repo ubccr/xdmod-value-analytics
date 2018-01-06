@@ -129,7 +129,6 @@ function computeNodeBreadths() {
         ++x;
     }
 
-    //
     moveSinksRight(x);
     scaleNodeBreadths((width - nodeWidth) / (x - 1));
 }
@@ -166,15 +165,9 @@ function computeNodeDepths(iterations) {
         .map(function(d) {
             return d.values; });
 
-    //
+
     initializeNodeDepth();
     resolveCollisions();
-    for (var alpha = 1; iterations > 0; --iterations) {
-        // relaxRightToLeft(alpha *= .99);
-        // resolveCollisions();
-        // relaxLeftToRight(alpha);
-        // resolveCollisions();
-    }
 
     function initializeNodeDepth() {
         var ky = Math.abs(d3.min(nodesByBreadth, function(nodes) {
@@ -190,14 +183,6 @@ function computeNodeDepths(iterations) {
 
         links.forEach(function(link) {
             link.dy = link.value * ky ;
-      /*      if (link.dy <0)
-                {
-                    console.log(size[1]);
-                    console.log(nodes.length);
-                    console.log(nodePadding);
-                    console.log(d3.sum(nodes,value));
-                    link.dy = Math.abs(link.dy);
-                }*/
         });
     }
 
@@ -241,10 +226,6 @@ function computeNodeDepths(iterations) {
             nodes = nodes.sort(function(a, b) {
                     return a.value - b.value
                 })
-                // Push any overlapping nodes down.
-                // nodes.sort(function(a, b) {
-                //   return a.uid - b.uid;
-                // });
             for (i = 0; i < n; ++i) {
                 node = nodes[i];
                 dy = y0 - node.y;
@@ -252,19 +233,6 @@ function computeNodeDepths(iterations) {
                 y0 = node.y + node.dy + nodePadding;
             }
 
-            // // If the bottommost node goes outside the bounds, push it back up.
-            // dy = y0 - nodePadding - size[1];
-            // if (dy > 0) {
-            //   y0 = node.y -= dy;
-
-            //   // Push any overlapping nodes back up.
-            //   for (i = n - 2; i >= 0; --i) {
-            //     node = nodes[i];
-            //     dy = node.y + node.dy + nodePadding - y0;
-            //     if (dy > 0) node.y -= dy;
-            //     y0 = node.y;
-            //   }
-            // }
         });
     }
 
@@ -275,8 +243,6 @@ function computeNodeDepths(iterations) {
 
 function computeLinkDepths() {
     nodes.forEach(function(node) {
-        // node.sourceLinks.sort(ascendingTargetDepth);
-        // node.targetLinks.sort(ascendingSourceDepth);
     });
     nodes.forEach(function(node) {
         var sy = 0,

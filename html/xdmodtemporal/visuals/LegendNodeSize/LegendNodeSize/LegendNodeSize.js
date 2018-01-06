@@ -3,7 +3,6 @@ visualizationFunctions.LegendNodeSize = function(element, data, opts) {
     context.config = context.CreateBaseConfig();
     // context.SVG = context.config.easySVG(element[0])
     context.VisFunc = function() {
-
         d3.xml("visuals/LegendNodeSize/LegendNodeSize/legend.svg").mimeType("image/svg+xml").get(function(error, xml) {
             if (error) throw error;
             context.SVG = d3.select(xml.documentElement);
@@ -13,13 +12,13 @@ visualizationFunctions.LegendNodeSize = function(element, data, opts) {
                 var extent = d3.extent(arr);
                 var avg = (extent[1] - extent[0]) / 2;
                 context.getMaxNode()
-                .attr("r", extent[1])
+                    .attr("r", extent[1])
                 context.getMidNode()
-                .attr("r", avg)
-                .attr("cy", parseInt(context.getMaxNode().attr("cy")) + extent[1] - avg)
+                    .attr("r", avg)
+                    .attr("cy", parseInt(context.getMaxNode().attr("cy")) + extent[1] - avg)
                 context.getMinNode()
-                .attr("r", extent[0])
-                .attr("cy", parseInt(context.getMaxNode().attr("cy")) + extent[1] - extent[0])
+                    .attr("r", extent[0])
+                    .attr("cy", parseInt(context.getMaxNode().attr("cy")) + extent[1] - extent[0])
             }
             context.getTitle = function() {
                 return context.SVG.selectAll("#title");
@@ -75,33 +74,40 @@ visualizationFunctions.LegendNodeSize = function(element, data, opts) {
                 context.getNote().text(text);
             }
 
+            //8 68 128
+
             context.SVG.attr("width", 150);
             context.SVG.attr("height", 150);
-            
+            // context.setNodeSizes([4, 64])
         });
 
-        context.updateNodeSize = function(arr) {          
+        context.updateNodeSize = function(arr,zoom,viz) {
             var minNode = context.getMinNode();
             var midNode = context.getMidNode();
-            var minNodeSize = (64 * arr[0]) / arr[1];
-            var midNodeSize = (64 + minNodeSize) / 2;
+            var maxNode = context.getMaxNode();
 
-            minNode
-            .attr("r", minNodeSize)
-            .attr("cy", 174 - minNodeSize)
-            
-            midNode
-            .attr("r", midNodeSize)
-            .attr("cy", 174 - midNodeSize)
-            context.getMidG().attr("transform", "translate(70," + (174 - (midNodeSize * 2)) + ")")
-            context.getMinG().attr("transform", "translate(70," + (174 - (minNodeSize * 2)) + ")")
-        }
+            if (viz == "network"){
+                    minNode.transition()
+  	                 .duration(100)
+                        .attr("r", arr[0]*zoom);
+                    midNode.transition()
+  	                 .duration(100)
+                        .attr("r", ((arr[0]+arr[1])/2)*zoom);
+                    maxNode.transition()
+  	                 .duration(100)
+                        .attr("r", arr[1]*zoom);
+                      }
 
-        context.updateTextFromFunc = function(f) {
-            var max = f(96);
-            var mean = f(57.6);
-            var min = f(19.2);
-            nodeSize.updateText([min, mean, max]);
+
+              }
+
+        context.updateTextFromFunc = function(viz){
+
+           if(viz=="network"){
+                var mid = (forceNetwork01.maxGrants + forceNetwork01.minGrants)/2;
+                nodeSize.updateText([forceNetwork01.minGrants, mid, forceNetwork01.maxGrants]);
+            }
+
         }
 
         context.updateText = function(arr) {

@@ -220,9 +220,119 @@
                         .style("opacity", .000001)
                     }
                 });
+            }).on('click',function(d,i){
+                if(!barChart01.click)
+                {
+                    barChart01.click=1;
+                    forceNetwork01.click=1;
+                    barChart01.SVG.selectAll("text.wvf-label-mid").attr("opacity",.25);
+                    
+
+                    d3.select(this).selectAll("text.wvf-label-mid").attr("opacity",1);
+                    d3.select(this).selectAll("text.wvf-label-mid").style("fontWeight","bold");
+                    d3.select(this).selectAll("text.wvf-label-mid").style("stroke","black"); 
+                    d3.select(this).selectAll("text.wvf-label-mid").style("stroke-width",".5px");
+
+                    
+                    d3.select(this).selectAll("rect.wvf-rect").style("fill","darkgrey");
+
+
+
+                    forceNetwork01.SVG.selectAll("text").attr("display","none");
+                    
+                    
+                    forceNetwork01.SVG.nodeG.selectAll("circle")
+                    .attr("opacity", .25)
+                    forceNetwork01.SVG.edges
+                    .attr("opacity", .25)
+
+                    forceNetwork01.SVG.nodeG.filter(function(d1,i1){
+                        if(d1.name == d.key)
+                        {
+                            var matchingEdges = forceNetwork01.SVG.edges.filter(function(d2, i2) {
+                               return d2.source.id == d1.id || d2.target.id == d1.id;
+                           })
+
+                            matchingEdges.attr("opacity", 1);
+
+                            matchingEdges.data().forEach(function(d4, i4) {
+                                forceNetwork01.SVG.nodeG.filter(function(d5, i5) {
+                                   
+                                    if(d5.id == d4.source.id || d5.id == d4.target.id) {
+                                                  return d4.id;    
+                                              }
+                                          }).selectAll("circle").attr("opacity", 1)
+                            });
+                            
+                            matchingEdges.data().forEach(function(d6,i6){
+                                forceNetwork01.SVG.nodeG.filter(function(d7,i7){
+                                    if((d6.target.id == d1.id) && (d7.id == d6.source.id)) {
+
+                                       barChart01.SVG.barGroups.selectAll("text").forEach(function(d9,i9){
+                                        if (d9[0].innerHTML == d7.name.toString().toLowerCase()) 
+                                        {
+                                           d9[0].setAttribute("opacity",1);
+                                           
+                                       }
+                                   })
+
+
+                                       return d7.id;
+
+                                   }
+                                   else if((d6.source.id == d1.id) && (d7.id == d6.target.id)) {
+
+                                      barChart01.SVG.barGroups.selectAll("text").forEach(function(d9,i9){
+                                        if (d9[0].innerHTML == d7.name.toString().toLowerCase()) 
+                                        {
+                                           d9[0].setAttribute("opacity",1);
+                                           
+                                       }
+                                   })
+
+                                      return d7.id;
+
+                                  }
+                              }).selectAll("text").attr("display","inline");
+                            })
+                            return d1.id;
+                        } 
+
+                    }).selectAll("circle").attr("opacity", 1)
+                    
+                    forceNetwork01.SVG.nodeG.filter(function(d8,i8){
+                        if(d8.name == d.key)
+                            { return d8.id;}
+                    }).selectAll("text").attr("display", "inline")
+
+                }
+
+                else{
+
+                    barChart01.click=0;
+                    forceNetwork01.click=0;
+                    d3.selectAll("rect.wvf-rect").style("fill","lightgrey");
+                    
+                    forceNetwork01.SVG.nodeG.selectAll("text").attr("display", function(d, i) {
+                        if (d[configs.forceNetwork01.nodes.styleEncoding.size.attr] >= parseInt($("#range")["0"].value)) {
+                           
+                            return "inline";
+                            
+                        } else {
+                            
+                            return "none";
+                        }
+                        
+                    });
+                    barChart01.SVG.selectAll("text.wvf-label-mid").attr("opacity",1);
+                    barChart01.SVG.selectAll("text.wvf-label-mid").style("fontWeight","normal"); 
+                    barChart01.SVG.selectAll("text.wvf-label-mid").style("stroke-width","0px");
+                    forceNetwork01.SVG.nodeG.selectAll("circle").attr("opacity", "1");
+                    forceNetwork01.SVG.edges.attr("opacity", 1);
+                }
             })
             .on('mouseover', function(d,i){
-                
+                 if(!barChart01.click){
                 barChart01.SVG.selectAll("text.wvf-label-mid").attr("opacity",.25);
                 
 
@@ -257,10 +367,6 @@
                             forceNetwork01.SVG.nodeG.filter(function(d5, i5) {
                              
                                 if(d5.id == d4.source.id || d5.id == d4.target.id) {
-                                                // barChart01.SVG.barGroups.selectAll("text").forEach(function(d6,i6){
-                                                // if (d6[0].innerHTML == d2.name) d6[0].setAttribute("opacity",1);
-                                                
-                                                  // })
                                                   return d4.id;    
                                               }
                                           }).selectAll("circle").attr("opacity", 1)
@@ -306,9 +412,10 @@
                     if(d8.name == d.key)
                         { return d8.id;}
                 }).selectAll("text").attr("display", "inline")
+            }
             })
             .on('mouseout', function(d,i){
-                
+                 if(!barChart01.click){
                 d3.selectAll("rect.wvf-rect").style("fill","lightgrey");
                 
                 forceNetwork01.SVG.nodeG.selectAll("text").attr("display", function(d, i) {
@@ -327,6 +434,7 @@
                 barChart01.SVG.selectAll("text.wvf-label-mid").style("stroke-width","0px");
                 forceNetwork01.SVG.nodeG.selectAll("circle").attr("opacity", "1");
                 forceNetwork01.SVG.edges.attr("opacity", 1);
+            }
             });
         }
     }

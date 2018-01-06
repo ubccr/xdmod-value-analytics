@@ -3,7 +3,7 @@ configs.forceNetwork01 = {
         "styleEncoding": {
             "size": {
                 "attr": "number_of_grants",
-                "range": [5,11,17],
+                "range": [5,17],
                 "scale": "linear"
             },
             "color": {
@@ -19,7 +19,7 @@ configs.forceNetwork01 = {
         "styleEncoding": {
             "strokeWidth": {
                 "attr": "number_of_grants",
-                "range": [1,3.5,8]
+                "range": [1,8]
             },
             "opacity": {
                 "attr": "value",
@@ -100,53 +100,48 @@ events.forceNetwork01 = function(ntwrk){
     function configureDOMElements() {
 
         $('.drawer').drawer();
-        
+
         var orderedSizeCoding = [];
-        
+
         ntwrk.filteredData.nodes.data.forEach(function(d, i) {
             orderedSizeCoding.push(d[configs.forceNetwork01.nodes.styleEncoding.size.attr]);
         })
         orderedSizeCoding.sort(function(a, b) {
             return Number(a) - Number(b);
         });
-        
+
 
         var $range = $("#range");
         $range.ionRangeSlider({
             min: d3.min(orderedSizeCoding),
             max: d3.max(orderedSizeCoding),
             from: Math.ceil(d3.mean(orderedSizeCoding)),
-            // type: 'double',
             step: 1,
             grid: false,
             onChange: function(newVal) {
-                
+
                 updateLabelVisibility(newVal.from, orderedSizeCoding)
             }
-        }); 
+        });
 
         ntwrk.allNodes = [].concat(ntwrk.filteredData.nodes.data);
         ntwrk.allEdges = [].concat(ntwrk.filteredData.edges.data);
-        updateLabelVisibility(d3.mean(orderedSizeCoding), orderedSizeCoding);  
+        updateLabelVisibility(d3.mean(orderedSizeCoding), orderedSizeCoding);
 
         slider = $("#range").data("ionRangeSlider");
-        
-        
+
+
         var sliderFormElem = $("#sliderForm");
         var sliderFormScope = angular.element(sliderFormElem).scope();
         nodeSize.setTitle("Number of grants")
         nodeSize.setNote("Based on zoom level (" + Utilities.round(ntwrk.zoom.scale(), 1) + "x)")
-        nodeSize.updateNodeSize(configs.forceNetwork01.nodes.styleEncoding.size.range);
-        nodeSize.updateTextFromFunc(function(d) {
-            return ntwrk.Scales.nodeSizeScale.invert(d / 2) / ntwrk.zoom.scale();
-        });  
+        nodeSize.updateNodeSize(configs.forceNetwork01.nodes.styleEncoding.size.range,ntwrk.zoom.scale(), "network");
+        nodeSize.updateTextFromFunc("network");
 
         edgeSize.setTitle("#Co-authored Grants")
         edgeSize.setNote("Based on zoom level (" + Utilities.round(ntwrk.zoom.scale(), 1) + "x)")
-        edgeSize.updateEdgeSize(configs.forceNetwork01.edges.styleEncoding.strokeWidth.range);
-        edgeSize.updateTextFromFunc(function(d) {
-            return ntwrk.Scales.edgeSizeScale.invert(d / 2) / ntwrk.zoom.scale();
-        });
+        edgeSize.updateEdgeSize(configs.forceNetwork01.edges.styleEncoding.strokeWidth.range,ntwrk.zoom.scale());
+        edgeSize.updateTextFromFunc();
 
         nodeColor.setTitle("Total Amount in $")
         nodeColor.updateStopColors(configs.forceNetwork01.nodes.styleEncoding.color.range)
@@ -154,27 +149,50 @@ events.forceNetwork01 = function(ntwrk){
 
         ntwrk.SVG.on("mousewheel", function() {
             setTimeout(function() {
-                nodeSize.updateTextFromFunc(function(d) {
-                    return ntwrk.Scales.nodeSizeScale.invert(d / 2) / ntwrk.zoom.scale();
-                });
-                edgeSize.updateTextFromFunc(function(d) {
-                    return ntwrk.Scales.edgeSizeScale.invert(d / 2) / ntwrk.zoom.scale();
-                });
+                nodeSize.updateNodeSize(configs.forceNetwork01.nodes.styleEncoding.size.range, ntwrk.zoom.scale(), "network");
+                nodeSize.updateTextFromFunc("network");
+                edgeSize.updateEdgeSize(configs.forceNetwork01.edges.styleEncoding.strokeWidth.range, ntwrk.zoom.scale());
                 nodeSize.setNote("Based on zoom level (" + Utilities.round(ntwrk.zoom.scale(), 1) + "x)")
                 edgeSize.setNote("Based on zoom level (" + Utilities.round(ntwrk.zoom.scale(), 1) + "x)")
             }, 10);
         });
-        
-        
+
+
     }
 };
 dataprep.forceNetwork01 = function(ntwrk) {
+    ntwrk.click=0;
+    nodeIdMap={};
+    ntwrk.maxGrants = 1;
+    ntwrk.minGrants = 1;
+
     ntwrk.filteredData.nodes.data.map(function(d, i) {
-        d.id = i;
+        d.index = i;
+        nodeIdMap[d.id] = d.index;
+
+        if (d.number_of_grants>ntwrk.maxGrants){
+            ntwrk.maxGrants = d.number_of_grants;
+        }
+        if(d.number_of_grants<ntwrk.minGrants){
+            ntwrk.minGrants = d.number_of_grants;
+        }
+
         return d;
     })
+    ntwrk.maxEdgeWeight = 1;
+    ntwrk.minEdgeWeight = 1;
     ntwrk.filteredData.edges.data.map(function(d, i) {
         d.id = i;
+        d.source = nodeIdMap[d.source];
+        d.target = nodeIdMap[d.target];
+        if (d.number_of_grants>ntwrk.maxEdgeWeight){
+            ntwrk.maxEdgeWeight = d.number_of_grants
+        }
+        if(d.number_of_grants<ntwrk.minEdgeWeight){
+            ntwrk.minEdgeWeight = d.number_of_grants;
+
+        }
         return d;
     })
+
 };

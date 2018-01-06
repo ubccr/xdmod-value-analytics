@@ -64,5 +64,8 @@ events.barChart01 = function(ntwrk) {
 
 
 dataprep.barChart01 = function(ntwrk) {
-  
+    ntwrk.click=0;
+    ntwrk.filteredData.records = ntwrk.filteredData.nodes; 
+    ntwrk.PrimaryDataAttr = "records";
+
 }

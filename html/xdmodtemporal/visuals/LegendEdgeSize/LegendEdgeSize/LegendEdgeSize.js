@@ -12,13 +12,13 @@ visualizationFunctions.LegendEdgeSize = function(element, data, opts) {
                 return context.SVG.selectAll("#title");
             }
             context.getMaxG = function() {
-                return context.SVG.selectAll("#maxG");
+                return context.SVG.selectAll("#maxEdge");
             }
             context.getMidG = function() {
-                return context.SVG.selectAll("#midG");
+                return context.SVG.selectAll("#midEdge");
             }
             context.getMinG = function() {
-                return context.SVG.selectAll("#minG");
+                return context.SVG.selectAll("#minEdge");
             }
 
             context.getMaxVal = function() {
@@ -64,18 +64,15 @@ visualizationFunctions.LegendEdgeSize = function(element, data, opts) {
             context.SVG.attr("height", 150);
         });
 
-        context.updateEdgeSize = function(arr) {          
-            var minEdge = context.getMinEdge();
-            var midEdge = context.getMidEdge();
-            
-            var minEdgeSize = (64 * arr[0]) / arr[1];
-            var midEdgeSize = (64 + minEdgeSize) / 2;
+        context.updateEdgeSize = function(arr, zoom) {
+          var minEdge = context.getMinEdge();
+           var midEdge = context.getMidEdge();
+           var maxEdge = context.getMaxEdge();
 
-          
-            minEdge.attr("stroke-width", minEdgeSize)
-            midEdge.attr("stroke-width", midEdgeSize)
+           maxEdge.select("line").attr("stroke-width",arr[1]*zoom);
+            midEdge.select("line").attr("stroke-width",(arr[0]+arr[1])/2*zoom);
+            minEdge.select("line").attr("stroke-width",arr[0]*zoom);
 
-            
         }
 
         context.updateText = function(arr) {
@@ -84,11 +81,9 @@ visualizationFunctions.LegendEdgeSize = function(element, data, opts) {
             context.setMaxVal(Utilities.round(arr[2], 0))
         }
 
-        context.updateTextFromFunc = function(f) {
-             var max = f(96);
-            var mean = f(57.6);
-            var min = f(19.2);
-            edgeSize.updateText([min, mean, max]);
+        context.updateTextFromFunc = function() {
+            var mid = (forceNetwork01.maxEdgeWeight + forceNetwork01.minEdgeWeight)/2;
+            edgeSize.updateText([forceNetwork01.minEdgeWeight, mid, forceNetwork01.maxEdgeWeight]);
         }
 
 

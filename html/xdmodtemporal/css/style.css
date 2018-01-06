@@ -3,12 +3,10 @@
 html,body {
   width: 100%;
   height: 100%;
-  text-transform: capitalize;
-  font-family: 'Open Sans', sans-serif;
-  
+  font-family: 'Open Sans', sans-serif !important;
   overflow-x:hidden;
   background: #FFF;
-  
+
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -17,15 +15,16 @@ html,body {
 }
 
 
-.container {
+.sankeyContainer {
   height: 100%;
   width: 100%;
-  /*overflow-y:auto;*/
-  float: left;     
+  float: left;
+  margin-top:12px;
 }
 
 .readmaptxt, .footinicatorss{
-  font-size:15px
+  font-size:15px;
+  font-family: 'Open Sans', sans-serif !important;
 }
 
 .titlediv {
@@ -41,19 +40,13 @@ html,body {
   position: relative;
   left: 30px;
   display: inline;
-  font-size:25px
+  font-size:25px;
+  font-family: 'Open Sans', sans-serif !important;
 }
 
 
 .inline-p {
- display: inline;
-}
-
-line {
-
-/*  stroke: #666;*/
-  shape-rendering: crispEdges;
-
+  display: inline;
 }
 
 .brush{
@@ -102,6 +95,7 @@ line {
   background: rgba(0, 0, 0, 0.8);
   color: #fff;
   border-radius: 2px;
+  font-family: 'Open Sans', sans-serif !important;
 }
 
 /* Creates a small triangle extender for the tooltip */
@@ -115,6 +109,7 @@ line {
   content: "\25BC";
   position: absolute;
   text-align: center;
+  font-family: 'Open Sans', sans-serif !important;
 }
 
 /* Style northward tooltips differently */
@@ -175,24 +170,17 @@ line {
 h1 {
   text-align: center;
   text-decoration: 600;
-  font-family: open sans !important;
+  font-family: 'Open Sans', sans-serif !important;
 }
 
-h3 {
+h2, h3, h4, h5, h6 {
   font-size: 20px;
-  font-family: open sans !important;
- font-weight: 600;
-  color: black !important;
-  text-align: center !important;
-}
-
-h5 {
-  font-size: 20px;
-  font-family: open sans !important;
+  font-family: 'Open Sans', sans-serif !important;
   font-weight: 600;
   color: black !important;
   text-align: center !important;
 }
+
 
 dl, dd, dt{
   margin:0;
@@ -231,6 +219,7 @@ dl, dd, dt{
   max-height: 400px;
   font-size: 12px;
   width:100%;
+  font-family: 'Open Sans', sans-serif !important;
 }
 #selection-display {
   width:90%;
@@ -242,8 +231,8 @@ dl, dd, dt{
   width:80%;
   overflow:hidden;
 }
-.table_specification dl{    
-  display:table-row;  
+.table_specification dl{
+  display:table-row;
 }
 .table_specification dt, .table_specification dd{
   display: table-cell;
@@ -273,26 +262,23 @@ dl, dd, dt{
   font-size: 18px;
   background-color: #fff;
   color: #222 !important;
-  
   margin: 0px;
+  font-family: 'Open Sans', sans-serif !important;
 }
 
 .legend-row {
   top: 0px;
   background: #fff;
-/*  border: 1px solid #222;*/
   border: .5px solid #afafaf;
-  
   padding: 5px 0px 10px 2px;
 }
 
 .sankey .legend-row{
-   top: 0px;
+  top: 0px;
   height: 260px;
   border-style: solid;
-  border-color: black; 
+  border: .5px solid #afafaf;
   border-width: 0.5px;
-  box-shadow: 10px 10px 5px #888888;
   background:white;
 }
 
@@ -305,7 +291,7 @@ dl, dd, dt{
 
 .legend-item-label {
   background: white;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Open Sans', sans-serif !important;
   text-transform: capitalize;
   font-weight: 600;
   margin-right: 15px;
@@ -321,9 +307,8 @@ dl, dd, dt{
 
 .legend-container {
   width: 470px;
-  z-index: 10000;
+  z-index: 100;
   text-align: center;
-  /*height: 500px;*/
   font-size: 18px;
   color: #000;
   border-top-left-radius: 25px;
@@ -334,36 +319,33 @@ dl, dd, dt{
   bottom: -205px;
   left: 40%;
   transform: translate(-40%, 0);
+  font-family: 'Open Sans', sans-serif !important;
 }
 
 .sankey .legend-container{
-   background: transparent;
- position: fixed;
- width: 820px;
-
- z-index: 10000;
- text-align: center;
- /*height: 500px;*/
- font-size: 18px;
- color: #000;
- justify-content: center;
- /* align horizontal */
- border-top-left-radius: 25px;
- border-top-right-radius: 25px;
- 
- margin-right: auto;
- margin-left: auto;
- bottom: -280px;
- left:45%;
+  background: transparent;
+  position: fixed;
+  width: 820px;
+  z-index: 100;
+  text-align: center;
+  font-size: 18px;
+  color: #000;
+  justify-content: center;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+  margin-right: auto;
+  margin-left: auto;
+  bottom: -270px;
+  left:45%;
+  font-family: 'Open Sans', sans-serif !important;
 }
 
 .legend-container button {
   display: inline-block;
-/*  position: relative;*/
   padding: 10px 20px;
   font-size: 18px;
   font-weight: 600;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Open Sans', sans-serif !important;
   cursor: pointer;
   text-align: center;
   text-decoration: none;
@@ -421,16 +403,16 @@ dl, dd, dt{
 
 .zoom-level-text{
   text-transform: capitalize;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Open Sans', sans-serif !important;
   font-weight: 600;
 }
 
 .axis-text{
   font-weight: 600;
   text-transform: capitalize;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Open Sans', sans-serif !important;
   font-size: 16px;
-  
+
 }
 
 /* Filter Labels by #Grants */
@@ -438,7 +420,7 @@ dl, dd, dt{
 .filter-section {
   padding-top:5px;
   display: block;
-  z-index: 400000000000000;
+  z-index: 10;
   text-align: center;
   position: fixed;
   left: 40%;
@@ -446,9 +428,9 @@ dl, dd, dt{
 }
 
 #filterLabel {
-  text-transform: capitalize;
   font-weight: 600;
   font-size: 16px;
+  font-family: 'Open Sans', sans-serif !important;
 }
 
 .irs.js-irs-0{
@@ -465,12 +447,14 @@ dl, dd, dt{
   background: #e1e4e9;
   -moz-border-radius: 4px;
   border-radius: 4px;
+  font-family: 'Open Sans', sans-serif !important;
 }
 
 .irs-grid-text {
   color: rgba(0, 0, 0, 0.87) !important;
   top: 21px !important;
   font-size: 14px !important;
+  font-family: 'Open Sans', sans-serif !important;
 }
 
 .irs-from {
@@ -482,23 +466,18 @@ dl, dd, dt{
   background: #9bcc57;
   -moz-border-radius: 4px;
   border-radius: 4px;
+  font-family: 'Open Sans', sans-serif !important;
 }
 
-.irs-min {
+.irs-to, .irs-min, .irs-max {
   font-size: 14px !important;
-}
-
-.irs-to {
-  font-size: 14px !important;
-}
-
-.irs-max {
-  font-size: 14px !important;
+  font-family: 'Open Sans', sans-serif !important;
 }
 
 /*Axes*/
 .axis text {
   font: 10px sans-serif;
+  font-family: 'Open Sans', sans-serif !important;
 }
 
 /*Component bar graph*/
@@ -525,236 +504,77 @@ dl, dd, dt{
   right: 0px;
 }
 
-/*#nodeSize{
+.modal-header-info {
+  color:#fff;
+  padding:9px 15px;
+  border-bottom:1px solid #eee;
+  background-color: #5bc0de;
+  -webkit-border-top-left-radius: 5px;
+  -webkit-border-top-right-radius: 5px;
+  -moz-border-radius-topleft: 5px;
+  -moz-border-radius-topright: 5px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.modal-dialog{
+  top:90px;
+  overflow-y: hidden;
+}
+
+.modal-body{
+  height: 210px;
+  overflow-y: scroll;
+}
+
+.modal-header-primary {
+  color:#fff;
+  padding:9px 15px;
+  border-bottom:1px solid #eee;
+  background-color: #428bca;
+  -webkit-border-top-left-radius: 5px;
+  -webkit-border-top-right-radius: 5px;
+  -moz-border-radius-topleft: 5px;
+  -moz-border-radius-topright: 5px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+
+#impactUsageButton{
   position: absolute;
-  top:75px;
+  top: 10px;
+  left:90px;
+  z-index: 10;
+  color:black;
 }
-#nodeColor{
+
+
+#impactAboutButton{
   position: absolute;
-  top:75px;
-  left:145px;
-}
-#edgeSize{
- position: absolute;
- top:75px;
- left:280px;
-}
-*/
-
-/*thead {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  background: #222;
-  color: #d6d9d8;
-  width: inherit;
+  top: 10px;
+  left:0px;
+  z-index: 10;
+  color:black;
 }
 
-tbody {
-  display: block;
-  width: inherit;
-}
-
-td {
-  padding: 5px !important;
-}
-
-thead > tr,
-tbody > tr,
-tfoot > tr {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-}
-
-thead {
-  padding: 4px;
-}
-
-th {
-  font-weight: normal !important;
-  color: white;
-}
-
-thead,
-tfoot {
-  flex-shrink: 0;
-}
-
-th,
-tbody td {
-  width: 100%;
-  overflow-x: hidden;
-  text-overflow: ellipsis;
-  display: inline-block;
-  text-align:left;
-}
-
-tfoot {
-  display: inline-block;
-}
-
-tfoot td {
-  width: 100%;
-  display: inline-block;
-}
-
-.table>tbody>tr:nth-child(odd)>td,
-.table>tbody>tr:nth-child(odd)>th {
-  background-color: #eaeaea;
-}
-
-.how-to {
-  margin: 0;
-  text-align: left !important;
-  width: 300px;
-  float: left;
-}
-
-.how-to h3 {
-  font-weight: 400 !important;
-  line-height: 1.25em;
-  font-size: 1.25em;
-  bottom: 0;
-}
-
-.how-to p {
-  top: 0;
-  line-height: 1.2em;
-  font-size: 1em;
-  text-align: left;
-}
-
-#main-vis-node-size-legend {
-  width: 19%;
-  height: 100px;
-  float: left;
-  padding-left: 50px;
-}
-
-#main-vis-node-color-legend {
-  width: 24%;
-  height: 100px;
-  left: 25%;
-  float: left;
-}
-
-#main-vis-edge-opacity-legend {
-  width: 24%;
-  height: 100px;
-  left: 50%;
-  float: left;
-}
-
-#main-vis-edge-width-legend {
-  width: 24%;
-  height: 100px;
-  left: 80%;
-  float: left;
-}
-
-.help {
-  left: 0px;
-}
-
-.logos {
-  max-width: 20% !important;
-  right: 20px !important;
-  padding-top: 890px;
-  float: right !important;
-  display: block;
+#copiUsageButton{
   position: absolute;
-  background:none;
-}*/
-
-/* Tool Tip */
-
-/* Add this attribute to the element that needs a tooltip */
-/*[data-tooltip] {
-  position: relative;
-  z-index: 2;
-  cursor: pointer;
-  float: left;
-  left: 40px;
-}*/
-
-/* Hide the tooltip content by default */
-/*[data-tooltip]:before,
-[data-tooltip]:after {
-  visibility: hidden;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-  filter: progid: DXImageTransform.Microsoft.Alpha(Opacity=0);
-  opacity: 0;
-  pointer-events: none;
-}*/
-
-/* Position tooltip above the element */
-/*[data-tooltip]:before {
-  position: absolute;
-  bottom: 150%;
-  left: 50%;
-  margin-bottom: 5px;
-  margin-left: -80px;
-  padding: 7px;
-  width: 160px;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-  border: 1px solid #888;
-  background-color:rgba(255,255,255,.9);
-  padding: 10px 0px;
-  color: #555;
-  content: attr(data-tooltip);
-  text-align: center;
-  font-size: 16px;
-  line-height: 1.2;
+  top: 90px;
+  left:10px;
+  z-index: 10;
+  color:black;
 }
-*/
-/* Triangle hack to make tooltip look like a speech bubble */
-/*[data-tooltip]:after {
+
+
+#copiAboutButton{
   position: absolute;
-  bottom: 150%;
-  left: 50%;
-  margin-left: -5px;
-  width: 0;
-  border-top: 5px solid #000;
-  border-top: 5px solid hsla(0, 0%, 20%, 0.9);
-  border-right: 5px solid transparent;
-  border-left: 5px solid transparent;
-  content: " ";
-  font-size: 0;
-  line-height: 0;
-}*/
-
-/* Show tooltip content on hover */
-/*[data-tooltip]:hover:before,
-[data-tooltip]:hover:after {
-  visibility: visible;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
-  filter: progid: DXImageTransform.Microsoft.Alpha(Opacity=100);
-  opacity: 1;
-  float: right;
+  top: 50px;
+  left:10px;
+  z-index: 10;
+  color:black;
 }
-*/
-/*.question {
-  padding: 0px;
-  left: 0px;
-  bottom: 0px;
-  float: left;
-  max-width: 55%;
 
-}*/
-/*
-.question-1 {
-  position:absolute;
-  top:5px;
-  left: 200px;
-
-  .question-2 {
-    max-width: 55%;
-  }
-  .question-container {
-    width: 24%;
-  }
-
-*/
+.modal-title{
+  color: black;
+}
