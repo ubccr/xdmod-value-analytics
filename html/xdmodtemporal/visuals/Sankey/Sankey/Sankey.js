@@ -54,8 +54,8 @@ visualizationFunctions.Sankey = function(element, data, opts) {
         .nodes(graph.nodes)
         .links(graph.links)
         .layout(0);
-        function setDisciplineColors(colors){
-            context.disciplineColors = colors;
+        function setNodeColors(colors){
+            context.nodeColors = colors;
             context.SVG.group = createVisGroup();
             context.SVG.edges = createEdges();
             context.SVG.nodes = createNodes();
@@ -63,7 +63,7 @@ visualizationFunctions.Sankey = function(element, data, opts) {
             context.SVG.tooltips = createToolTips();
             applySVGEvents();
         }
-        d3.json("data/disciplineColors.json", setDisciplineColors);
+        d3.json("data/nodeColors.json", setNodeColors);
 
         function createColumnLabels() {
          context.SVG.columnLabels = context.SVG.group.append("g");
@@ -459,14 +459,14 @@ context.SVG.nodes.append("rect")
 .attr("width", sankey.nodeWidth())
  .attr("fill", function(d){
    if (d.i == 0)
-     return context.disciplineColors[sankey01.resource_map[d.name]];
+     return context.nodeColors[sankey01.resource_map[d.name]];
    if(d.i == 1){
      if(d.name.indexOf("NSF")>=0)
-       return context.disciplineColors["NSF"];
-     else return context.disciplineColors["NIH"];
+       return context.nodeColors["NSF"];
+     else return context.nodeColors["NIH"];
    }
    if (d.i == 2)
-     return context.disciplineColors[d.name];
+     return context.nodeColors[d.name];
    });
 
 context.SVG.nodes.append("text")
