@@ -37,6 +37,10 @@ be viewed online [here](https://github.com/ubccr/xdmod-value-analytics/tree/mast
 
 ## Ingestion
 
+**Note: Prior to running the XDMoD Value Analytics ingestor, you must first ensure that
+XDMoD has been properly configured and job data has been ingested. See
+[Configuration](configuration.html).**
+
 To begin the ingestion and aggregation process, simply run the command below.
 
 ```
