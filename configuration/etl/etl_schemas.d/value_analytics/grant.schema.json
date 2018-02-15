@@ -74,10 +74,15 @@
                 "organization": {
                     "type": "string",
                     "description": "Organizational affiliation (needed if >1 organization is supported)."
+                },
+                "role": {
+                    "type": "string",
+                    "description": "Role on the grant"
                 }
             },
             "required": [
-                "id"
+                "id",
+                "role"
             ]
         },
         "general_person": {
@@ -97,12 +102,17 @@
                 "organization": {
                     "type": "string",
                     "description": "Organizational affiliation."
+                },
+                "role": {
+                    "type": "string",
+                    "description": "Role on the grant"
                 }
             },
             "required": [
                 "first_name",
                 "last_name",
-                "organization"
+                "organization",
+                "role"
             ]
         },
         "person": {
