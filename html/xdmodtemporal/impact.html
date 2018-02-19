@@ -1,0 +1,72 @@
+<DOCTYPE! html>
+
+<head>
+  <meta charset=UTF-8 />
+  <title>Funding and Publication Impact</title>
+  <script src="../gui/lib/jquery/jquery-1.12.4.min.js"></script>
+  <script src="../gui/lib/angularjs/angular.min.js"></script>
+  <script src="lib/head.js"></script>
+  <script src="src/Init.js"></script>
+  <link rel="stylesheet" href="../gui/lib/bootstrap/dist/css/bootstrap.min.css">
+  <script src="../gui/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+  <div ng-include="'partials/impact_usage_modal.html'"></div>
+  <button type="button" class="btn btn-info btn-s" data-toggle="modal"
+  data-target="#impactUsageModal" id="impactUsageButton">
+  <span class="glyphicon glyphicon-info-sign"></span> Usage </button>
+
+  <div ng-include="'partials/impact_about_modal.html'"></div>
+  <button type="button" class="btn btn-primary btn-s" data-toggle="modal" data-target="#impactAboutModal" id="impactAboutButton">
+    <span class="glyphicon glyphicon-question-sign"></span> About</button>
+
+    <div class="sankey" >
+      <div class="sankeyContainer" id="container">
+        <div ng-controller="ngCnsVisual"
+        ng-vis-type="Sankey"
+        id="sankey01"
+        ng-data-field="sankeyData"
+        ng-identifier="sankey01"
+        ng-config="visuals/sankey01-configs.js">
+      </div>
+      <div class="legend-container legend">
+        <button >
+          <span>Legend</span>
+        </button>
+        <div class="legend-row">
+          <img src="./images/legend.svg" alt="Discipline Legend">
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+<script>
+
+var legendToggleOff = true;
+setTimeout(function() {
+  $(document).ready(function() {
+    $(".legend-container").click(function() {
+      toggleLegend();
+    });
+  });
+}, 2000)
+
+function toggleLegend() {
+  if (legendToggleOff) {
+    $(".legend-container").animate({
+      bottom: '0px'
+    }, 20);
+    legendToggleOff = false;
+  } else {
+    $(".legend-container").animate({
+      bottom: '-270px'
+    }, 75);
+    legendToggleOff = true;
+  }
+
+}
+</script>
+</html>

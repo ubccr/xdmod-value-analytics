@@ -1,0 +1,16 @@
+{
+	"data": {
+		"ForceNetwork": {
+			"alias": "forceNetwork01",
+			"commit": ""
+		},
+		"HVBarChart": {
+			"alias": "barChart01",
+			"commit": ""
+		},
+		"Sankey": {
+			"alias": "sankey01",
+			"commit": ""
+		}
+	}
+}

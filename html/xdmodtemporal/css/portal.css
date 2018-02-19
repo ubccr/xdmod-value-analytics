@@ -1,0 +1,22 @@
+body {
+	text-align: center;
+	font-family: 'Open Sans'; sans-serif;
+	text-transform: none !important;
+}
+
+.portal h1 {
+	padding: 40px 0px;
+	font-size: 30px;
+	font-weight: 600;
+}
+
+.portal h2 {
+	font-size: 20px;
+	font-weight: bold;
+	margin-bottom: 0px;
+}
+
+.group {
+	margin:auto;
+	max-width: 1200px;
+}

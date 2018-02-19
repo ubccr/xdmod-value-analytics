@@ -1,0 +1,20 @@
+{
+"STORAGE" : "#0eb49b",
+"COMPUTE" : "#efe986",
+"NSF" : "#00559b",
+"NIH" : "#99000D",
+"Medical Specialties" : "#FF0000",
+"Health Professionals" : "#FF804D",
+"Infectious Diseases" : "#B8150B",
+"Brain Research" : "#FFB529",
+"Unclassified" : "#8E8E8E",
+"Biotechnology": "#00FF80",
+"Multidisciplinary" : "#000000",
+"Chemistry" : "#0000ff",
+"Social Sciences" : "#FFFF00",
+"Math & Physics" : "#8E1BCE",
+"Earth Sciences" : "#9B180F",
+"Biology" : "#379908",
+"Chemical, Mechanical, & Civil Engineering" : "#61FFFF",
+"EE & Computer Science" : "#FF85FF"
+}
