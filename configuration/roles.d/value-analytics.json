@@ -22,7 +22,18 @@
                     "realm": "ValueAnalyticsGrants",
                     "group_by": "va_pi"
                 }
-            ]
+            ],
+            "+permitted_modules": [
+                  {
+                      "name": "cns_temporal_iframe",
+                      "title": "Visualizations",
+                      "position": 1000,
+                      "javascriptClass": "XDMoD.Module.CnsTemporalIframe",
+                      "javascriptReference": "CCR.xdmod.ui.cnsTemporalIframe",
+                      "userManualSectionName": "Viz",
+                      "tooltip": ""
+                  }
+			]
         }
     }
 }
