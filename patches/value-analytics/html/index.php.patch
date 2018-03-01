@@ -1,0 +1,12 @@
+diff --git a/html/index.php b/html/index.php
+index 33647e9..f4f1e7c 100644
+--- a/html/index.php
++++ b/html/index.php
+@@ -447,6 +447,7 @@ use Models\Services\Realms;
+       <script type="text/javascript" src="gui/js/modules/Usage.js"></script>
+       <?php if ($userLoggedIn): ?>
+       <script type="text/javascript" src="gui/js/modules/ReportGenerator.js"></script>
++      <script type="text/javascript" src="gui/js/modules/cns_temporal_iframe.js"></script>
+       <?php endif; ?>
+       <script type="text/javascript" src="gui/js/modules/About.js"></script>
+ 

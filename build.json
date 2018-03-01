@@ -19,6 +19,7 @@
             "classes",
             "db",
             "patches",
+			"html",
             {"tools": "tools/value-analytics"}
         ],
         "bin": [

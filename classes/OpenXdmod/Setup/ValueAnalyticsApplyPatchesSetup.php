@@ -50,6 +50,9 @@ class ValueAnalyticsApplyPatchesSetup extends SetupItem
             'value-analytics/classes/OpenXdmod/DataWarehouseInitializer.php.patch' => (
                 DATA_DIR . '/classes/OpenXdmod/DataWarehouseInitializer.php'
             ),
+			'value-analytics/html/index.php.patch' => (
+                DATA_DIR . '/html/index.php'
+            )
         );
         foreach ($patchesToTargets as $patchPathInDir => $targetPath) {
             $patchPath = DATA_DIR . '/patches/' . $patchPathInDir;
