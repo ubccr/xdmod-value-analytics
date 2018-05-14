@@ -1,0 +1,9 @@
+{
+    "+menu": [
+        {
+            "position": 300,
+            "label": "Value Analytics",
+            "handler": "ValueAnalyticsSetup"
+        }
+    ]
+}
