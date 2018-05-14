@@ -18,9 +18,9 @@ the expected formats and placed in the expected locations.
 Grant data will be ingested into Open XDMoD from three JSON files in
 `[xdmod_etc_dir]/etl/etl_data.d/value_analytics`:
 
-- `grants.json`
-- `organizations.json`
-- `people.json`
+- `grants.json` Detailed information on individual grants.
+- `organizations.json` Definition of the institutional organization.
+- `people.json` Detailed information on the people associated with grants.
 
 For common financial systems, we will include tools to generate the
 required files. These tools may be found in
@@ -33,7 +33,7 @@ not listed above, please contact `ccr-xdmod-help` at `buffalo.edu` for more
 information. Otherwise, you will need to convert your data according to the
 corresponding JSON schemas in
 `[xdmod_etc_dir]/etl/etl_schemas.d/value_analytics`. These schemas may also
-be viewed online [here](https://github.com/ubccr/xdmod-value-analytics/tree/master/configuration/etl/etl_schemas.d/value_analytics).
+be [viewed online](https://github.com/ubccr/xdmod-value-analytics/tree/master/configuration/etl/etl_schemas.d/value_analytics).
 
 ## Ingestion
 
