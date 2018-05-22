@@ -3,9 +3,9 @@ title: Software Requirements
 ---
 
 The Value Analytics Open XDMoD module requires all of the software for
-Open XDMoD and the following additional packages:
+**[Open XDMoD 7.5](https://open.xdmod.org/7.5/)** and the following additional packages:
 
-- [jq][] 1.5+
+- [jq](https://stedolan.github.io/jq/) 1.5+
 
 Linux Distribution Packages
 ---------------------------

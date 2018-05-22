@@ -23,3 +23,4 @@ Using
 -----
 
 - [Ingestion](ingestor.html)
+- [Visualizations](visualizations.html)
