@@ -4,14 +4,14 @@ Release:       __RELEASE__%{?dist}
 Summary:       Value Analytics module for Open XDMoD
 URL:           http://value-analytics.xdmod.org
 Vendor:        Center for Computational Research, University at Buffalo
-Packager:      Tom Yearke <tyearke@buffalo.edu>
+Packager:      Steve Gallo <smgallo@buffalo.edu>
 Group:         Applications/Internet
 License:       LGPLv3+
 Source:        %{name}-%{version}.tar.gz
 BuildRoot:     %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 BuildArch:     noarch
 BuildRequires: php-cli
-Requires:      xdmod >= 7.0.0
+Requires:      xdmod >= 7.5.0
 Requires:      jq
 
 %description
@@ -41,6 +41,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_docdir}/%{name}-%{version}/
 %{_sysconfdir}/xdmod/modules.d/*
 
-%config(noreplace) %{_sysconfdir}/xdmod/*.d/value_analytics.json
+%config(noreplace) %{_sysconfdir}/xdmod/*.d/value-analytics.json
 %config(noreplace) %{_sysconfdir}/xdmod/etl/etl.d/value_analytics.json
 %config(noreplace) %{_sysconfdir}/xdmod/etl/*.d/value_analytics
