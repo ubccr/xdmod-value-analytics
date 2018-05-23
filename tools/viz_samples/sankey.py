@@ -222,7 +222,8 @@ def main():
     data = []
     for resource in resources:
         for paper in papers[resource['user']]:
-            datum = {**paper}
+            datum = dict()
+            datum.update(paper)
             datum['ResourceID'] = resource['resource']
             datum['ResourceType'] = resource['type']
             datum['ResourceUnitsUsed'] = resource['units']
@@ -230,7 +231,8 @@ def main():
 
     print("Computing auxiliary data")
     compute_users = get_compute_user_count(jobs)
-    resource_users = {**compute_users}
+    resource_users = dict()
+    resource_users.update(compute_users)
 
     result = dict(records=dict())
     result['records']['data'] = data
